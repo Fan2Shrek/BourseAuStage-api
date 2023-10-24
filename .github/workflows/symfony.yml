@@ -1,0 +1,25 @@
+name: Php Check
+
+on: 
+  pull_request:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Vendor install
+        run: composer install --no-scripts
+
+      - name: Php Lint
+        run: php vendor/bin/php-cs-fixer fix --dry-run
+      
+      - name: PHP Stan
+        run: php vendor/bin/phpstan analyse src --level 9
