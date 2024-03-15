@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+  db:
+    image: mariadb:10.3
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ${DB_NAME}
+    volumes:
+      - db_data:/var/lib/mysql
+
+  pma:
+    image: phpmyadmin:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "8082:80"
+    depends_on:
+      - db
+
+  php:
+    build:
+      context: .boing/docker/php
+    volumes:
+      - .:/srv
+
+  web:
+    depends_on:
+      - php
+    build:
+      context: .boing/docker/nginx/symfony
+    ports:
+      - "8080:80"
+    volumes:
+      - ./public:/srv/public
+
+volumes:
+  db_data:
