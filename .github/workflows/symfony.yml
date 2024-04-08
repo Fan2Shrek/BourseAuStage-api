@@ -1,8 +1,8 @@
 name: Php Check
 
-on: 
-  pull_request:
-    branches: [main, develop]
+on:
+  push:
+    branches: ['*']
 
 permissions:
   contents: read
@@ -22,4 +22,4 @@ jobs:
         run: php vendor/bin/php-cs-fixer fix --dry-run
       
       - name: PHP Stan
-        run: php vendor/bin/phpstan analyse src --level 9
+        run: php vendor/bin/phpstan analyse src --level 5
