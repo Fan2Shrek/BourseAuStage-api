@@ -12,15 +12,14 @@ class UserFixture extends Fixture
     public function __construct(
         private readonly UserPasswordHasherInterface $passwordHasher,
     ) {
-        
     }
 
     public function load(ObjectManager $manager): void
     {
         $user = (new User())->setEmail('admin@test.com');
-        
+
         $pw = $this->passwordHasher->hashPassword($user, 'boing');
-        
+
         $user->setPassword($pw);
 
         $manager->persist($user);
