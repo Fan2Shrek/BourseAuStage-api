@@ -11,6 +11,7 @@ deploy:
 	$(git) pull -fr
 	$(MAKE) vendor
 	$(MAKE) database-migration
+	$(MAKE) database-update
 	$(php) bin/console cache:clear --no-warmup
 
 database-migration:
