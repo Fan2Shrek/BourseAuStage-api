@@ -16,7 +16,9 @@ class UserFixture extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $user = (new User())->setEmail('admin@test.com');
+        $user = (new User())
+            ->setEmail('admin@test.com')
+            ->setRoles(['ROLE_ADMIN']);
 
         $pw = $this->passwordHasher->hashPassword($user, 'boing');
 
