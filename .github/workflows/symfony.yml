@@ -19,7 +19,7 @@ jobs:
         run: composer install --no-scripts
 
       - name: Php Lint
-        run: make prod-phpcs
+        run: make pipeline-phpcs
       
       - name: PHP Stan
-        run: php vendor/bin/phpstan analyse src --level 5
+        run: make pipeline-phpstan
