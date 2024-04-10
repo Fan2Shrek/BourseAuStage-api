@@ -12,12 +12,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          submodules: recursive
 
       - name: Vendor install
         run: composer install --no-scripts
 
       - name: Php Lint
-        run: php vendor/bin/php-cs-fixer fix --dry-run
+        run: make prod-phpcs
       
       - name: PHP Stan
         run: php vendor/bin/phpstan analyse src --level 5

@@ -16,3 +16,6 @@ deploy:
 
 database-migration:
 	$(php) bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
+
+prod-phpcs:
+	php vendor/bin/php-cs-fixer fix --config=$(PHP_CS_FIXER_CONFIGURATION_FILE) --dry-run
