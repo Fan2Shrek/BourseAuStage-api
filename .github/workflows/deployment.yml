@@ -4,10 +4,12 @@ on:
   push:
     branches:
       - develop
+      - main
 
 jobs:
-  deploy:
+  preprod:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
 
     steps:
     - name: Checkout Repository
@@ -23,3 +25,22 @@ jobs:
     - name: Deploy App
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd ${{ secrets.FOLDER }} && make deploy'
+
+  prod:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.7.0
+      with:
+        ssh-private-key: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
+
+    - name: Deploy App
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.PROD_SSH_USER }}@${{ secrets.SSH_HOST }} 'cd ${{ secrets.PROD_FOLDER }} && make deploy'
