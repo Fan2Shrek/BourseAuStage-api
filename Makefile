@@ -12,7 +12,7 @@ deploy:
 	$(MAKE) vendor
 	$(MAKE) database-migration
 	$(MAKE) database-update
-	$(php) bin/console cache:clear --no-warmup
+	$(php) bin/console cache:clear
 
 database-migration:
 	$(php) bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
