@@ -21,6 +21,8 @@ services:
   php:
     build:
       context: .boing/docker/php
+      args:
+        - INTL_REQUIRE=1
     volumes:
       - .:/srv
 
