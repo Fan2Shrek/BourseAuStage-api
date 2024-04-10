@@ -1,8 +1,6 @@
 name: Php Check
 
-on:
-  push:
-    branches: ['*']
+on: [push]
 
 permissions:
   contents: read
