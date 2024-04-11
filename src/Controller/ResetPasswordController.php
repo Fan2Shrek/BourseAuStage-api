@@ -8,7 +8,6 @@ use App\Form\ResetPasswordRequestFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
@@ -39,13 +38,16 @@ class ResetPasswordController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                return $this->processSendingPasswordResetEmail(
+                $this->processSendingPasswordResetEmail(
                     $form->get('email')->getData(),
                     $mailer,
                 );
             } catch (UserNotFoundException $e) {
-                $this->addFlash('reset_password_error', 'Il n\'y a pas de compte associé à cet email.');
             }
+
+            $this->addFlash('reset_password_check_email', 'Un email de réinitialisation de mot de passe vous a été envoyé. Veuillez vérifier votre boîte de réception.');
+
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('reset_password/request.html.twig', [
@@ -101,7 +103,7 @@ class ResetPasswordController extends AbstractController
         ]);
     }
 
-    private function processSendingPasswordResetEmail(string $emailFormData, MailerInterface $mailer): RedirectResponse
+    private function processSendingPasswordResetEmail(string $emailFormData, MailerInterface $mailer): bool
     {
         $user = $this->entityManager->getRepository(User::class)->findOneBy([
             'email' => $emailFormData,
@@ -114,7 +116,7 @@ class ResetPasswordController extends AbstractController
         try {
             $resetToken = $this->resetPasswordHelper->generateResetToken($user);
         } catch (ResetPasswordExceptionInterface $e) {
-            return $this->redirectToRoute('app_login');
+            return false;
         }
 
         $email = (new TemplatedEmail())
@@ -131,6 +133,6 @@ class ResetPasswordController extends AbstractController
         $this->setTokenObjectInSession($resetToken);
         $this->addFlash('reset_password_check_email', 'Un email de réinitialisation de mot de passe vous a été envoyé. Veuillez vérifier votre boîte de réception.');
 
-        return $this->redirectToRoute('app_login');
+        return true;
     }
 }
