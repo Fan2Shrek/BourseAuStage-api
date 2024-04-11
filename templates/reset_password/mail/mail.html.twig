@@ -1,0 +1,9 @@
+<h1>Bonjour !</h1>
+
+<p>Une demande de réinitialisation de mot de passe à été faite sur votre compte.</p>
+
+<a href="{{ url('app_reset_password', {token: resetToken.token}) }}">{{ url('app_reset_password', {token: resetToken.token}) }}</a>
+
+<p>Le lien expire dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
+
+<p>L'équipe Bourse Aux Stages</p>
