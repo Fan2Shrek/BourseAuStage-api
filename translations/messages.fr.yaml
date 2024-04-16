@@ -1,0 +1,34 @@
+ROLE_ADMIN: "Administrateur"
+ROLE_STUDENT: "Étudiant"
+ROLE_COLLABORATOR: "Collaborateur"
+ROLE_SPONSOR: "Sponsor"
+
+user:
+  title: "Utilisateurs"
+  infoTitle:
+    basic: "Informations de base"
+    authentication: "Authentification"
+    additional: "Informations complémentaires"
+  field:
+    gender:
+      label: "Genre"
+    email:
+      label: "Mail"
+    password:
+      label: "Mot de passe"
+      repeat: "Confirmer le mot de passe"
+    firstName:
+      label: "Prénom"
+    lastName:
+      label: "Nom"
+    role:
+      label: "Type d'utilisateur"
+    createdAt:
+      label: "Créé le"
+    updatedAt:
+      label: "Dernière modification"
+    deletedAt:
+      label: "État"
+      dateLabel: "Désactivé le"
+      active: "Actif"
+      inactive: "Désactivé"

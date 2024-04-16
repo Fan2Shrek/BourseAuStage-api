@@ -30,7 +30,8 @@
         "phpstan/phpstan": "^1.10",
         "phpstan/phpstan-doctrine": "1.3.61",
         "phpstan/phpstan-symfony": "^1.3",
-        "symfony/maker-bundle": "^1.58"
+        "symfony/maker-bundle": "^1.58",
+        "zenstruck/foundry": "^1.37"
     },
     "config": {
         "allow-plugins": {
