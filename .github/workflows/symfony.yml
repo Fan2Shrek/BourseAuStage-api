@@ -15,6 +15,13 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: "none"
+          ini-values: memory_limit=-1
+          php-version: "8.2"
+
       - name: Vendor install
         run: composer install --no-scripts
 
