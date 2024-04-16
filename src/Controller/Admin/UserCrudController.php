@@ -4,9 +4,12 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use App\Enum\GenderEnum;
+use App\Enum\RoleEnum;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -15,7 +18,6 @@ use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -29,13 +31,19 @@ class UserCrudController extends AbstractCrudController
         return User::class;
     }
 
+    public function deleteEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $entityInstance->setDeletedAt(new \DateTimeImmutable());
+        $entityManager->flush();
+    }
+
     public function configureFields(string $pageName): iterable
     {
         $roleMap = [
-            'ROLE_ADMIN' => 'light',
-            'ROLE_STUDENT' => 'info',
-            'ROLE_COLLABORATOR' => 'warning',
-            'ROLE_SPONSOR' => 'dark',
+            RoleEnum::ADMIN->value => 'light',
+            RoleEnum::STUDENT->value => 'info',
+            RoleEnum::COLLABORATOR->value => 'warning',
+            RoleEnum::SPONSOR->value => 'dark',
         ];
 
         return [
@@ -66,7 +74,7 @@ class UserCrudController extends AbstractCrudController
 
                     $roles = array_filter(
                         $entity->getRoles(),
-                        fn (string $role) => 'ROLE_USER' !== $role
+                        fn (string $role) => RoleEnum::USER->value !== $role
                     );
 
                     if (empty($roles) || !key_exists($roles[0], $roleMap)) {

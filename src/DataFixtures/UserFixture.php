@@ -2,20 +2,18 @@
 
 namespace App\DataFixtures;
 
+use App\Enum\RoleEnum;
 use App\Tests\Factory\UserFactory;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 
 class UserFixture extends Fixture
 {
-    // A enlever quand les autres roles seront mis en place
-    private const ROLES = ['ROLE_STUDENT', 'ROLE_COLLABORATOR', 'ROLE_SPONSOR'];
-
     public function load(ObjectManager $manager): void
     {
         UserFactory::createOne([
             'email' => 'admin@test.com',
-            'roles' => ['ROLE_ADMIN'],
+            'roles' => [RoleEnum::ADMIN->value],
             'firstName' => 'Super',
             'lastName' => 'Admin',
             'password' => 'boing',
@@ -23,13 +21,24 @@ class UserFixture extends Fixture
 
         UserFactory::createOne([
             'deletedAt' => new \DateTimeImmutable(),
-            'roles' => ['ROLE_ADMIN'],
+            'roles' => [RoleEnum::ADMIN->value],
         ]);
 
+        // A enlever quand les autres roles seront mis en place
         for ($i = 0; $i < 10; ++$i) {
             UserFactory::createOne([
-                'roles' => [self::ROLES[array_rand(self::ROLES)]],
+                'roles' => [$this->getRole()->value],
             ]);
         }
+    }
+
+    // A enlever quand les autres roles seront mis en place
+    private function getRole(): RoleEnum
+    {
+        do {
+            $role = RoleEnum::cases()[array_rand(RoleEnum::cases())];
+        } while (RoleEnum::USER === $role || RoleEnum::ADMIN === $role);
+
+        return $role;
     }
 }

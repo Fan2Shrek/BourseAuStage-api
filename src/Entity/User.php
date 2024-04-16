@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Enum\GenderEnum;
+use App\Enum\RoleEnum;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use App\Interface\SoftDeleteInterface;
@@ -79,7 +80,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionT
     public function getRoles(): array
     {
         $roles = $this->roles;
-        $roles[] = 'ROLE_USER';
+        $roles[] = RoleEnum::USER->value;
 
         return array_unique($roles);
     }
