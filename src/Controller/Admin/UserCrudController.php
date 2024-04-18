@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -93,7 +94,7 @@ class UserCrudController extends AbstractCrudController
 
             FormField::addColumn(6),
             FormField::addFieldset($this->translator->trans('user.infoTitle.authentication')),
-            TextField::new('email', $this->translator->trans('user.field.email.label')),
+            EmailField::new('email', $this->translator->trans('user.field.email.label')),
             TextField::new('password')
                 ->setFormType(RepeatedType::class)
                 ->setFormTypeOptions([
