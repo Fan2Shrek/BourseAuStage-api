@@ -3,21 +3,27 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
-use App\Enum\GenderEnum;
 use App\Enum\RoleEnum;
+use App\Enum\GenderEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use Symfony\Component\Validator\Constraints\Email;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use Symfony\Component\Validator\Constraints\Length;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Validator\Constraints\PasswordStrength;
+use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -31,10 +37,35 @@ class UserCrudController extends AbstractCrudController
         return User::class;
     }
 
+    public function createEntity(string $entityFqcn)
+    {
+        return (new User())
+            ->setRoles([RoleEnum::ADMIN->value]);
+    }
+
     public function deleteEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
+        if (in_array(RoleEnum::ADMIN->value, $entityInstance->getRoles())) {
+            $repository = $entityManager->getRepository(User::class);
+
+            if (1 === $repository->countActiveAdmins()) {
+                $this->addFlash('danger', $this->translator->trans('user.flash.error.lastAdmin'));
+
+                return;
+            }
+        }
+
         $entityInstance->setDeletedAt(new \DateTimeImmutable());
         $entityManager->flush();
+    }
+
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->setPageTitle(Crud::PAGE_INDEX, $this->translator->trans('user.pageTitle.index'))
+            ->setPageTitle(Crud::PAGE_NEW, $this->translator->trans('user.pageTitle.new'))
+            ->setPageTitle(Crud::PAGE_DETAIL, fn (User $user) => sprintf('%s %s', $user->getFirstName(), $user->getLastName()))
+            ->setPageTitle(Crud::PAGE_EDIT, $this->translator->trans('user.pageTitle.edit'));
     }
 
     public function configureFields(string $pageName): iterable
@@ -93,7 +124,21 @@ class UserCrudController extends AbstractCrudController
 
             FormField::addColumn(6),
             FormField::addFieldset($this->translator->trans('user.infoTitle.authentication')),
-            TextField::new('email', $this->translator->trans('user.field.email.label')),
+            EmailField::new('email', $this->translator->trans('user.field.email.label'))
+                ->setFormTypeOptions([
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Veuillez entrer une adresse mail.',
+                        ]),
+                        new Email([
+                            'message' => 'L\'adresse mail "{{ value }}" n\'est pas valide.',
+                        ]),
+                        new Length([
+                            'maxMessage' => 'Votre adresse mail est trop longue.',
+                            'max' => 180,
+                        ]),
+                    ],
+                ]),
             TextField::new('password')
                 ->setFormType(RepeatedType::class)
                 ->setFormTypeOptions([
@@ -104,6 +149,18 @@ class UserCrudController extends AbstractCrudController
                     ],
                     'second_options' => ['label' => $this->translator->trans('user.field.password.repeat')],
                     'mapped' => false,
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Veuillez entrer un mot de passe.',
+                        ]),
+                        new Length([
+                            'min' => 12,
+                            'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères.',
+                            'max' => 4096,
+                        ]),
+                        new PasswordStrength(),
+                        new NotCompromisedPassword(),
+                    ],
                 ])
                 ->setRequired(Crud::PAGE_NEW === $pageName)
                 ->onlyOnForms()
@@ -144,6 +201,21 @@ class UserCrudController extends AbstractCrudController
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->add(Crud::PAGE_NEW, Action::INDEX)
             ->add(Crud::PAGE_EDIT, Action::INDEX)
-            ->add(Crud::PAGE_EDIT, Action::DETAIL);
+            ->add(Crud::PAGE_EDIT, Action::DETAIL)
+            ->update(
+                Crud::PAGE_INDEX,
+                Action::NEW,
+                fn (Action $action) => $action->setLabel($this->translator->trans('user.action.new'))
+            )
+            ->update(
+                Crud::PAGE_INDEX,
+                Action::DELETE,
+                fn (Action $action) => $action->setLabel($this->translator->trans('user.action.delete'))
+            )
+            ->update(
+                Crud::PAGE_DETAIL,
+                Action::DELETE,
+                fn (Action $action) => $action->setLabel($this->translator->trans('user.action.delete'))
+            );
     }
 }

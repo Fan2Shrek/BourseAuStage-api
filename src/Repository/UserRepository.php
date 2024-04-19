@@ -39,4 +39,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush();
     }
+
+    public function countActiveAdmins(): int
+    {
+        return $this->createQueryBuilder('u')
+            ->select('COUNT(u)')
+            ->where('u.roles LIKE :roles')
+            ->andWhere('u.deletedAt IS NULL')
+            ->setParameter('roles', '%"ROLE_ADMIN"%')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

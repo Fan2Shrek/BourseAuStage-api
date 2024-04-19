@@ -4,11 +4,17 @@ ROLE_COLLABORATOR: "Collaborateur"
 ROLE_SPONSOR: "Sponsor"
 
 user:
-  title: "Utilisateurs"
+  pageTitle:
+    index: "Utilisateurs"
+    new: "Créer un administrateur"
+    edit: "Modifier l'utilisateur"
   infoTitle:
     basic: "Informations de base"
     authentication: "Authentification"
     additional: "Informations complémentaires"
+  action:
+    new: "Créer un administrateur"
+    delete: "Désactiver"
   field:
     gender:
       label: "Genre"
@@ -32,3 +38,6 @@ user:
       dateLabel: "Désactivé le"
       active: "Actif"
       inactive: "Désactivé"
+  flash:
+    error:
+      lastAdmin: "Vous ne pouvez pas désactiver le dernier administrateur."

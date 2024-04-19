@@ -2,19 +2,20 @@
 
 namespace App\Entity;
 
-use App\Enum\GenderEnum;
 use App\Enum\RoleEnum;
+use App\Enum\GenderEnum;
+use App\Trait\SoftDeleteTrait;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use App\Trait\ActionTrackingTrait;
 use App\Interface\SoftDeleteInterface;
 use App\Interface\ActionTrackingInterface;
-use App\Trait\ActionTrackingTrait;
-use App\Trait\SoftDeleteTrait;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
+#[UniqueEntity('email')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionTrackingInterface, SoftDeleteInterface
 {
     use ActionTrackingTrait;
@@ -25,7 +26,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionT
     #[ORM\Column]
     private int $id;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(length: 180, unique: true)]
     private string $email;
 
     /**
