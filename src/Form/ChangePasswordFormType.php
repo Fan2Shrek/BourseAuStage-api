@@ -11,9 +11,15 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 use Symfony\Component\Validator\Constraints\PasswordStrength;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ChangePasswordFormType extends AbstractType
 {
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -27,22 +33,22 @@ class ChangePasswordFormType extends AbstractType
                 'first_options' => [
                     'constraints' => [
                         new NotBlank([
-                            'message' => 'Veuillez entrer un mot de passe.',
+                            'message' => $this->translator->trans('form.changePassword.field.password.error.notBlank'),
                         ]),
                         new Length([
                             'min' => 12,
-                            'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères.',
+                            'minMessage' => $this->translator->trans('form.changePassword.field.password.error.minLength'),
                             'max' => 4096,
                         ]),
                         new PasswordStrength(),
                         new NotCompromisedPassword(),
                     ],
-                    'label' => 'Nouveau mot de passe',
+                    'label' => $this->translator->trans('form.changePassword.field.password.label'),
                 ],
                 'second_options' => [
-                    'label' => 'Répéter le mot de passe',
+                    'label' => $this->translator->trans('form.changePassword.field.password.repeat'),
                 ],
-                'invalid_message' => 'Les champs du mot de passe doivent correspondre.',
+                'invalid_message' => $this->translator->trans('form.changePassword.field.password.error.correspondance'),
                 'mapped' => false,
             ]);
     }

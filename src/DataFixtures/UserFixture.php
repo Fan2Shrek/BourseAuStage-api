@@ -2,29 +2,43 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\User;
-use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\Enum\RoleEnum;
+use App\Tests\Factory\UserFactory;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 
 class UserFixture extends Fixture
 {
-    public function __construct(
-        private readonly UserPasswordHasherInterface $passwordHasher,
-    ) {
-    }
-
     public function load(ObjectManager $manager): void
     {
-        $user = (new User())
-            ->setEmail('admin@test.com')
-            ->setRoles(['ROLE_ADMIN']);
+        UserFactory::createOne([
+            'email' => 'admin@test.com',
+            'roles' => [RoleEnum::ADMIN->value],
+            'firstName' => 'Super',
+            'lastName' => 'Admin',
+            'password' => 'boing',
+        ]);
 
-        $pw = $this->passwordHasher->hashPassword($user, 'boing');
+        UserFactory::createOne([
+            'deletedAt' => new \DateTimeImmutable(),
+            'roles' => [RoleEnum::ADMIN->value],
+        ]);
 
-        $user->setPassword($pw);
+        // A enlever quand les autres roles seront mis en place
+        for ($i = 0; $i < 10; ++$i) {
+            UserFactory::createOne([
+                'roles' => [$this->getRole()->value],
+            ]);
+        }
+    }
 
-        $manager->persist($user);
-        $manager->flush();
+    // A enlever quand les autres roles seront mis en place
+    private function getRole(): RoleEnum
+    {
+        do {
+            $role = RoleEnum::cases()[array_rand(RoleEnum::cases())];
+        } while (RoleEnum::USER === $role || RoleEnum::ADMIN === $role);
+
+        return $role;
     }
 }

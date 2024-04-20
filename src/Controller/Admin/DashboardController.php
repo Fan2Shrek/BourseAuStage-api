@@ -9,9 +9,15 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DashboardController extends AbstractDashboardController
 {
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+    ) {
+    }
+
     #[Route('/admin', name: 'dashboard')]
     public function index(): Response
     {
@@ -24,14 +30,14 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Tableau de bord');
+            ->setTitle($this->translator->trans('dashboard.title'));
     }
 
     public function configureMenuItems(): iterable
     {
         // A mettre si besoin d'un vrai dashboard avec chart etc...
         // yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToRoute('Api', 'fas fa-layer-group', 'home');
-        yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-users', User::class);
+        yield MenuItem::linkToRoute($this->translator->trans('dashboard.menu.api'), 'fas fa-layer-group', 'home');
+        yield MenuItem::linkToCrud($this->translator->trans('dashboard.menu.users'), 'fas fa-users', User::class);
     }
 }
