@@ -3,21 +3,22 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\ChangePasswordFormType;
-use App\Form\ResetPasswordRequestFormType;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use App\Form\ChangePasswordFormType;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Form\ResetPasswordRequestFormType;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
-use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
 #[Route('/reset-password')]
 class ResetPasswordController extends AbstractController
@@ -25,8 +26,9 @@ class ResetPasswordController extends AbstractController
     use ResetPasswordControllerTrait;
 
     public function __construct(
-        private ResetPasswordHelperInterface $resetPasswordHelper,
-        private EntityManagerInterface $entityManager,
+        private readonly ResetPasswordHelperInterface $resetPasswordHelper,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -45,7 +47,7 @@ class ResetPasswordController extends AbstractController
             } catch (UserNotFoundException $e) {
             }
 
-            $this->addFlash('reset_password_check_email', 'Un email de réinitialisation de mot de passe vous a été envoyé. Veuillez vérifier votre boîte de réception.');
+            $this->addFlash('reset_password_check_email', $this->translator->trans('resetPassword.flash.forgotEmail'));
 
             return $this->redirectToRoute('app_login');
         }
@@ -122,7 +124,7 @@ class ResetPasswordController extends AbstractController
         $email = (new TemplatedEmail())
             ->from(new Address('no-reply@bas.com', 'Bourse Aux Stages'))
             ->to($user->getEmail())
-            ->subject('Demande de réinitialisation de mot de passe')
+            ->subject($this->translator->trans('resetPassword.email.subject'))
             ->htmlTemplate('reset_password/mail/mail.html.twig')
             ->context([
                 'resetToken' => $resetToken,
@@ -131,7 +133,7 @@ class ResetPasswordController extends AbstractController
         $mailer->send($email);
 
         $this->setTokenObjectInSession($resetToken);
-        $this->addFlash('reset_password_check_email', 'Un email de réinitialisation de mot de passe vous a été envoyé. Veuillez vérifier votre boîte de réception.');
+        $this->addFlash('reset_password_check_email', $this->translator->trans('resetPassword.flash.resetEmail'));
 
         return true;
     }

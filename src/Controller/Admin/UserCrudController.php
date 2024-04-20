@@ -28,7 +28,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 class UserCrudController extends AbstractCrudController
 {
     public function __construct(
-        private readonly TranslatorInterface $translator
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -128,13 +128,13 @@ class UserCrudController extends AbstractCrudController
                 ->setFormTypeOptions([
                     'constraints' => [
                         new NotBlank([
-                            'message' => 'Veuillez entrer une adresse mail.',
+                            'message' => $this->translator->trans('user.field.email.error.notBlank'),
                         ]),
                         new Email([
-                            'message' => 'L\'adresse mail "{{ value }}" n\'est pas valide.',
+                            'message' => $this->translator->trans('user.field.email.error.email'),
                         ]),
                         new Length([
-                            'maxMessage' => 'Votre adresse mail est trop longue.',
+                            'maxMessage' => $this->translator->trans('user.field.email.error.length'),
                             'max' => 180,
                         ]),
                     ],
@@ -151,11 +151,11 @@ class UserCrudController extends AbstractCrudController
                     'mapped' => false,
                     'constraints' => [
                         new NotBlank([
-                            'message' => 'Veuillez entrer un mot de passe.',
+                            'message' => $this->translator->trans('user.field.password.error.notBlank'),
                         ]),
                         new Length([
                             'min' => 12,
-                            'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères.',
+                            'minMessage' => $this->translator->trans('user.field.password.error.minLength'),
                             'max' => 4096,
                         ]),
                         new PasswordStrength(),
