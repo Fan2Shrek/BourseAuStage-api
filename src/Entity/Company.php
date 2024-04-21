@@ -5,12 +5,15 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CompanyRepository;
 use App\Trait\ActionTrackingTrait;
+use App\Trait\SoftDeleteTrait;
 use App\Interface\ActionTrackingInterface;
+use App\Interface\SoftDeleteInterface;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
-class Company implements ActionTrackingInterface
+class Company implements ActionTrackingInterface, SoftDeleteInterface
 {
     use ActionTrackingTrait;
+    use SoftDeleteTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -38,6 +41,9 @@ class Company implements ActionTrackingInterface
     #[ORM\Column(length: 180)]
     private string $country;
 
+    #[ORM\Column()]
+    private int $numberActiveOffer;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -56,6 +62,7 @@ class Company implements ActionTrackingInterface
     public function setName(string $name): static
     {
         $this->name = $name;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -68,6 +75,7 @@ class Company implements ActionTrackingInterface
     public function setLegalStatus(string $legalStatus): static
     {
         $this->legalStatus = $legalStatus;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -80,6 +88,7 @@ class Company implements ActionTrackingInterface
     public function setSiretNumber(int $siretNumber): static
     {
         $this->siretNumber = $siretNumber;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -92,6 +101,7 @@ class Company implements ActionTrackingInterface
     public function setSocialLink(string $socialLink): static
     {
         $this->socialLink = $socialLink;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -104,6 +114,7 @@ class Company implements ActionTrackingInterface
     public function setAddress(string $address): static
     {
         $this->address = $address;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -116,6 +127,7 @@ class Company implements ActionTrackingInterface
     public function setPostCode(string $postCode): static
     {
         $this->postCode = $postCode;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -128,6 +140,20 @@ class Company implements ActionTrackingInterface
     public function setCountry(string $country): static
     {
         $this->country = $country;
+        $this->updatedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function getNumberActiveOffer(): int
+    {
+        return $this->numberActiveOffer;
+    }
+
+    public function setNumberActiveOffer(int $numberActiveOffer): static
+    {
+        $this->numberActiveOffer = $numberActiveOffer;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }

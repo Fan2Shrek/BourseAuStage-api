@@ -25,6 +25,7 @@ final class CompanyFactory extends ModelFactory
             'address' => self::faker()->address(),
             'postCode' => self::faker()->postCode(),
             'country' => self::faker()->country(),
+            'numberActiveOffer' => self::faker()->numberBetween(0, 20),
         ];
     }
 
