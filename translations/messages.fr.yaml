@@ -16,6 +16,7 @@ dashboard:
   menu:
     api: "API"
     users: "Utilisateurs"
+    companies: "Entreprises"
 
 user:
   pageTitle:
@@ -78,3 +79,7 @@ form:
       email:
         error:
           notBlank: "Entrez votre adresse email."
+
+company:
+  pageTitle:
+    index: "Entreprises"
