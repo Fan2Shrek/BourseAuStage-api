@@ -16,6 +16,19 @@ dashboard:
   menu:
     api: "API"
     users: "Utilisateurs"
+    companies: "Entreprises"
+
+entity:
+  action:
+    createdAt:
+      label: "Créé le"
+    updatedAt:
+      label: "Dernière modification"
+    deletedAt:
+      label: "État"
+      dateLabel: "Désactivé le"
+      active: "Actif"
+      inactive: "Désactivé"
 
 user:
   pageTitle:
@@ -50,15 +63,6 @@ user:
       label: "Nom"
     role:
       label: "Type d'utilisateur"
-    createdAt:
-      label: "Créé le"
-    updatedAt:
-      label: "Dernière modification"
-    deletedAt:
-      label: "État"
-      dateLabel: "Désactivé le"
-      active: "Actif"
-      inactive: "Désactivé"
   flash:
     error:
       lastAdmin: "Vous ne pouvez pas désactiver le dernier administrateur."
@@ -78,3 +82,46 @@ form:
       email:
         error:
           notBlank: "Entrez votre adresse email."
+
+company:
+  pageTitle:
+    index: "Entreprises"
+    edit: "Modifier l'entreprise"
+  infoTitle:
+    basic: "Informations de base"
+    localisation: "Localisation"
+    additional: "Informations complémentaires"
+  action:
+    delete: "Désactiver"
+  field:
+    name:
+      label: "Nom"
+      error:
+        notBlank: "Veuillez entrer un nom."
+    legalStatus:
+      label: "Statut juridique"
+      error:
+        notBlank: "Veuillez entrer un statut juridique."
+    socialLink:
+      label: "URL"
+      error:
+        notBlank: "Veuillez entrer un URL."
+    siretNumber:
+      label: "Siret"
+      error:
+        notBlank: "Veuillez entrer un numéro de siret."
+        length: "Votre numéro de siret doit contenir 14 chiffres."
+    city:
+      label: "Ville"
+      error:
+        notBlank: "Veuillez entrer une ville."
+    postCode:
+      label: "Code postal"
+      error:
+        notBlank: "Veuillez entrer un code postal."
+    address:
+      label: "Adresse"
+      error:
+        notBlank: "Veuillez entrer une adresse."
+    numberActiveOffer:
+      label: "Offre active"
