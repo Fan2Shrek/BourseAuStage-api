@@ -56,6 +56,8 @@ class CompanyCrudController extends AbstractCrudController
                         new Length([
                             'maxMessage' => $this->translator->trans('company.field.siretNumber.error.length'),
                             'max' => 14,
+                            'minMessage' => $this->translator->trans('company.field.siretNumber.error.length'),
+                            'min' => 14,
                         ]),
                     ],
                 ])
