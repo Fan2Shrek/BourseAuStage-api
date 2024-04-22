@@ -186,7 +186,7 @@ class UserCrudController extends AbstractCrudController
                     return sprintf(
                         '<span class="badge badge-%s">%s</span>',
                         $date ? 'danger' : 'success',
-                        $date ? $this->translator->trans('user.field.deletedAt.inactive') : $this->translator->trans('entity.action.deletedAt.active')
+                        $date ? $this->translator->trans('entity.action.deletedAt.inactive') : $this->translator->trans('entity.action.deletedAt.active')
                     );
                 })
                 ->hideOnForm(),
