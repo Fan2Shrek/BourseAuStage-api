@@ -17,7 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class CompanyRepository extends ServiceEntityRepository
 {
     use ActionTrait;
-    
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Company::class);
