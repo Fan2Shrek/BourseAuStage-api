@@ -27,7 +27,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     private string $legalStatus;
 
     #[ORM\Column(length: 14)]
-    private int $siretNumber;
+    private string $siretNumber;
 
     #[ORM\Column(length: 180)]
     private string $socialLink;
@@ -80,12 +80,12 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
         return $this;
     }
 
-    public function getSiretNumber(): int
+    public function getSiretNumber(): string
     {
         return $this->siretNumber;
     }
 
-    public function setSiretNumber(int $siretNumber): static
+    public function setSiretNumber(string $siretNumber): static
     {
         $this->siretNumber = $siretNumber;
         $this->updatedAt = new \DateTimeImmutable();

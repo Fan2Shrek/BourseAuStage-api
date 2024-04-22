@@ -110,6 +110,7 @@ company:
       label: "Siret"
       error:
         notBlank: "Veuillez entrer un numéro de siret."
+        length: "Votre numéro de siret doit contenir au maximum 14 chiffres."
     city:
       label: "Ville"
       error:

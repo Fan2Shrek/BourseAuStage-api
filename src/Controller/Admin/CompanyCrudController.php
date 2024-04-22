@@ -13,6 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use Symfony\Component\Validator\Constraints\Length;
 
 class CompanyCrudController extends AbstractCrudController
 {
@@ -36,7 +37,7 @@ class CompanyCrudController extends AbstractCrudController
     {
         return $crud
             ->setPageTitle(Crud::PAGE_INDEX, $this->translator->trans('company.pageTitle.index'))
-            ->setPageTitle(Crud::PAGE_DETAIL, fn (Company $user) => sprintf($user->getName()))
+            ->setPageTitle(Crud::PAGE_DETAIL, fn (Company $company) => $company->getName())
             ->setPageTitle(Crud::PAGE_EDIT, $this->translator->trans('company.pageTitle.edit'));
     }
 
@@ -50,6 +51,14 @@ class CompanyCrudController extends AbstractCrudController
             TextField::new('socialLink', $this->translator->trans('company.field.socialLink.label'))
                 ->hideOnIndex(),
             NumberField::new('siretNumber', $this->translator->trans('company.field.siretNumber.label'))
+                ->setFormTypeOptions([
+                    'constraints' => [
+                        new Length([
+                            'maxMessage' => $this->translator->trans('company.field.siretNumber.error.length'),
+                            'max' => 14,
+                        ]),
+                    ],
+                ])
                 ->hideOnIndex(),
             NumberField::new('numberActiveOffer', $this->translator->trans('company.field.numberActiveOffer.label'))
                 ->hideOnForm(),
@@ -70,22 +79,22 @@ class CompanyCrudController extends AbstractCrudController
             DateTimeField::new('updatedAt', $this->translator->trans('entity.action.updatedAt.label'))
                 ->onlyOnDetail(),
             DateTimeField::new('deletedAt', $this->translator->trans('entity.action.deletedAt.label'))
-            ->formatValue(function ($value, ?Company $entity) {
-                if (null === $entity) {
-                    return '';
-                }
+                ->formatValue(function ($value, ?Company $entity) {
+                    if (null === $entity) {
+                        return '';
+                    }
 
-                $date = $entity->getDeletedAt();
+                    $date = $entity->getDeletedAt();
 
-                return sprintf(
-                    '<span class="badge badge-%s">%s</span>',
-                    $date ? 'danger' : 'success',
-                    $date ? $this->translator->trans('entity.action.deletedAt.inactive') : $this->translator->trans('entity.action.deletedAt.active')
-                );
-            })
-            ->hideOnForm(),
+                    return sprintf(
+                        '<span class="badge badge-%s">%s</span>',
+                        $date ? 'danger' : 'success',
+                        $date ? $this->translator->trans('entity.action.deletedAt.inactive') : $this->translator->trans('entity.action.deletedAt.active')
+                    );
+                })
+                ->hideOnForm(),
             DateTimeField::new('deletedAt', $this->translator->trans('entity.action.deletedAt.dateLabel'))
-            ->onlyOnDetail(),
+                ->onlyOnDetail(),
         ];
     }
 
