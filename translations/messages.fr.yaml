@@ -83,3 +83,17 @@ form:
 company:
   pageTitle:
     index: "Entreprises"
+  field:
+    name:
+      label: "Nom"
+    legalStatus:
+      label: "Statut légal"
+    address:
+      label: "Adresse"
+    postCode:
+      label: "Code postal"
+    deletedAt:
+      label: "État"
+      dateLabel: "Désactivé le"
+      active: "Actif"
+      inactive: "Désactivé"
