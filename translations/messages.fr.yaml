@@ -18,6 +18,18 @@ dashboard:
     users: "Utilisateurs"
     companies: "Entreprises"
 
+entity:
+  action:
+    createdAt:
+      label: "Créé le"
+    updatedAt:
+      label: "Dernière modification"
+    deletedAt:
+      label: "État"
+      dateLabel: "Désactivé le"
+      active: "Actif"
+      inactive: "Désactivé"
+
 user:
   pageTitle:
     index: "Utilisateurs"
@@ -51,15 +63,6 @@ user:
       label: "Nom"
     role:
       label: "Type d'utilisateur"
-    createdAt:
-      label: "Créé le"
-    updatedAt:
-      label: "Dernière modification"
-    deletedAt:
-      label: "État"
-      dateLabel: "Désactivé le"
-      active: "Actif"
-      inactive: "Désactivé"
   flash:
     error:
       lastAdmin: "Vous ne pouvez pas désactiver le dernier administrateur."
@@ -121,12 +124,3 @@ company:
         notBlank: "Veuillez entrer une adresse."
     numberActiveOffer:
       label: "Offre active"
-    createdAt:
-      label: "Créé le"
-    updatedAt:
-      label: "Dernière modification"
-    deletedAt:
-      label: "État"
-      dateLabel: "Désactivé le"
-      active: "Actif"
-      inactive: "Désactivé"

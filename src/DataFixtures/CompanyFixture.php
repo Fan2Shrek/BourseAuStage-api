@@ -10,8 +10,6 @@ class CompanyFixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        for ($i = 0; $i < 10; ++$i) {
-            CompanyFactory::createOne();
-        }
+        CompanyFactory::createMany(10);
     }
 }

@@ -42,7 +42,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     private string $address;
 
     #[ORM\Column()]
-    private int $numberActiveOffer;
+    private int $numberActiveOffer = 0;
 
     public function __construct()
     {

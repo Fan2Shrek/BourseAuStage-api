@@ -65,11 +65,11 @@ class CompanyCrudController extends AbstractCrudController
                 ->hideOnForm(),
             FormField::addFieldset($this->translator->trans('company.infoTitle.additional'))
                 ->hideOnForm(),
-            DateTimeField::new('createdAt', $this->translator->trans('company.field.createdAt.label'))
+            DateTimeField::new('createdAt', $this->translator->trans('entity.action.createdAt.label'))
                 ->onlyOnDetail(),
-            DateTimeField::new('updatedAt', $this->translator->trans('company.field.updatedAt.label'))
+            DateTimeField::new('updatedAt', $this->translator->trans('entity.action.updatedAt.label'))
                 ->onlyOnDetail(),
-            DateTimeField::new('deletedAt', $this->translator->trans('company.field.deletedAt.label'))
+            DateTimeField::new('deletedAt', $this->translator->trans('entity.action.deletedAt.label'))
             ->formatValue(function ($value, ?Company $entity) {
                 if (null === $entity) {
                     return '';
@@ -80,11 +80,11 @@ class CompanyCrudController extends AbstractCrudController
                 return sprintf(
                     '<span class="badge badge-%s">%s</span>',
                     $date ? 'danger' : 'success',
-                    $date ? $this->translator->trans('company.field.deletedAt.inactive') : $this->translator->trans('company.field.deletedAt.active')
+                    $date ? $this->translator->trans('entity.action.deletedAt.inactive') : $this->translator->trans('entity.action.deletedAt.active')
                 );
             })
             ->hideOnForm(),
-            DateTimeField::new('deletedAt', $this->translator->trans('company.field.deletedAt.dateLabel'))
+            DateTimeField::new('deletedAt', $this->translator->trans('entity.action.deletedAt.dateLabel'))
             ->onlyOnDetail(),
         ];
     }
