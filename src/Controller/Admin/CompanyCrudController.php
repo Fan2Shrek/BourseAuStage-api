@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Company;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
@@ -23,6 +24,12 @@ class CompanyCrudController extends AbstractCrudController
     public static function getEntityFqcn(): string
     {
         return Company::class;
+    }
+
+    public function deleteEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $entityInstance->setDeletedAt(new \DateTimeImmutable());
+        $entityManager->flush();
     }
 
     public function configureCrud(Crud $crud): Crud
@@ -88,8 +95,16 @@ class CompanyCrudController extends AbstractCrudController
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->add(Crud::PAGE_EDIT, Action::INDEX)
             ->add(Crud::PAGE_EDIT, Action::DETAIL)
-            ->remove(Crud::PAGE_INDEX, Action::NEW)
-            ->remove(Crud::PAGE_INDEX, Action::DELETE)
-            ->remove(Crud::PAGE_DETAIL, Action::DELETE);
+            ->update(
+                Crud::PAGE_INDEX,
+                Action::DELETE,
+                fn (Action $action) => $action->setLabel($this->translator->trans('company.action.delete'))
+            )
+            ->update(
+                Crud::PAGE_DETAIL,
+                Action::DELETE,
+                fn (Action $action) => $action->setLabel($this->translator->trans('company.action.delete'))
+            )
+            ->remove(Crud::PAGE_INDEX, Action::NEW);
     }
 }

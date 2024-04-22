@@ -88,6 +88,8 @@ company:
     basic: "Informations de base"
     localisation: "Localisation"
     additional: "Informations complémentaires"
+  action:
+    delete: "Désactiver"
   field:
     name:
       label: "Nom"
