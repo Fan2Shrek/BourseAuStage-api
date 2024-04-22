@@ -110,12 +110,12 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     {
         return $this->city;
     }
-    
+
     public function setCity(string $city): static
     {
         $this->city = $city;
         $this->updatedAt = new \DateTimeImmutable();
-        
+
         return $this;
     }
 

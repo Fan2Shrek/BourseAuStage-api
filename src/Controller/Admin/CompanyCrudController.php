@@ -46,7 +46,7 @@ class CompanyCrudController extends AbstractCrudController
                 ->hideOnIndex(),
             NumberField::new('numberActiveOffer', $this->translator->trans('company.field.numberActiveOffer.label'))
                 ->hideOnForm(),
-            
+
             FormField::addColumn(6),
             FormField::addFieldset($this->translator->trans('company.infoTitle.localisation')),
             TextField::new('city', $this->translator->trans('company.field.city.label')),
@@ -67,9 +67,9 @@ class CompanyCrudController extends AbstractCrudController
                 if (null === $entity) {
                     return '';
                 }
-                
+
                 $date = $entity->getDeletedAt();
-                
+
                 return sprintf(
                     '<span class="badge badge-%s">%s</span>',
                     $date ? 'danger' : 'success',
