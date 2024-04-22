@@ -9,7 +9,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
-// use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 
 class CompanyCrudController extends AbstractCrudController
 {
@@ -26,41 +28,68 @@ class CompanyCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPageTitle(Crud::PAGE_INDEX, $this->translator->trans('company.pageTitle.index'));
+            ->setPageTitle(Crud::PAGE_INDEX, $this->translator->trans('company.pageTitle.index'))
+            ->setPageTitle(Crud::PAGE_DETAIL, fn (Company $user) => sprintf($user->getName()))
+            ->setPageTitle(Crud::PAGE_EDIT, $this->translator->trans('company.pageTitle.edit'));
     }
 
     public function configureFields(string $pageName): iterable
     {
         return [
+            FormField::addColumn(6),
+            FormField::addFieldset($this->translator->trans('company.infoTitle.basic')),
             TextField::new('name', $this->translator->trans('company.field.name.label')),
             TextField::new('legalStatus', $this->translator->trans('company.field.legalStatus.label')),
-            TextField::new('address', $this->translator->trans('company.field.address.label')),
-            TextField::new('postCode', $this->translator->trans('company.field.postCode.label')),
-            DateTimeField::new('deletedAt', $this->translator->trans('company.field.deletedAt.label'))
-                ->formatValue(function ($value, ?Company $entity) {
-                    if (null === $entity) {
-                        return '';
-                    }
-
-                    $date = $entity->getDeletedAt();
-
-                    return sprintf(
-                        '<span class="badge badge-%s">%s</span>',
-                        $date ? 'danger' : 'success',
-                        $date ? $this->translator->trans('company.field.deletedAt.inactive') : $this->translator->trans('company.field.deletedAt.active')
-                    );
-                })
+            TextField::new('socialLink', $this->translator->trans('company.field.socialLink.label'))
+                ->hideOnIndex(),
+            NumberField::new('siretNumber', $this->translator->trans('company.field.siretNumber.label'))
+                ->hideOnIndex(),
+            NumberField::new('numberActiveOffer', $this->translator->trans('company.field.numberActiveOffer.label'))
                 ->hideOnForm(),
-            DateTimeField::new('deletedAt', $this->translator->trans('company.field.deletedAt.dateLabel'))
+            
+            FormField::addColumn(6),
+            FormField::addFieldset($this->translator->trans('company.infoTitle.localisation')),
+            TextField::new('city', $this->translator->trans('company.field.city.label')),
+            TextField::new('postCode', $this->translator->trans('company.field.postCode.label')),
+            TextField::new('address', $this->translator->trans('company.field.address.label'))
+                ->hideOnIndex(),
+
+            FormField::addColumn(6)
+                ->hideOnForm(),
+            FormField::addFieldset($this->translator->trans('company.infoTitle.additional'))
+                ->hideOnForm(),
+            DateTimeField::new('createdAt', $this->translator->trans('company.field.createdAt.label'))
                 ->onlyOnDetail(),
-            // NumberField::new('numberActiveOffer', $this->translator->trans('company.field.numberActiveOffer.label')),
-            // NumberField::new('sireNumber', $this->translator->trans('company.field.sireNumber.label')),
-            // TextField::new('socialLink', $this->translator->trans('company.field.socialLink.label')),
-            // TextField::new('country', $this->translator->trans('company.field.country.label')),
-            // DateTimeField::new('createdAt', $this->translator->trans('company.field.createdAt.label'))
-            //     ->hideOnForm(),
-            // DateTimeField::new('updatedAt', $this->translator->trans('company.field.updatedAt.label'))
-            //     ->hideOnForm(),
+            DateTimeField::new('updatedAt', $this->translator->trans('company.field.updatedAt.label'))
+                ->onlyOnDetail(),
+            DateTimeField::new('deletedAt', $this->translator->trans('company.field.deletedAt.label'))
+            ->formatValue(function ($value, ?Company $entity) {
+                if (null === $entity) {
+                    return '';
+                }
+                
+                $date = $entity->getDeletedAt();
+                
+                return sprintf(
+                    '<span class="badge badge-%s">%s</span>',
+                    $date ? 'danger' : 'success',
+                    $date ? $this->translator->trans('company.field.deletedAt.inactive') : $this->translator->trans('company.field.deletedAt.active')
+                );
+            })
+            ->hideOnForm(),
+            DateTimeField::new('deletedAt', $this->translator->trans('company.field.deletedAt.dateLabel'))
+            ->onlyOnDetail(),
         ];
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->add(Crud::PAGE_EDIT, Action::INDEX)
+            ->add(Crud::PAGE_EDIT, Action::DETAIL)
+            ->remove(Crud::PAGE_INDEX, Action::NEW)
+            ->remove(Crud::PAGE_INDEX, Action::DELETE)
+            ->remove(Crud::PAGE_DETAIL, Action::DELETE);
     }
 }

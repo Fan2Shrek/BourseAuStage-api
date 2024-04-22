@@ -20,11 +20,11 @@ final class CompanyFactory extends ModelFactory
         return [
             'name' => self::faker()->company(),
             'legalStatus' => self::faker()->randomElement(['SARL', 'SA', 'SAS', 'EI', 'EURL']),
-            'siretNumber' => self::faker()->numberBetween(100000000, 500000000),
             'socialLink' => self::faker()->url(),
-            'address' => self::faker()->address(),
+            'siretNumber' => self::faker()->numberBetween(100000000, 500000000),
+            'city' => self::faker()->city(),
             'postCode' => self::faker()->postCode(),
-            'country' => self::faker()->country(),
+            'address' => self::faker()->address(),
             'numberActiveOffer' => self::faker()->numberBetween(0, 20),
         ];
     }

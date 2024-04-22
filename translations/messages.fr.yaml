@@ -83,15 +83,46 @@ form:
 company:
   pageTitle:
     index: "Entreprises"
+    edit: "Modifier l'entreprise"
+  infoTitle:
+    basic: "Informations de base"
+    localisation: "Localisation"
+    additional: "Informations complémentaires"
   field:
     name:
       label: "Nom"
+      error:
+        notBlank: "Veuillez entrer un nom."
     legalStatus:
-      label: "Statut légal"
-    address:
-      label: "Adresse"
+      label: "Statut juridique"
+      error:
+        notBlank: "Veuillez entrer un statut juridique."
+    socialLink:
+      label: "URL"
+      error:
+        notBlank: "Veuillez entrer un URL."
+    siretNumber:
+      label: "Siret"
+      error:
+        notBlank: "Veuillez entrer un numéro de siret."
+    city:
+      label: "Ville"
+      error:
+        notBlank: "Veuillez entrer une ville."
     postCode:
       label: "Code postal"
+      error:
+        notBlank: "Veuillez entrer un code postal."
+    address:
+      label: "Adresse"
+      error:
+        notBlank: "Veuillez entrer une adresse."
+    numberActiveOffer:
+      label: "Offre active"
+    createdAt:
+      label: "Créé le"
+    updatedAt:
+      label: "Dernière modification"
     deletedAt:
       label: "État"
       dateLabel: "Désactivé le"

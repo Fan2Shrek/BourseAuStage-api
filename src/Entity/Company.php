@@ -33,13 +33,13 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     private string $socialLink;
 
     #[ORM\Column(length: 180)]
-    private string $address;
+    private string $city;
 
     #[ORM\Column(length: 10)]
     private string $postCode;
 
     #[ORM\Column(length: 180)]
-    private string $country;
+    private string $address;
 
     #[ORM\Column()]
     private int $numberActiveOffer;
@@ -106,16 +106,16 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
         return $this;
     }
 
-    public function getAddress(): string
+    public function getCity(): string
     {
-        return $this->address;
+        return $this->city;
     }
-
-    public function setAddress(string $address): static
+    
+    public function setCity(string $city): static
     {
-        $this->address = $address;
+        $this->city = $city;
         $this->updatedAt = new \DateTimeImmutable();
-
+        
         return $this;
     }
 
@@ -132,14 +132,14 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
         return $this;
     }
 
-    public function getCountry(): string
+    public function getAddress(): string
     {
-        return $this->country;
+        return $this->address;
     }
 
-    public function setCountry(string $country): static
+    public function setAddress(string $address): static
     {
-        $this->country = $country;
+        $this->address = $address;
         $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
