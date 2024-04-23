@@ -14,7 +14,7 @@ resetPassword:
 dashboard:
   title: "Tableau de bord"
   menu:
-    api: "API"
+    account: "Mon compte"
     users: "Utilisateurs"
     companies: "Entreprises"
 
