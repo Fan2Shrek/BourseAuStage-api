@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Enum\RoleEnum;
 use App\Enum\GenderEnum;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use Symfony\Component\Validator\Constraints\Email;
@@ -32,6 +33,7 @@ class UserCrudController extends AbstractCrudController
 {
     public function __construct(
         private readonly TranslatorInterface $translator,
+        private readonly Security $security,
     ) {
     }
 
@@ -74,6 +76,11 @@ class UserCrudController extends AbstractCrudController
 
         $entityInstance->setDeletedAt(new \DateTimeImmutable());
         $entityManager->flush();
+
+        $user = $this->getUser();
+        if ($user === $entityInstance) {
+            $this->security->logout(false);
+        }
     }
 
     public function configureCrud(Crud $crud): Crud
