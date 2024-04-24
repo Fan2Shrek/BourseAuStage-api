@@ -7,4 +7,6 @@ interface ActionTrackingInterface
     public function getCreatedAt(): \DateTimeInterface;
 
     public function getUpdatedAt(): ?\DateTimeInterface;
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): static;
 }
