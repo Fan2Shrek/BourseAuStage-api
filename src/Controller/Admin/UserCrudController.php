@@ -14,18 +14,19 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use Symfony\Component\Validator\Constraints\Length;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Validator\Constraints\PasswordStrength;
 use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -37,6 +38,17 @@ class UserCrudController extends AbstractCrudController
     public static function getEntityFqcn(): string
     {
         return User::class;
+    }
+
+    public function detail(AdminContext $context)
+    {
+        $entityInstance = $context->getEntity()->getInstance();
+
+        if ($this->getUser() === $entityInstance) {
+            $this->activateMyAccountMenuItem($context);
+        }
+
+        return parent::detail($context);
     }
 
     public function createEntity(string $entityFqcn)
@@ -220,5 +232,16 @@ class UserCrudController extends AbstractCrudController
                 Action::DELETE,
                 fn (Action $action) => $action->setLabel($this->translator->trans('user.action.delete'))
             );
+    }
+
+    private function activateMyAccountMenuItem(AdminContext $context): void
+    {
+        $menu = $context->getMainMenu()->getItems();
+
+        foreach ($menu as $item) {
+            if ('my_account' === $item->getRouteName()) {
+                $item->setSelected(true);
+            }
+        }
     }
 }
