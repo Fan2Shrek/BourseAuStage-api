@@ -37,7 +37,7 @@ class UserFixture extends Fixture
     {
         do {
             $role = RoleEnum::cases()[array_rand(RoleEnum::cases())];
-        } while (in_array($role, [RoleEnum::USER, RoleEnum::ADMIN, RoleEnum::COLLABORATOR]));
+        } while (in_array($role, [RoleEnum::USER, RoleEnum::ADMIN, RoleEnum::COLLABORATOR, RoleEnum::STUDENT]));
 
         return $role;
     }

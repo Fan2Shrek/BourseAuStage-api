@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\InheritanceType('JOINED')]
 #[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
-#[ORM\DiscriminatorMap(['collaborator' => Collaborator::class, 'user' => User::class])]
+#[ORM\DiscriminatorMap(['collaborator' => Collaborator::class, 'student' => Student::class, 'user' => User::class])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionTrackingInterface, SoftDeleteInterface
 {
     use ActionTrackingTrait;
