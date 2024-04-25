@@ -55,7 +55,6 @@ user:
       label: "Mot de passe"
       repeat: "Confirmer le mot de passe"
       error:
-        notBlank: "Veuillez entrer un mot de passe."
         minLength: "Votre mot de passe doit contenir au moins {{ limit }} caractères."
     firstName:
       label: "Prénom"
@@ -66,6 +65,7 @@ user:
   flash:
     error:
       lastAdmin: "Vous ne pouvez pas désactiver le dernier administrateur."
+      lastCollaborator: "Vous ne pouvez pas désactiver le dernier gérant d'une entreprise."
 
 form:
   changePassword:

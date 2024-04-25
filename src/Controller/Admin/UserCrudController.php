@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Collaborator;
 use App\Entity\User;
 use App\Enum\RoleEnum;
 use App\Enum\GenderEnum;
@@ -24,6 +25,7 @@ use Symfony\Component\Validator\Constraints\PasswordStrength;
 use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -45,14 +47,17 @@ class UserCrudController extends AbstractCrudController
 
     public function deleteEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        if (in_array(RoleEnum::ADMIN->value, $entityInstance->getRoles())) {
-            $repository = $entityManager->getRepository(User::class);
+        $count = match (true) {
+            $entityInstance instanceof Collaborator => $entityManager->getRepository(Collaborator::class)->countActiveCollaboratorForCompany($entityInstance->getCompany()),
+            $entityInstance instanceof User => $entityManager->getRepository(User::class)->countActiveAdmins(),
+            default => 0,
+        };
 
-            if (1 === $repository->countActiveAdmins()) {
-                $this->addFlash('danger', $this->translator->trans('user.flash.error.lastAdmin'));
+        if (1 === $count) {
+            $tokenId = $entityInstance instanceof Collaborator ? 'user.flash.error.lastCollaborator' : 'user.flash.error.lastAdmin';
+            $this->addFlash('danger', $this->translator->trans($tokenId));
 
-                return;
-            }
+            return;
         }
 
         $entityInstance->setDeletedAt(new \DateTimeImmutable());
@@ -139,6 +144,7 @@ class UserCrudController extends AbstractCrudController
                         ]),
                     ],
                 ]),
+            TelephoneField::new('phone'),
             TextField::new('password')
                 ->setFormType(RepeatedType::class)
                 ->setFormTypeOptions([
@@ -150,9 +156,6 @@ class UserCrudController extends AbstractCrudController
                     'second_options' => ['label' => $this->translator->trans('user.field.password.repeat')],
                     'mapped' => false,
                     'constraints' => [
-                        new NotBlank([
-                            'message' => $this->translator->trans('user.field.password.error.notBlank'),
-                        ]),
                         new Length([
                             'min' => 12,
                             'minMessage' => $this->translator->trans('user.field.password.error.minLength'),

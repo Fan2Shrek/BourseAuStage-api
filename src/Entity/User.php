@@ -16,6 +16,9 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[UniqueEntity('email')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\InheritanceType('JOINED')]
+#[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
+#[ORM\DiscriminatorMap(['collaborator' => Collaborator::class, 'user' => User::class])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionTrackingInterface, SoftDeleteInterface
 {
     use ActionTrackingTrait;
@@ -34,6 +37,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionT
      */
     #[ORM\Column]
     private array $roles = [];
+
+    #[ORM\Column()]
+    private string $phone;
 
     #[ORM\Column]
     private string $password;
@@ -65,6 +71,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionT
     public function setEmail(string $email): static
     {
         $this->email = $email;
+        $this->updatedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function getPhone(): string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): static
+    {
+        $this->phone = $phone;
         $this->updatedAt = new \DateTimeImmutable();
 
         return $this;

@@ -10,13 +10,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 /**
  * @extends ModelFactory<User>
  */
-final class UserFactory extends ModelFactory
+class UserFactory extends ModelFactory
 {
-    /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
-     *
-     * @todo inject services if required
-     */
     public function __construct(
         private readonly UserPasswordHasherInterface $passwordHasher,
     ) {
@@ -36,6 +31,7 @@ final class UserFactory extends ModelFactory
             'gender' => self::faker()->randomElement(GenderEnum::cases()),
             'lastName' => self::faker()->lastName(),
             'password' => self::faker()->text(12),
+            'phone' => self::faker()->phoneNumber(),
             'roles' => [],
         ];
     }
@@ -49,14 +45,15 @@ final class UserFactory extends ModelFactory
             ->afterInstantiate($this->hashPassword(...));
     }
 
+    protected function hashPassword(User $user): void
+    {
+        $password = $this->passwordHasher->hashPassword($user, $user->getPassword());
+
+        $user->setPassword($password);
+    }
+
     protected static function getClass(): string
     {
         return User::class;
-    }
-
-    private function hashPassword(User $user): void
-    {
-        $password = $this->passwordHasher->hashPassword($user, $user->getPassword());
-        $user->setPassword($password);
     }
 }
