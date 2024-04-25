@@ -22,7 +22,7 @@ trait ActionTrackingTrait
         return $this->updatedAt;
     }
 
-    private function setUpdatedAt(?\DateTimeInterface $updatedAt): static
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
 

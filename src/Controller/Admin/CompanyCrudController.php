@@ -3,20 +3,23 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Company;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Controller\Admin\Trait\ReviveTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use Symfony\Component\Validator\Constraints\Length;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class CompanyCrudController extends AbstractCrudController
 {
+    use ReviveTrait;
+
     public function __construct(
         private readonly TranslatorInterface $translator,
     ) {
@@ -102,20 +105,45 @@ class CompanyCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
+        $reviveAction = $this->getReviveAction($this->translator->trans('company.action.revive'));
+
         return $actions
+            ->remove(Crud::PAGE_INDEX, Action::NEW)
+            ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
+            ->remove(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE)
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->add(Crud::PAGE_NEW, Action::INDEX)
             ->add(Crud::PAGE_EDIT, Action::INDEX)
             ->add(Crud::PAGE_EDIT, Action::DETAIL)
+            ->add(Crud::PAGE_INDEX, $reviveAction)
+            ->add(Crud::PAGE_DETAIL, $reviveAction)
+            ->update(
+                Crud::PAGE_INDEX,
+                'reviveEntity',
+                fn (Action $action) => $action->addCssClass('text-success')
+            )
             ->update(
                 Crud::PAGE_INDEX,
                 Action::DELETE,
                 fn (Action $action) => $action->setLabel($this->translator->trans('company.action.delete'))
+                    ->displayIf(fn (Company $company) => !$company->isDeleted())
             )
             ->update(
                 Crud::PAGE_DETAIL,
                 Action::DELETE,
-                fn (Action $action) => $action->setLabel($this->translator->trans('company.action.delete'))
+                fn (Action $action) => $action->setIcon(null)
+                    ->setLabel($this->translator->trans('company.action.delete'))
+                    ->addCssClass('btn btn-danger text-light')
+                    ->displayIf(fn (Company $company) => !$company->isDeleted())
             )
-            ->remove(Crud::PAGE_INDEX, Action::NEW);
+            ->update(
+                Crud::PAGE_DETAIL,
+                'reviveEntity',
+                fn (Action $action) => $action
+                    ->addCssClass('btn btn-success')
+            )
+            ->reorder(Crud::PAGE_INDEX, [Action::DETAIL, Action::EDIT, 'reviveEntity', Action::DELETE])
+            ->reorder(Crud::PAGE_DETAIL, [Action::INDEX, Action::EDIT, 'reviveEntity', Action::DELETE])
+            ->reorder(Crud::PAGE_EDIT, [Action::INDEX, Action::DETAIL, Action::SAVE_AND_RETURN]);
     }
 }

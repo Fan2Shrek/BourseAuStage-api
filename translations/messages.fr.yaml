@@ -42,6 +42,7 @@ user:
   action:
     new: "Créer un administrateur"
     delete: "Désactiver"
+    revive: "Réactiver"
   field:
     gender:
       label: "Genre"
@@ -93,6 +94,7 @@ company:
     additional: "Informations complémentaires"
   action:
     delete: "Désactiver"
+    revive: "Réactiver"
   field:
     name:
       label: "Nom"
