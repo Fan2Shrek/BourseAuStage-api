@@ -13,7 +13,7 @@ class SecurityController extends AbstractController
     public function home(): Response
     {
         if ($this->getUser()) {
-            return $this->redirectToRoute('dashboard');
+            return $this->redirectToRoute('my_account');
         }
 
         return $this->redirectToRoute('app_login');
@@ -23,7 +23,7 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
-            return $this->redirectToRoute('dashboard');
+            return $this->redirectToRoute('my_account');
         }
 
         $error = $authenticationUtils->getLastAuthenticationError();

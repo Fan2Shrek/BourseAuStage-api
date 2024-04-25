@@ -20,7 +20,7 @@ class DashboardController extends AbstractDashboardController
     ) {
     }
 
-    #[Route('/admin', name: 'dashboard')]
+    #[Route('/admin', name: 'my_account')]
     public function index(): Response
     {
         $user = $this->getUser();
@@ -50,7 +50,7 @@ class DashboardController extends AbstractDashboardController
     {
         // A mettre si besoin d'un vrai dashboard avec chart etc...
         // yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToRoute($this->translator->trans('dashboard.menu.account'), 'fas fa-user', 'home');
+        yield MenuItem::linkToRoute($this->translator->trans('dashboard.menu.account'), 'fas fa-user', 'my_account');
         yield MenuItem::linkToCrud($this->translator->trans('dashboard.menu.users'), 'fas fa-users', User::class);
         yield MenuItem::linkToCrud($this->translator->trans('dashboard.menu.companies'), 'fas fa-building', Company::class);
     }
