@@ -18,6 +18,12 @@ class Student extends User
     }
 
     #[ORM\Column(length: 180)]
+    private string $city;
+
+    #[ORM\Column(length: 10)]
+    private string $postCode;
+
+    #[ORM\Column(length: 180)]
     private string $address;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -31,6 +37,32 @@ class Student extends User
     public function setAddress(string $address): static
     {
         $this->address = $address;
+        $this->updatedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function getCity(): string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): static
+    {
+        $this->city = $city;
+        $this->updatedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function getPostCode(): string
+    {
+        return $this->postCode;
+    }
+
+    public function setPostCode(string $postCode): static
+    {
+        $this->postCode = $postCode;
         $this->updatedAt = new \DateTimeImmutable();
 
         return $this;

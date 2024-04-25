@@ -16,6 +16,8 @@ final class StudentFactory extends UserFactory
             parent::getDefaults(),
             [
                 'roles' => [RoleEnum::STUDENT->value],
+                'city' => self::faker()->city(),
+                'postCode' => self::faker()->postCode(),
                 'address' => self::faker()->address(),
                 'birthdayAt' => self::faker()->dateTime(),
             ]
