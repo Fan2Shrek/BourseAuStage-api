@@ -17,6 +17,7 @@ dashboard:
     account: "Mon compte"
     users: "Utilisateurs"
     companies: "Entreprises"
+    students: "Étudiants"
 
 entity:
   action:
