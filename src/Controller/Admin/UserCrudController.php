@@ -66,7 +66,7 @@ class UserCrudController extends AbstractCrudController
     {
         $count = match (true) {
             $entityInstance instanceof Collaborator => $entityManager->getRepository(Collaborator::class)->countActiveCollaboratorForCompany($entityInstance->getCompany()),
-            $entityInstance instanceof User => $entityManager->getRepository(User::class)->countActiveAdmins(),
+            in_array(RoleEnum::ADMIN->value, $entityInstance->getRoles()) => $entityManager->getRepository(User::class)->countActiveAdmins(),
             default => 0,
         };
 
