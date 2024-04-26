@@ -13,9 +13,20 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use Symfony\Component\Validator\Constraints\Email;
+use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Validator\Constraints\PasswordStrength;
+use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 
 class StudentCrudController extends AbstractCrudController
 {
@@ -41,6 +52,7 @@ class StudentCrudController extends AbstractCrudController
     {
         return $crud
             ->setPageTitle(Crud::PAGE_INDEX, $this->translator->trans('student.pageTitle.index'))
+            ->setPageTitle(Crud::PAGE_NEW, $this->translator->trans('student.pageTitle.new'))
             ->setPageTitle(Crud::PAGE_DETAIL, fn (Student $student) => sprintf('%s %s', $student->getFirstName(), $student->getLastName()))
             ->setPageTitle(Crud::PAGE_EDIT, $this->translator->trans('student.pageTitle.edit'));
     }
@@ -69,12 +81,63 @@ class StudentCrudController extends AbstractCrudController
                 }),
             TextField::new('firstName', $this->translator->trans('student.field.firstName.label')),
             TextField::new('lastName', $this->translator->trans('student.field.lastName.label')),
-            NumberField::new('age', 'Âge'),
+            DateField::new('birthdayAt', $this->translator->trans('student.field.birthdayAt.label'))
+                ->setFormat('dd/MM/yyyy')
+                ->hideOnIndex(),
+            NumberField::new('age', 'Âge')
+                ->onlyOnIndex(),
+
+            FormField::addColumn(6),
+            FormField::addFieldset($this->translator->trans('student.infoTitle.authentication')),
+            EmailField::new('email', $this->translator->trans('student.field.email.label'))
+                ->setFormTypeOptions([
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => $this->translator->trans('student.field.email.error.notBlank'),
+                        ]),
+                        new Email([
+                            'message' => $this->translator->trans('student.field.email.error.email'),
+                        ]),
+                        new Length([
+                            'maxMessage' => $this->translator->trans('student.field.email.error.length'),
+                            'max' => 180,
+                        ]),
+                    ],
+                ])
+                ->hideOnIndex(),
+            TelephoneField::new('phone')
+                ->hideOnIndex(),
+            TextField::new('password')
+                ->setFormType(RepeatedType::class)
+                ->setFormTypeOptions([
+                    'type' => PasswordType::class,
+                    'first_options' => [
+                        'label' => $this->translator->trans('student.field.password.label'),
+                        'hash_property_path' => 'password',
+                    ],
+                    'second_options' => ['label' => $this->translator->trans('student.field.password.repeat')],
+                    'mapped' => false,
+                    'constraints' => [
+                        new Length([
+                            'min' => 12,
+                            'minMessage' => $this->translator->trans('student.field.password.error.minLength'),
+                            'max' => 4096,
+                        ]),
+                        new PasswordStrength(),
+                        new NotCompromisedPassword(),
+                    ],
+                ])
+                ->setRequired(Crud::PAGE_NEW === $pageName)
+                ->onlyOnForms()
+                ->hideOnIndex()
+                ->hideOnDetail(),
 
             FormField::addColumn(6),
             FormField::addFieldset($this->translator->trans('student.infoTitle.localisation')),
             TextField::new('city', $this->translator->trans('student.field.city.label')),
             TextField::new('postCode', $this->translator->trans('student.field.postCode.label')),
+            TextField::new('address', $this->translator->trans('student.field.address.label'))
+                ->hideOnIndex(),
 
             FormField::addColumn(6)
                 ->hideOnForm(),

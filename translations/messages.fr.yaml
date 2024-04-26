@@ -136,6 +136,7 @@ student:
     edit: "Modifier l'étudiant"
   infoTitle:
       basic: "Informations de base"
+      authentication: "Authentification"
       localisation: "Localisation"
       additional: "Informations complémentaires"
   action:
@@ -153,3 +154,18 @@ student:
       label: "Ville"
     postCode:
       label: "Code postal"
+    address:
+      label: "Adresse"
+    birthdayAt:
+      label: "Date de naissance"
+    email:
+      label: "Mail"
+      error:
+        notBlank: "Veuillez entrer une adresse mail."
+        email: "L'adresse mail n'est pas valide."
+        lenght: "Votre adresse mail est trop longue."
+    password:
+      label: "Mot de passe"
+      repeat: "Confirmer le mot de passe"
+      error:
+        minLength: "Votre mot de passe doit contenir au moins {{ limit }} caractères."
