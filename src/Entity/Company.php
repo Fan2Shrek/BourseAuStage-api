@@ -3,11 +3,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Trait\SoftDeleteTrait;
 use App\Repository\CompanyRepository;
-use App\Trait\ActionTrackingTrait;
-use App\Trait\SoftDeleteTrait;
-use App\Interface\ActionTrackingInterface;
-use App\Interface\SoftDeleteInterface;
+use App\Entity\Trait\ActionTrackingTrait;
+use App\Entity\Interface\SoftDeleteInterface;
+use App\Entity\Interface\ActionTrackingInterface;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
 class Company implements ActionTrackingInterface, SoftDeleteInterface

@@ -27,6 +27,7 @@ class Collaborator extends User
     public function setCompany(Company $company): self
     {
         $this->company = $company;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }

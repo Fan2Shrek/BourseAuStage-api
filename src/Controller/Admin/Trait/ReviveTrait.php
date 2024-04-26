@@ -2,8 +2,8 @@
 
 namespace App\Controller\Admin\Trait;
 
-use App\Interface\SoftDeleteInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Interface\SoftDeleteInterface;
 use Symfony\Component\HttpFoundation\Response;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;

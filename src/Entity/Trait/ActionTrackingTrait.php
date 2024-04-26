@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Trait;
+namespace App\Entity\Trait;
 
 use Doctrine\ORM\Mapping as ORM;
 
 trait ActionTrackingTrait
 {
     #[ORM\Column(type: 'datetime_immutable')]
-    private \DateTimeInterface $createdAt;
+    protected \DateTimeInterface $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-    private ?\DateTimeInterface $updatedAt = null;
+    protected ?\DateTimeInterface $updatedAt = null;
 
     public function getCreatedAt(): \DateTimeInterface
     {
@@ -22,7 +22,7 @@ trait ActionTrackingTrait
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): static
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Interface;
+namespace App\Entity\Interface;
 
 interface ActionTrackingInterface
 {
@@ -8,5 +8,5 @@ interface ActionTrackingInterface
 
     public function getUpdatedAt(): ?\DateTimeInterface;
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): static;
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): static;
 }
