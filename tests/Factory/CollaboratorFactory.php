@@ -16,6 +16,7 @@ final class CollaboratorFactory extends UserFactory
             parent::getDefaults(),
             [
                 'roles' => [RoleEnum::COLLABORATOR->value],
+                'company' => CompanyFactory::randomOrCreate(),
             ]
         );
     }
