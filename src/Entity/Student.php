@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 use DateTime;
 
-#[ORM\Entity(repositoryClass: CollaboratorRepository::class)]
+#[ORM\Entity(repositoryClass: StudentRepository::class)]
 class Student extends User
 {
     public function __construct()
