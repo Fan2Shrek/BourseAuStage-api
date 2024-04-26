@@ -8,6 +8,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Controller\Admin\Trait\ReviveTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
@@ -100,5 +102,54 @@ class StudentCrudController extends AbstractCrudController
             DateTimeField::new('deletedAt', $this->translator->trans('entity.action.deletedAt.dateLabel'))
                 ->onlyOnDetail(),
         ];
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        $reviveAction = $this->getReviveAction($this->translator->trans('student.action.revive'));
+
+        return $actions
+            ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
+            ->remove(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE)
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->add(Crud::PAGE_NEW, Action::INDEX)
+            ->add(Crud::PAGE_EDIT, Action::INDEX)
+            ->add(Crud::PAGE_EDIT, Action::DETAIL)
+            ->add(Crud::PAGE_INDEX, $reviveAction)
+            ->add(Crud::PAGE_DETAIL, $reviveAction)
+            ->update(
+                Crud::PAGE_INDEX,
+                Action::NEW,
+                fn (Action $action) => $action->setLabel($this->translator->trans('student.action.new'))
+            )
+            ->update(
+                Crud::PAGE_INDEX,
+                'reviveEntity',
+                fn (Action $action) => $action->addCssClass('text-success')
+            )
+            ->update(
+                Crud::PAGE_INDEX,
+                Action::DELETE,
+                fn (Action $action) => $action->setLabel($this->translator->trans('student.action.delete'))
+                    ->displayIf(fn (Student $student) => !$student->isDeleted())
+            )
+            ->update(
+                Crud::PAGE_DETAIL,
+                Action::DELETE,
+                fn (Action $action) => $action->setIcon(null)
+                    ->setLabel($this->translator->trans('student.action.delete'))
+                    ->addCssClass('btn btn-danger text-light')
+                    ->displayIf(fn (Student $student) => !$student->isDeleted())
+            )
+            ->update(
+                Crud::PAGE_DETAIL,
+                'reviveEntity',
+                fn (Action $action) => $action
+                    ->addCssClass('btn btn-success')
+            )
+            ->reorder(Crud::PAGE_NEW, [Action::INDEX, Action::SAVE_AND_RETURN])
+            ->reorder(Crud::PAGE_INDEX, [Action::NEW, Action::DETAIL, Action::EDIT, 'reviveEntity', Action::DELETE])
+            ->reorder(Crud::PAGE_DETAIL, [Action::INDEX, Action::EDIT, 'reviveEntity', Action::DELETE])
+            ->reorder(Crud::PAGE_EDIT, [Action::INDEX, Action::DETAIL, Action::SAVE_AND_RETURN]);
     }
 }
