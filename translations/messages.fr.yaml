@@ -128,3 +128,28 @@ company:
         notBlank: "Veuillez entrer une adresse."
     numberActiveOffer:
       label: "Offre active"
+
+student:
+  pageTitle:
+    index: "Étudiants"
+    new: "Créer un étudiant"
+    edit: "Modifier l'étudiant"
+  infoTitle:
+      basic: "Informations de base"
+      localisation: "Localisation"
+      additional: "Informations complémentaires"
+  action:
+    new: "Créer un étudiant"
+    delete: "Désactiver"
+    revive: "Réactiver"
+  field:
+    gender:
+      label: "Genre"
+    firstName:
+      label: "Prénom"
+    lastName:
+      label: "Nom"
+    city:
+      label: "Ville"
+    postCode:
+      label: "Code postal"

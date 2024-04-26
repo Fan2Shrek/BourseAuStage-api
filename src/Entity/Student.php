@@ -6,6 +6,7 @@ use App\Enum\RoleEnum;
 use App\Repository\StudentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
+use DateTime;
 
 #[ORM\Entity(repositoryClass: CollaboratorRepository::class)]
 class Student extends User
@@ -79,5 +80,18 @@ class Student extends User
         $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
+    }
+
+    public function getAge(): ?int
+    {
+        $birthday = $this->birthdayAt;
+        if ($birthday === null) {
+            return null;
+        }
+
+        $now = new DateTime();
+        $age = $now->diff($birthday)->y;
+
+        return $age;
     }
 }
