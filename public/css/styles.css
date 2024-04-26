@@ -1,0 +1,97 @@
+/* BASICS */
+.custom-page {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    color: #FFF;
+    background-color: #171717;
+    font-size: 16px;
+    padding-top: 10%;
+}
+
+.custom-page h1 {
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.custom-page p {
+    margin: 0;
+}
+
+/* FORM */
+.custom-page .form {
+    width: min(90%, 350px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* FORM INPUT */
+.custom-page .form input {
+    width: 100%;
+    color: #FFF;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    border-bottom: 1px rgba(255, 255, 255, .6) solid;
+    font-size: 16px;
+    height: 16px;
+    padding: 10px 5px;
+}
+
+.custom-page .form input:focus {
+    border-bottom-color: #FFF;
+}
+
+/* FORM ERROR */
+.custom-page .form .form-error {
+    min-height: 16px;
+    padding: 10px 5px;
+    color: #EF4444;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* FORM BUTTON */
+.custom-page .form button {
+    width: 80%;
+    color: rgba(255, 255, 255, .6);
+    background-color: transparent;
+    border: 1px rgba(255, 255, 255, .6) solid;
+    border-radius: 5px;
+    outline: none;
+    padding: 10px 5px;
+    cursor: pointer;
+}
+
+.custom-page .form button:hover,
+.custom-page .form button:focus {
+    color: #FFF;
+    border: 1px #FFF solid;
+}
+
+/* FORM CALL TO ACTION */
+.custom-page .form .call-to-reset {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    color: rgba(255, 255, 255, .6);
+    font-size: 16px;
+    padding: 10px 5px;
+}
+
+.custom-page .form .call-to-reset a {
+    color: rgba(255, 255, 255, .6);
+    text-decoration: none;
+}
+
+.custom-page .form .call-to-reset a:hover,
+.custom-page .form .call-to-reset a:focus {
+    color: #FFF;
+}

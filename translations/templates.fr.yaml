@@ -1,0 +1,32 @@
+login:
+  title: "Connexion"
+  inputs:
+    email: "adresse@mail.com"
+    password: "Mot de passe"
+  messages:
+    forgottenPassword: "Vous avez oublié votre mot de passe ?"
+  callToAction:
+    submit: "Se connecter"
+    reset: "> Cliquez ici <"
+
+resetPassword:
+  title: "Réinitialisation du mot de passe"
+  inputs:
+    password: "Mot de passe"
+  callToAction:
+    submit: "Réinitialiser"
+  
+resetPasswordRequest:
+  title: "Réinitialiser votre mot de passe"
+  inputs:
+    email: "adresse@mail.com"
+  callToAction:
+    submit: "Envoyer la demande"
+
+mail:
+  resetPassword:
+    title: "Bonjour,"
+    line1: "Une demande de réinitialisation de mot de passe à été faite sur votre compte."
+    line2: "Si vous n'êtes pas à l'origine de cette demande, ignorez ce message."
+    line3: "Le lien expire dans {{ limit }}."
+    line4: "L'équipe Bourse Aux Stages."

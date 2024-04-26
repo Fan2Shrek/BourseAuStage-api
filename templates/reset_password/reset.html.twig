@@ -1,12 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Réinitialiser votre mot de passe{% endblock %}
+{% block title %}{{ 'resetPassword.title'|trans({}, 'templates') }}{% endblock %}
 
 {% block body %}
-    <h1>Réinitialiser votre mot de passe</h1>
+    <div class="custom-page">
+        <h1>{{ 'resetPassword.title'|trans({}, 'templates') }}</h1>
 
-    {{ form_start(resetForm) }}
-        {{ form_row(resetForm.plainPassword) }}
-        <button class="btn btn-primary">Réinitialiser votre mot de passe</button>
-    {{ form_end(resetForm) }}
+        {{ form_start(resetForm, { attr: { class: 'form' } }) }}
+            {{ form_widget(resetForm.plainPassword, { attr: { placeholder: 'resetPassword.inputs.password'|trans({}, 'templates')}}) }}
+            <button class="btn">{{ 'resetPassword.callToAction.submit'|trans({}, 'templates') }}</button>
+        {{ form_end(resetForm) }}
+    </div
 {% endblock %}

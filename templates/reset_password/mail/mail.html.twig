@@ -1,9 +1,11 @@
-<h1>Bonjour !</h1>
+<h1>{{ 'mail.resetPassword.title'|trans({}, 'templates') }}</h1>
 
-<p>Une demande de réinitialisation de mot de passe à été faite sur votre compte.</p>
+<p>{{ 'mail.resetPassword.line1'|trans({}, 'templates') }}</p>
+
+<p>{{ 'mail.resetPassword.line3'|trans({}, 'templates') }}</p>
 
 <a href="{{ url('app_reset_password', {token: resetToken.token}) }}">{{ url('app_reset_password', {token: resetToken.token}) }}</a>
 
-<p>Le lien expire dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
+<p>{{ 'mail.resetPassword.line3'|trans({}, 'templates') }}</p>
 
-<p>L'équipe Bourse Aux Stages</p>
+<p>{{ 'mail.resetPassword.line4'|trans({}, 'templates') }}</p>
