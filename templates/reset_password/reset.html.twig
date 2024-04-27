@@ -7,7 +7,12 @@
         <h1>{{ 'resetPassword.title'|trans({}, 'templates') }}</h1>
 
         {{ form_start(resetForm, { attr: { class: 'form' } }) }}
-            {{ form_widget(resetForm.plainPassword, { attr: { placeholder: 'resetPassword.inputs.password'|trans({}, 'templates')}}) }}
+            {{ form_widget(resetForm.plainPassword, { attr: { class: 'form-group' } }) }}
+
+            <div class="form-error">
+                {{ form_errors(resetForm) }}
+            </div>
+
             <button class="btn">{{ 'resetPassword.callToAction.submit'|trans({}, 'templates') }}</button>
         {{ form_end(resetForm) }}
     </div
