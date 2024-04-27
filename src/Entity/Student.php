@@ -85,7 +85,7 @@ class Student extends User
     public function getAge(): ?int
     {
         $birthday = $this->birthdayAt;
-        if ($birthday === null) {
+        if ($birthday == null) {
             return null;
         }
 
