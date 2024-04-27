@@ -170,3 +170,9 @@ student:
       repeat: "Confirmer le mot de passe"
       error:
         minLength: "Votre mot de passe doit contenir au moins {{ limit }} caractères."
+
+collaborator:
+  field:
+    company:
+      label: "Entreprise"
+    

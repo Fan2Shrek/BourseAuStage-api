@@ -2,11 +2,12 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Collaborator;
 use App\Entity\User;
 use App\Enum\RoleEnum;
 use App\Enum\GenderEnum;
+use App\Entity\Collaborator;
 use Doctrine\ORM\EntityManagerInterface;
+use App\CustomEasyAdmin\Field\CustomField;
 use App\Controller\Admin\Trait\ReviveTrait;
 use Symfony\Bundle\SecurityBundle\Security;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -17,15 +18,16 @@ use Symfony\Component\Validator\Constraints\Length;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\Validator\Constraints\PasswordStrength;
 use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -36,6 +38,7 @@ class UserCrudController extends AbstractCrudController
 
     public function __construct(
         private readonly TranslatorInterface $translator,
+        private readonly AdminUrlGenerator $adminUrlGenerator,
         private readonly Security $security,
     ) {
     }
@@ -104,120 +107,135 @@ class UserCrudController extends AbstractCrudController
             RoleEnum::SPONSOR->value => 'dark',
         ];
 
-        return [
-            FormField::addColumn(6),
-            FormField::addFieldset($this->translator->trans('user.infoTitle.basic')),
-            ChoiceField::new('gender', $this->translator->trans('user.field.gender.label'))
-                ->setFormType(EnumType::class)
-                ->setFormTypeOptions([
-                    'class' => GenderEnum::class,
-                    'choice_label' => fn (GenderEnum $gender) => $gender->value,
-                    'choices' => GenderEnum::cases(),
-                ])
-                ->formatValue(function ($value, ?User $entity) {
-                    if (null === $entity) {
-                        return '';
-                    }
+        $user = $this->getContext()->getEntity()->getInstance();
 
-                    return sprintf(
-                        '<span class="badge badge-secondary">%s</span>',
-                        $entity->getGender()->value,
-                    );
-                }),
-            ChoiceField::new('roles', $this->translator->trans('user.field.role.label'))
-                ->formatValue(function ($value, ?User $entity) use ($roleMap) {
-                    if (null === $entity) {
-                        return '';
-                    }
+        yield FormField::addColumn(6);
+        yield FormField::addFieldset($this->translator->trans('user.infoTitle.basic'));
+        yield ChoiceField::new('gender', $this->translator->trans('user.field.gender.label'))
+            ->setFormType(EnumType::class)
+            ->setFormTypeOptions([
+                'class' => GenderEnum::class,
+                'choice_label' => fn (GenderEnum $gender) => $gender->value,
+                'choices' => GenderEnum::cases(),
+            ])
+            ->formatValue(function ($value, ?User $entity) {
+                if (null === $entity) {
+                    return '';
+                }
 
-                    $roles = array_filter(
-                        $entity->getRoles(),
-                        fn (string $role) => RoleEnum::USER->value !== $role
-                    );
+                return sprintf(
+                    '<span class="badge badge-secondary">%s</span>',
+                    $entity->getGender()->value,
+                );
+            });
+        yield ChoiceField::new('roles', $this->translator->trans('user.field.role.label'))
+            ->formatValue(function ($value, ?User $entity) use ($roleMap) {
+                if (null === $entity) {
+                    return '';
+                }
 
-                    if (empty($roles) || !key_exists($roles[0], $roleMap)) {
-                        return '';
-                    }
+                $roles = array_filter(
+                    $entity->getRoles(),
+                    fn (string $role) => RoleEnum::USER->value !== $role
+                );
 
-                    return sprintf(
-                        '<span class="badge badge-pill badge-%s">%s</span>',
-                        $roleMap[$roles[0]],
-                        $this->translator->trans($roles[0])
-                    );
-                })
-                ->hideOnForm(),
-            TextField::new('firstName', $this->translator->trans('user.field.firstName.label')),
-            TextField::new('lastName', $this->translator->trans('user.field.lastName.label')),
+                if (empty($roles) || !key_exists($roles[0], $roleMap)) {
+                    return '';
+                }
 
-            FormField::addColumn(6),
-            FormField::addFieldset($this->translator->trans('user.infoTitle.authentication')),
-            EmailField::new('email', $this->translator->trans('user.field.email.label'))
-                ->setFormTypeOptions([
-                    'constraints' => [
-                        new NotBlank([
-                            'message' => $this->translator->trans('user.field.email.error.notBlank'),
-                        ]),
-                        new Email([
-                            'message' => $this->translator->trans('user.field.email.error.email'),
-                        ]),
-                        new Length([
-                            'maxMessage' => $this->translator->trans('user.field.email.error.length'),
-                            'max' => 180,
-                        ]),
-                    ],
-                ]),
-            TelephoneField::new('phone'),
-            TextField::new('password')
-                ->setFormType(RepeatedType::class)
-                ->setFormTypeOptions([
-                    'type' => PasswordType::class,
-                    'first_options' => [
-                        'label' => $this->translator->trans('user.field.password.label'),
-                        'hash_property_path' => 'password',
-                    ],
-                    'second_options' => ['label' => $this->translator->trans('user.field.password.repeat')],
-                    'mapped' => false,
-                    'constraints' => [
-                        new Length([
-                            'min' => 12,
-                            'minMessage' => $this->translator->trans('user.field.password.error.minLength'),
-                            'max' => 4096,
-                        ]),
-                        new PasswordStrength(),
-                        new NotCompromisedPassword(),
-                    ],
-                ])
-                ->setRequired(Crud::PAGE_NEW === $pageName)
-                ->onlyOnForms()
-                ->hideOnIndex()
-                ->hideOnDetail(),
+                return sprintf(
+                    '<span class="badge badge-pill badge-%s">%s</span>',
+                    $roleMap[$roles[0]],
+                    $this->translator->trans($roles[0])
+                );
+            })
+            ->hideOnForm();
+        yield TextField::new('firstName', $this->translator->trans('user.field.firstName.label'));
+        yield TextField::new('lastName', $this->translator->trans('user.field.lastName.label'));
+        if ($user instanceof Collaborator) {
+            $company = $user->getCompany();
 
-            FormField::addColumn(6)
-                ->hideOnForm(),
-            FormField::addFieldset($this->translator->trans('user.infoTitle.additional'))
-                ->hideOnForm(),
-            DateTimeField::new('createdAt', $this->translator->trans('entity.action.createdAt.label'))
-                ->hideOnForm(),
-            DateTimeField::new('updatedAt', $this->translator->trans('entity.action.updatedAt.label'))
-                ->hideOnForm(),
-            DateTimeField::new('deletedAt', $this->translator->trans('entity.action.deletedAt.label'))
-                ->formatValue(function ($value, ?User $entity) {
-                    if (null === $entity) {
-                        return '';
-                    }
+            yield CustomField::create(
+                sprintf(
+                    '<a href="%s">%s</a>',
+                    $this->adminUrlGenerator
+                        ->setController(CompanyCrudController::class)
+                        ->setAction(Action::DETAIL)
+                        ->setEntityId($company->getId()),
+                    $company->getName(),
+                ),
+                $this->translator->trans('collaborator.field.company.label')
+            );
+        }
 
-                    $date = $entity->getDeletedAt();
+        yield FormField::addColumn(6);
+        yield FormField::addFieldset($this->translator->trans('user.infoTitle.authentication'));
+        yield EmailField::new('email', $this->translator->trans('user.field.email.label'))
+            ->setFormTypeOptions([
+                'constraints' => [
+                    new NotBlank([
+                        'message' => $this->translator->trans('user.field.email.error.notBlank'),
+                    ]),
+                    new Email([
+                        'message' => $this->translator->trans('user.field.email.error.email'),
+                    ]),
+                    new Length([
+                        'maxMessage' => $this->translator->trans('user.field.email.error.length'),
+                        'max' => 180,
+                    ]),
+                ],
+            ]);
+        yield TelephoneField::new('phone');
+        yield TextField::new('password')
+            ->setFormType(RepeatedType::class)
+            ->setFormTypeOptions([
+                'type' => PasswordType::class,
+                'first_options' => [
+                    'label' => $this->translator->trans('user.field.password.label'),
+                    'hash_property_path' => 'password',
+                ],
+                'second_options' => ['label' => $this->translator->trans('user.field.password.repeat')],
+                'mapped' => false,
+                'constraints' => [
+                    new Length([
+                        'min' => 12,
+                        'minMessage' => $this->translator->trans('user.field.password.error.minLength'),
+                        'max' => 4096,
+                    ]),
+                    new PasswordStrength(),
+                    new NotCompromisedPassword(),
+                ],
+            ])
+            ->setRequired(Crud::PAGE_NEW === $pageName)
+            ->onlyOnForms()
+            ->hideOnIndex()
+            ->hideOnDetail();
 
-                    return sprintf(
-                        '<span class="badge badge-%s">%s</span>',
-                        $date ? 'danger' : 'success',
-                        $date ? $this->translator->trans('entity.action.deletedAt.inactive') : $this->translator->trans('entity.action.deletedAt.active')
-                    );
-                })
-                ->hideOnForm(),
-            DateTimeField::new('deletedAt', $this->translator->trans('entity.action.deletedAt.dateLabel'))
-                ->onlyOnDetail(),
-        ];
+        yield FormField::addColumn(6)
+            ->hideOnForm();
+        yield FormField::addFieldset($this->translator->trans('user.infoTitle.additional'))
+            ->hideOnForm();
+        yield DateTimeField::new('createdAt', $this->translator->trans('entity.action.createdAt.label'))
+            ->hideOnForm();
+        yield DateTimeField::new('updatedAt', $this->translator->trans('entity.action.updatedAt.label'))
+            ->hideOnForm();
+        yield DateTimeField::new('deletedAt', $this->translator->trans('entity.action.deletedAt.label'))
+            ->formatValue(function ($value, ?User $entity) {
+                if (null === $entity) {
+                    return '';
+                }
+
+                $date = $entity->getDeletedAt();
+
+                return sprintf(
+                    '<span class="badge badge-%s">%s</span>',
+                    $date ? 'danger' : 'success',
+                    $date ? $this->translator->trans('entity.action.deletedAt.inactive') : $this->translator->trans('entity.action.deletedAt.active')
+                );
+            })
+            ->hideOnForm();
+        yield DateTimeField::new('deletedAt', $this->translator->trans('entity.action.deletedAt.dateLabel'))
+            ->onlyOnDetail();
     }
 
     public function configureActions(Actions $actions): Actions
