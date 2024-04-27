@@ -17,6 +17,7 @@ dashboard:
     account: "Mon compte"
     users: "Utilisateurs"
     companies: "Entreprises"
+    students: "Étudiants"
 
 entity:
   action:
@@ -127,3 +128,44 @@ company:
         notBlank: "Veuillez entrer une adresse."
     numberActiveOffer:
       label: "Offre active"
+
+student:
+  pageTitle:
+    index: "Étudiants"
+    new: "Créer un étudiant"
+    edit: "Modifier l'étudiant"
+  infoTitle:
+      basic: "Informations de base"
+      authentication: "Authentification"
+      localisation: "Localisation"
+      additional: "Informations complémentaires"
+  action:
+    new: "Créer un étudiant"
+    delete: "Désactiver"
+    revive: "Réactiver"
+  field:
+    gender:
+      label: "Genre"
+    firstName:
+      label: "Prénom"
+    lastName:
+      label: "Nom"
+    city:
+      label: "Ville"
+    postCode:
+      label: "Code postal"
+    address:
+      label: "Adresse"
+    birthdayAt:
+      label: "Date de naissance"
+    email:
+      label: "Mail"
+      error:
+        notBlank: "Veuillez entrer une adresse mail."
+        email: "L'adresse mail n'est pas valide."
+        lenght: "Votre adresse mail est trop longue."
+    password:
+      label: "Mot de passe"
+      repeat: "Confirmer le mot de passe"
+      error:
+        minLength: "Votre mot de passe doit contenir au moins {{ limit }} caractères."
