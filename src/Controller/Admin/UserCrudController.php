@@ -8,7 +8,7 @@ use App\Enum\GenderEnum;
 use App\Entity\Collaborator;
 use Doctrine\ORM\EntityManagerInterface;
 use App\CustomEasyAdmin\Field\CustomField;
-use App\Controller\Admin\Trait\ReviveTrait;
+use App\Controller\Admin\Trait\SoftDeleteActionsTrait;
 use Symfony\Bundle\SecurityBundle\Security;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -34,7 +34,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class UserCrudController extends AbstractCrudController
 {
-    use ReviveTrait;
+    use SoftDeleteActionsTrait;
 
     public function __construct(
         private readonly TranslatorInterface $translator,
@@ -65,26 +65,29 @@ class UserCrudController extends AbstractCrudController
             ->setRoles([RoleEnum::ADMIN->value]);
     }
 
-    public function deleteEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    public function desactivateEntityCondition(EntityManagerInterface $entityManager, User $userInstance): bool
     {
         $count = match (true) {
-            $entityInstance instanceof Collaborator => $entityManager->getRepository(Collaborator::class)->countActiveCollaboratorForCompany($entityInstance->getCompany()),
-            in_array(RoleEnum::ADMIN->value, $entityInstance->getRoles()) => $entityManager->getRepository(User::class)->countActiveAdmins(),
+            $userInstance instanceof Collaborator => $entityManager->getRepository(Collaborator::class)->countActiveCollaboratorForCompany($userInstance->getCompany()),
+            in_array(RoleEnum::ADMIN->value, $userInstance->getRoles()) => $entityManager->getRepository(User::class)->countActiveAdmins(),
             default => 0,
         };
 
         if (1 === $count) {
-            $tokenId = $entityInstance instanceof Collaborator ? 'user.flash.error.lastCollaborator' : 'user.flash.error.lastAdmin';
+            $tokenId = $userInstance instanceof Collaborator ? 'user.flash.error.lastCollaborator' : 'user.flash.error.lastAdmin';
             $this->addFlash('danger', $this->translator->trans($tokenId));
 
-            return;
+            return false;
         }
 
-        $entityInstance->setDeletedAt(new \DateTimeImmutable());
-        $entityManager->flush();
+        return true;
+    }
 
+    public function desactivateEntityClose(User $userInstance): void
+    {
         $user = $this->getUser();
-        if ($user === $entityInstance) {
+
+        if ($user === $userInstance) {
             $this->security->logout(false);
         }
     }
@@ -240,7 +243,11 @@ class UserCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        $reviveAction = $this->getReviveAction($this->translator->trans('user.action.revive'));
+        $actions = $this->applySoftDeleteActions(
+            $actions,
+            $this->translator->trans('user.action.revive'),
+            $this->translator->trans('user.action.desactivate'),
+        );
 
         return $actions
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
@@ -249,41 +256,14 @@ class UserCrudController extends AbstractCrudController
             ->add(Crud::PAGE_NEW, Action::INDEX)
             ->add(Crud::PAGE_EDIT, Action::INDEX)
             ->add(Crud::PAGE_EDIT, Action::DETAIL)
-            ->add(Crud::PAGE_INDEX, $reviveAction)
-            ->add(Crud::PAGE_DETAIL, $reviveAction)
             ->update(
                 Crud::PAGE_INDEX,
                 Action::NEW,
                 fn (Action $action) => $action->setLabel($this->translator->trans('user.action.new'))
             )
-            ->update(
-                Crud::PAGE_INDEX,
-                'reviveEntity',
-                fn (Action $action) => $action->addCssClass('text-success')
-            )
-            ->update(
-                Crud::PAGE_INDEX,
-                Action::DELETE,
-                fn (Action $action) => $action->setLabel($this->translator->trans('user.action.delete'))
-                    ->displayIf(fn (User $user) => !$user->isDeleted())
-            )
-            ->update(
-                Crud::PAGE_DETAIL,
-                Action::DELETE,
-                fn (Action $action) => $action->setIcon(null)
-                    ->setLabel($this->translator->trans('user.action.delete'))
-                    ->addCssClass('btn btn-danger text-light')
-                    ->displayIf(fn (User $user) => !$user->isDeleted())
-            )
-            ->update(
-                Crud::PAGE_DETAIL,
-                'reviveEntity',
-                fn (Action $action) => $action
-                    ->addCssClass('btn btn-success')
-            )
             ->reorder(Crud::PAGE_NEW, [Action::INDEX, Action::SAVE_AND_RETURN])
-            ->reorder(Crud::PAGE_INDEX, [Action::NEW, Action::DETAIL, Action::EDIT, 'reviveEntity', Action::DELETE])
-            ->reorder(Crud::PAGE_DETAIL, [Action::INDEX, Action::EDIT, 'reviveEntity', Action::DELETE])
+            ->reorder(Crud::PAGE_INDEX, [Action::NEW, Action::DETAIL, Action::EDIT, 'reviveEntity', 'desactivateEntity'])
+            ->reorder(Crud::PAGE_DETAIL, [Action::INDEX, Action::EDIT, 'reviveEntity', 'desactivateEntity'])
             ->reorder(Crud::PAGE_EDIT, [Action::INDEX, Action::DETAIL, Action::SAVE_AND_RETURN]);
     }
 

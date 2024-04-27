@@ -42,7 +42,7 @@ user:
     additional: "Informations complémentaires"
   action:
     new: "Créer un administrateur"
-    delete: "Désactiver"
+    desactivate: "Désactiver"
     revive: "Réactiver"
   field:
     gender:
@@ -94,7 +94,7 @@ company:
     localisation: "Localisation"
     additional: "Informations complémentaires"
   action:
-    delete: "Désactiver"
+    desactivate: "Désactiver"
     revive: "Réactiver"
   field:
     name:
@@ -142,7 +142,7 @@ student:
       additional: "Informations complémentaires"
   action:
     new: "Créer un étudiant"
-    delete: "Désactiver"
+    desactivate: "Désactiver"
     revive: "Réactiver"
   field:
     gender:
