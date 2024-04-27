@@ -114,6 +114,7 @@ company:
       error:
         notBlank: "Veuillez entrer un numéro de siret."
         length: "Votre numéro de siret doit contenir 14 chiffres."
+        luhn: "Numéro de siret incorrect."
     city:
       label: "Ville"
       error:

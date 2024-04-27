@@ -15,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use Symfony\Component\Validator\Constraints\Luhn;
 
 class CompanyCrudController extends AbstractCrudController
 {
@@ -53,7 +54,7 @@ class CompanyCrudController extends AbstractCrudController
             TextField::new('legalStatus', $this->translator->trans('company.field.legalStatus.label')),
             TextField::new('socialLink', $this->translator->trans('company.field.socialLink.label'))
                 ->hideOnIndex(),
-            NumberField::new('siretNumber', $this->translator->trans('company.field.siretNumber.label'))
+            TextField::new('siretNumber', $this->translator->trans('company.field.siretNumber.label'))
                 ->setFormTypeOptions([
                     'constraints' => [
                         new Length([
@@ -61,6 +62,9 @@ class CompanyCrudController extends AbstractCrudController
                             'max' => 14,
                             'minMessage' => $this->translator->trans('company.field.siretNumber.error.length'),
                             'min' => 14,
+                        ]),
+                        new Luhn([
+                            'message' => $this->translator->trans('company.field.siretNumber.error.luhn'),
                         ]),
                     ],
                 ])
