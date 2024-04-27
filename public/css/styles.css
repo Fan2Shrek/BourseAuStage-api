@@ -95,3 +95,9 @@
 .custom-page .form .call-to-reset a:focus {
     color: #FFF;
 }
+
+div.alert.alert-success {
+    color: white;
+    z-index: 10;
+    position: relative;
+}
