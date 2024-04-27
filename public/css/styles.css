@@ -1,4 +1,8 @@
 /* BASICS */
+* {
+    box-sizing: border-box;
+}
+
 .custom-page {
     position: absolute;
     inset: 0;
@@ -21,6 +25,34 @@
     margin: 0;
 }
 
+.custom-page ul {
+    list-style: none;
+    padding: 0;
+}
+
+/* ALERT */
+
+.alert {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 2;
+    color: #FFF;
+    border: 1px solid transparent;
+    padding: 16px;
+}
+
+.alert.alert-danger {
+    background-color: #991B1B;
+    border-color: #B91C1C;
+}
+
+.alert.alert-success {
+    background-color: #1B991B;
+    border-color: #1CB91C;
+}
+
 /* FORM */
 .custom-page .form {
     width: min(90%, 350px);
@@ -39,7 +71,7 @@
     outline: none;
     border-bottom: 1px rgba(255, 255, 255, .6) solid;
     font-size: 16px;
-    height: 16px;
+    height: 36px;
     padding: 10px 5px;
 }
 
@@ -47,13 +79,26 @@
     border-bottom-color: #FFF;
 }
 
+/* FORM GROUP */
+.custom-page .form .form-group {
+    width: 100%;
+}
+
+.custom-page .form .form-group > div:not(:last-child) {
+    margin-bottom: 10px;
+}
+
 /* FORM ERROR */
 .custom-page .form .form-error {
     min-height: 16px;
     padding: 10px 5px;
-    color: #EF4444;
+    color: #B91C1C;
     font-weight: bold;
     text-align: center;
+}
+
+.custom-page .form .form-error li {
+    margin-bottom: 10px;
 }
 
 /* FORM BUTTON */

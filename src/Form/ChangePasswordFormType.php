@@ -43,13 +43,20 @@ class ChangePasswordFormType extends AbstractType
                         new PasswordStrength(),
                         new NotCompromisedPassword(),
                     ],
-                    'label' => $this->translator->trans('form.changePassword.field.password.label'),
+                    'label' => false,
+                    'attr' => [
+                        'placeholder' => $this->translator->trans('form.changePassword.field.password.label'),
+                    ],
                 ],
                 'second_options' => [
-                    'label' => $this->translator->trans('form.changePassword.field.password.repeat'),
+                    'label' => false,
+                    'attr' => [
+                        'placeholder' => $this->translator->trans('form.changePassword.field.password.repeat'),
+                    ],
                 ],
                 'invalid_message' => $this->translator->trans('form.changePassword.field.password.error.correspondance'),
                 'mapped' => false,
+                'error_bubbling' => true,
             ]);
     }
 

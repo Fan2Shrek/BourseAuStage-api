@@ -11,8 +11,6 @@ login:
 
 resetPassword:
   title: "Réinitialisation du mot de passe"
-  inputs:
-    password: "Mot de passe"
   callToAction:
     submit: "Réinitialiser"
   
