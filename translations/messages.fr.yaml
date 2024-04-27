@@ -1,0 +1,178 @@
+ROLE_ADMIN: "Administrateur"
+ROLE_STUDENT: "Étudiant"
+ROLE_COLLABORATOR: "Collaborateur"
+ROLE_SPONSOR: "Sponsor"
+
+resetPassword:
+  flash:
+    forgotEmail: "Un email de réinitialisation de mot de passe vous a été envoyé. Veuillez vérifier votre boîte de réception."
+    resetEmail: "Un email de réinitialisation de mot de passe vous a été envoyé. Veuillez vérifier votre boîte de réception."
+  email:
+    subject: "Demande de réinitialisation de mot de passe"
+    message: "Cliquez sur le lien suivant pour réinitialiser votre mot de passe :"
+
+dashboard:
+  title: "Tableau de bord"
+  menu:
+    account: "Mon compte"
+    users: "Utilisateurs"
+    companies: "Entreprises"
+    students: "Étudiants"
+
+entity:
+  action:
+    createdAt:
+      label: "Créé le"
+    updatedAt:
+      label: "Dernière modification"
+    deletedAt:
+      label: "État"
+      dateLabel: "Désactivé le"
+      active: "Actif"
+      inactive: "Désactivé"
+
+user:
+  pageTitle:
+    index: "Utilisateurs"
+    new: "Créer un administrateur"
+    edit: "Modifier l'utilisateur"
+  infoTitle:
+    basic: "Informations de base"
+    authentication: "Authentification"
+    additional: "Informations complémentaires"
+  action:
+    new: "Créer un administrateur"
+    delete: "Désactiver"
+    revive: "Réactiver"
+  field:
+    gender:
+      label: "Genre"
+    email:
+      label: "Mail"
+      error:
+        notBlank: "Veuillez entrer une adresse mail."
+        email: "L'adresse mail n'est pas valide."
+        lenght: "Votre adresse mail est trop longue."
+    password:
+      label: "Mot de passe"
+      repeat: "Confirmer le mot de passe"
+      error:
+        minLength: "Votre mot de passe doit contenir au moins {{ limit }} caractères."
+    firstName:
+      label: "Prénom"
+    lastName:
+      label: "Nom"
+    role:
+      label: "Type d'utilisateur"
+  flash:
+    error:
+      lastAdmin: "Vous ne pouvez pas désactiver le dernier administrateur."
+      lastCollaborator: "Vous ne pouvez pas désactiver le dernier gérant d'une entreprise."
+
+form:
+  changePassword:
+    field:
+      password:
+        label: "Nouveau mot de passe"
+        repeat: "Confirmer le mot de passe"
+        error:
+          notBlank: "Veuillez entrer un mot de passe."
+          minLength: "Votre mot de passe doit contenir au moins {{ limit }} caractères."
+          correspondance: "Les champs du mot de passe doivent correspondre."
+  resetPassword:
+    field:
+      email:
+        error:
+          notBlank: "Entrez votre adresse email."
+
+company:
+  pageTitle:
+    index: "Entreprises"
+    edit: "Modifier l'entreprise"
+  infoTitle:
+    basic: "Informations de base"
+    localisation: "Localisation"
+    additional: "Informations complémentaires"
+  action:
+    delete: "Désactiver"
+    revive: "Réactiver"
+  field:
+    name:
+      label: "Nom"
+      error:
+        notBlank: "Veuillez entrer un nom."
+    legalStatus:
+      label: "Statut juridique"
+      error:
+        notBlank: "Veuillez entrer un statut juridique."
+    socialLink:
+      label: "URL"
+      error:
+        notBlank: "Veuillez entrer un URL."
+    siretNumber:
+      label: "Siret"
+      error:
+        notBlank: "Veuillez entrer un numéro de siret."
+        length: "Votre numéro de siret doit contenir 14 chiffres."
+        luhn: "Numéro de siret incorrect."
+    city:
+      label: "Ville"
+      error:
+        notBlank: "Veuillez entrer une ville."
+    postCode:
+      label: "Code postal"
+      error:
+        notBlank: "Veuillez entrer un code postal."
+    address:
+      label: "Adresse"
+      error:
+        notBlank: "Veuillez entrer une adresse."
+    numberActiveOffer:
+      label: "Offre active"
+
+student:
+  pageTitle:
+    index: "Étudiants"
+    new: "Créer un étudiant"
+    edit: "Modifier l'étudiant"
+  infoTitle:
+      basic: "Informations de base"
+      authentication: "Authentification"
+      localisation: "Localisation"
+      additional: "Informations complémentaires"
+  action:
+    new: "Créer un étudiant"
+    delete: "Désactiver"
+    revive: "Réactiver"
+  field:
+    gender:
+      label: "Genre"
+    firstName:
+      label: "Prénom"
+    lastName:
+      label: "Nom"
+    city:
+      label: "Ville"
+    postCode:
+      label: "Code postal"
+    address:
+      label: "Adresse"
+    birthdayAt:
+      label: "Date de naissance"
+    email:
+      label: "Mail"
+      error:
+        notBlank: "Veuillez entrer une adresse mail."
+        email: "L'adresse mail n'est pas valide."
+        lenght: "Votre adresse mail est trop longue."
+    password:
+      label: "Mot de passe"
+      repeat: "Confirmer le mot de passe"
+      error:
+        minLength: "Votre mot de passe doit contenir au moins {{ limit }} caractères."
+
+collaborator:
+  field:
+    company:
+      label: "Entreprise"
+    

@@ -1,31 +1,55 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}{{ 'login.title'|trans({}, 'templates') }}{% endblock %}
 
 {% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+    {% for flash_messages in app.flashes('reset_password_check_email') %}
+        <div class="alert alert-success">{{ flash_messages }}</div>
+    {% endfor %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-        </div>
-    {% endif %}
+    <div class="custom-page">
+        <h1>{{ 'login.title'|trans({}, 'templates') }}</h1>
 
-    <h1 class="h3 mb-3 font-weight-normal">Connectez vous !</h1>
-    <label for="inputEmail">Email :</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">Mots de passe :</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+        <form method="post" class="form">
+            <input
+                type="email"
+                class="form-control"
+                name="email" id="inputEmail" 
+                placeholder="{{ 'login.inputs.email'|trans({}, 'templates') }}"
+                value="{{ last_username }}" 
+                autocomplete="email"
+                required
+                autofocus
+            />
+            <input
+                id="inputPassword"
+                class="form-control"
+                type="password" 
+                name="password" 
+                placeholder="{{ 'login.inputs.password'|trans({}, 'templates') }}"
+                autocomplete="current-password"
+                required
+            />
+            <input
+                type="hidden"
+                name="_csrf_token"
+                value="{{ csrf_token('authenticate') }}"
+            />
+                
+            <div class="form-error">
+                {% if error %}
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                {% endif %}
+            </div>
 
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
+            <button class="btn" type="submit">
+                {{ 'login.callToAction.submit'|trans({}, 'templates') }}
+            </button>
 
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-</form>
+            <div class="call-to-reset">
+                <p>{{ 'login.messages.forgottenPassword'|trans({}, 'templates') }}</p>
+                <a href={{ path('app_forgot_password_request') }}>{{ 'login.callToAction.reset'|trans({}, 'templates') }}</a>
+            </div>
+        </form>
+    </div>
 {% endblock %}

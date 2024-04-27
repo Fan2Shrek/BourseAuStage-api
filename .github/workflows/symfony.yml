@@ -1,8 +1,6 @@
 name: Php Check
 
-on:
-  push:
-    branches: ['*']
+on: [push]
 
 permissions:
   contents: read
@@ -14,12 +12,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: "none"
+          ini-values: memory_limit=-1
+          php-version: "8.2"
 
       - name: Vendor install
         run: composer install --no-scripts
 
       - name: Php Lint
-        run: php vendor/bin/php-cs-fixer fix --dry-run
+        run: make pipeline-phpcs
       
       - name: PHP Stan
-        run: php vendor/bin/phpstan analyse src --level 5
+        run: make pipeline-phpstan

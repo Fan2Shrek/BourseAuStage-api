@@ -1,0 +1,11 @@
+<h1>{{ 'mail.resetPassword.title'|trans({}, 'templates') }}</h1>
+
+<p>{{ 'mail.resetPassword.line1'|trans({}, 'templates') }}</p>
+
+<p>{{ 'mail.resetPassword.line2'|trans({}, 'templates') }}</p>
+
+<a href="{{ url('app_reset_password', {token: resetToken.token}) }}">{{ url('app_reset_password', {token: resetToken.token}) }}</a>
+
+<p>{{ 'mail.resetPassword.line3'|trans({'{{ limit }}': resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle')}, 'templates') }}</p>
+
+<p>{{ 'mail.resetPassword.line4'|trans({}, 'templates') }}</p>

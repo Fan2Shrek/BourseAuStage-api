@@ -36,5 +36,10 @@ services:
     volumes:
       - ./public:/srv/public
 
+  mailer:
+    image: mailhog/mailhog
+    ports:
+      - "8025:8025"
+
 volumes:
   db_data:

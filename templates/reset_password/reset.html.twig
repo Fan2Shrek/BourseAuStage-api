@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'resetPassword.title'|trans({}, 'templates') }}{% endblock %}
+
+{% block body %}
+    <div class="custom-page">
+        <h1>{{ 'resetPassword.title'|trans({}, 'templates') }}</h1>
+
+        {{ form_start(resetForm, { attr: { class: 'form' } }) }}
+            {{ form_widget(resetForm.plainPassword, { attr: { class: 'form-group' } }) }}
+
+            <div class="form-error">
+                {{ form_errors(resetForm) }}
+            </div>
+
+            <button class="btn">{{ 'resetPassword.callToAction.submit'|trans({}, 'templates') }}</button>
+        {{ form_end(resetForm) }}
+    </div
+{% endblock %}

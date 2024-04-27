@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'resetPasswordRequest.title'|trans({}, 'templates') }}{% endblock %}
+
+{% block body %}
+    {% for flash_error in app.flashes('reset_password_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+
+    <div class="custom-page">
+        <h1>{{ 'resetPasswordRequest.title'|trans({}, 'templates') }}</h1>
+
+        {{ form_start(requestForm, { attr : { class: 'form' } }) }}
+            {{ form_widget(requestForm.email, { attr: { placeholder: 'resetPasswordRequest.inputs.email'|trans({}, 'templates')} }) }}
+
+            <div class="form-error">
+                {{ form_errors(requestForm.email) }}
+            </div>
+
+            <button class="btn">{{ 'resetPasswordRequest.callToAction.submit'|trans({}, 'templates') }}</button>
+        {{ form_end(requestForm) }}
+    </div
+{% endblock %}
