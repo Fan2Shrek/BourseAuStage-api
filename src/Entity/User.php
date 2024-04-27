@@ -4,12 +4,12 @@ namespace App\Entity;
 
 use App\Enum\RoleEnum;
 use App\Enum\GenderEnum;
-use App\Trait\SoftDeleteTrait;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
-use App\Trait\ActionTrackingTrait;
-use App\Interface\SoftDeleteInterface;
-use App\Interface\ActionTrackingInterface;
+use App\Entity\Trait\SoftDeleteTrait;
+use App\Entity\Trait\ActionTrackingTrait;
+use App\Entity\Interface\SoftDeleteInterface;
+use App\Entity\Interface\ActionTrackingInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;

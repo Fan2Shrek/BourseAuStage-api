@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Trait;
+namespace App\Entity\Trait;
 
 use Doctrine\ORM\Mapping as ORM;
 
 trait SoftDeleteTrait
 {
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-    private ?\DateTimeInterface $deletedAt = null;
+    protected ?\DateTimeInterface $deletedAt = null;
 
     public function getDeletedAt(): ?\DateTimeInterface
     {
