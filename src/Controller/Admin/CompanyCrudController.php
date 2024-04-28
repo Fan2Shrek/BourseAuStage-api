@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Company;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Controller\Admin\Trait\ReviveTrait;
+use App\Controller\Admin\Trait\SoftDeleteActionsTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints\Luhn;
 
 class CompanyCrudController extends AbstractCrudController
 {
-    use ReviveTrait;
+    use SoftDeleteActionsTrait;
 
     public function __construct(
         private readonly TranslatorInterface $translator,
@@ -109,7 +109,11 @@ class CompanyCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        $reviveAction = $this->getReviveAction($this->translator->trans('company.action.revive'));
+        $actions = $this->applySoftDeleteActions(
+            $actions,
+            $this->translator->trans('company.action.revive'),
+            $this->translator->trans('company.action.desactivate'),
+        );
 
         return $actions
             ->remove(Crud::PAGE_INDEX, Action::NEW)
@@ -119,35 +123,8 @@ class CompanyCrudController extends AbstractCrudController
             ->add(Crud::PAGE_NEW, Action::INDEX)
             ->add(Crud::PAGE_EDIT, Action::INDEX)
             ->add(Crud::PAGE_EDIT, Action::DETAIL)
-            ->add(Crud::PAGE_INDEX, $reviveAction)
-            ->add(Crud::PAGE_DETAIL, $reviveAction)
-            ->update(
-                Crud::PAGE_INDEX,
-                'reviveEntity',
-                fn (Action $action) => $action->addCssClass('text-success')
-            )
-            ->update(
-                Crud::PAGE_INDEX,
-                Action::DELETE,
-                fn (Action $action) => $action->setLabel($this->translator->trans('company.action.delete'))
-                    ->displayIf(fn (Company $company) => !$company->isDeleted())
-            )
-            ->update(
-                Crud::PAGE_DETAIL,
-                Action::DELETE,
-                fn (Action $action) => $action->setIcon(null)
-                    ->setLabel($this->translator->trans('company.action.delete'))
-                    ->addCssClass('btn btn-danger text-light')
-                    ->displayIf(fn (Company $company) => !$company->isDeleted())
-            )
-            ->update(
-                Crud::PAGE_DETAIL,
-                'reviveEntity',
-                fn (Action $action) => $action
-                    ->addCssClass('btn btn-success')
-            )
-            ->reorder(Crud::PAGE_INDEX, [Action::DETAIL, Action::EDIT, 'reviveEntity', Action::DELETE])
-            ->reorder(Crud::PAGE_DETAIL, [Action::INDEX, Action::EDIT, 'reviveEntity', Action::DELETE])
+            ->reorder(Crud::PAGE_INDEX, [Action::DETAIL, Action::EDIT, 'reviveEntity', 'desactivateEntity'])
+            ->reorder(Crud::PAGE_DETAIL, [Action::INDEX, Action::EDIT, 'reviveEntity', 'desactivateEntity'])
             ->reorder(Crud::PAGE_EDIT, [Action::INDEX, Action::DETAIL, Action::SAVE_AND_RETURN]);
     }
 }
