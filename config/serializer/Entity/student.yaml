@@ -1,0 +1,35 @@
+App\Entity\Student:
+    attributes:
+        id:
+            groups:
+                - 'api:student:read'
+        email:
+            groups:
+                - 'api:student:read'
+        roles:
+            groups:
+                - 'api:student:read'
+        phone:
+            groups:
+                - 'api:student:read'
+        gender:
+            groups:
+                - 'api:student:read'
+        firstName:
+            groups:
+                - 'api:student:read'
+        lastName:
+            groups:
+                - 'api:student:read'
+        city:
+            groups:
+                - 'api:student:read'
+        postCode:
+            groups:
+                - 'api:student:read'
+        address:
+            groups:
+                - 'api:student:read'
+        birthdayAt:
+            groups:
+                - 'api:student:read'
