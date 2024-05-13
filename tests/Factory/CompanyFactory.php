@@ -21,7 +21,7 @@ final class CompanyFactory extends ModelFactory
             'name' => self::faker()->company(),
             'legalStatus' => self::faker()->randomElement(['SARL', 'SA', 'SAS', 'EI', 'EURL']),
             'socialLink' => self::faker()->url(),
-            'siretNumber' => self::faker()->numberBetween(100000000, 500000000),
+            'siretNumber' => self::faker()->regexify('[0-9]{14}'),
             'city' => self::faker()->city(),
             'postCode' => self::faker()->postCode(),
             'address' => self::faker()->address(),
