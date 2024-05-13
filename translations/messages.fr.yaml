@@ -88,12 +88,14 @@ form:
 company:
   pageTitle:
     index: "Entreprises"
+    new: "Créer une entreprise"
     edit: "Modifier l'entreprise"
   infoTitle:
     basic: "Informations de base"
     localisation: "Localisation"
     additional: "Informations complémentaires"
   action:
+    new: "Créer une entreprise"
     desactivate: "Désactiver"
     revive: "Réactiver"
   field:
