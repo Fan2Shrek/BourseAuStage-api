@@ -183,7 +183,7 @@ collaborator:
       basic: "Informations de base"
       authentication: "Authentification"
   action:
-    new: "Créer une entreprise"
+    new: "Créer un collaborateur"
     desactivate: "Désactiver"
     revive: "Réactiver"
   field:
