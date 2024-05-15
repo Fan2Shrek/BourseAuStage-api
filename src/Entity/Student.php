@@ -3,10 +3,23 @@
 namespace App\Entity;
 
 use App\Enum\RoleEnum;
-use App\Repository\StudentRepository;
-use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Get;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use App\Repository\StudentRepository;
+use ApiPlatform\Metadata\GetCollection;
 
+#[ApiResource(
+    operations: [
+        new Get(
+            normalizationContext: ['groups' => ['api:student:read']],
+        ),
+        new GetCollection(
+            normalizationContext: ['groups' => ['api:student:read']],
+        ),
+    ],
+)]
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
 class Student extends User
 {

@@ -4,9 +4,12 @@ namespace App\Entity;
 
 use App\Enum\RoleEnum;
 use App\Enum\GenderEnum;
+use ApiPlatform\Metadata\Get;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Trait\SoftDeleteTrait;
+use ApiPlatform\Metadata\GetCollection;
 use App\Entity\Trait\ActionTrackingTrait;
 use App\Entity\Interface\SoftDeleteInterface;
 use App\Entity\Interface\ActionTrackingInterface;
@@ -14,6 +17,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
+#[ApiResource(
+    operations: [
+        new Get(
+            normalizationContext: ['groups' => ['api:user:read']],
+        ),
+        new GetCollection(
+            normalizationContext: ['groups' => ['api:user:read']],
+        ),
+    ],
+)]
 #[UniqueEntity('email')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\InheritanceType('JOINED')]

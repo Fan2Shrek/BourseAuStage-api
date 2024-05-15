@@ -2,13 +2,22 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\Get;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Trait\SoftDeleteTrait;
 use App\Repository\CompanyRepository;
+use ApiPlatform\Metadata\GetCollection;
 use App\Entity\Trait\ActionTrackingTrait;
 use App\Entity\Interface\SoftDeleteInterface;
 use App\Entity\Interface\ActionTrackingInterface;
 
+#[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(),
+    ],
+)]
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
 class Company implements ActionTrackingInterface, SoftDeleteInterface
 {

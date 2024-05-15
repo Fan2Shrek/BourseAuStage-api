@@ -3,9 +3,22 @@
 namespace App\Entity;
 
 use App\Enum\RoleEnum;
-use App\Repository\CollaboratorRepository;
+use ApiPlatform\Metadata\Get;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use App\Repository\CollaboratorRepository;
 
+#[ApiResource(
+    operations: [
+        new Get(
+            normalizationContext: ['groups' => ['api:collaborator:read']],
+        ),
+        new GetCollection(
+            normalizationContext: ['groups' => ['api:collaborator:read']],
+        ),
+    ],
+)]
 #[ORM\Entity(repositoryClass: CollaboratorRepository::class)]
 class Collaborator extends User
 {

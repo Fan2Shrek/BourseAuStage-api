@@ -1,0 +1,23 @@
+App\Entity\User:
+    attributes:
+        id:
+            groups:
+                - 'api:user:read'
+        email:
+            groups:
+                - 'api:user:read'
+        roles:
+            groups:
+                - 'api:user:read'
+        phone:
+            groups:
+                - 'api:user:read'
+        gender:
+            groups:
+                - 'api:user:read'
+        firstName:
+            groups:
+                - 'api:user:read'
+        lastName:
+            groups:
+                - 'api:user:read'

@@ -1,0 +1,8 @@
+App\Entity\Company:
+    attributes:
+        id:
+            groups:
+                - 'api:collaborator:read'
+        name:
+            groups:
+                - 'api:collaborator:read'
