@@ -25,6 +25,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Validator\Constraints\PasswordStrength;
 use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 
 class CollaboratorCrudController extends AbstractCrudController
 {
@@ -79,6 +80,7 @@ class CollaboratorCrudController extends AbstractCrudController
                 }),
             TextField::new('firstName', $this->translator->trans('collaborator.field.firstName.label')),
             TextField::new('lastName', $this->translator->trans('collaborator.field.lastName.label')),
+            AssociationField::new('company', $this->translator->trans('collaborator.field.company.label')),
 
             FormField::addColumn(6),
             FormField::addFieldset($this->translator->trans('collaborator.infoTitle.authentication')),
