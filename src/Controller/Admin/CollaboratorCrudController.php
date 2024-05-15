@@ -41,10 +41,17 @@ class CollaboratorCrudController extends AbstractCrudController
         return Collaborator::class;
     }
 
-    public function deleteEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    public function desactivateEntityCondition(EntityManagerInterface $entityManager, Collaborator $collaboratorInstance): bool
     {
-        $entityInstance->setDeletedAt(new \DateTimeImmutable());
-        $entityManager->flush();
+        $countActiveCollaborators = $entityManager->getRepository(Collaborator::class)->countActiveCollaboratorForCompany($collaboratorInstance->getCompany());
+
+        if (1 === $countActiveCollaborators) {
+            $this->addFlash('danger', $this->translator->trans('user.flash.error.lastCollaborator'));
+
+            return false;
+        }
+
+        return true;
     }
 
     public function configureCrud(Crud $crud): Crud
