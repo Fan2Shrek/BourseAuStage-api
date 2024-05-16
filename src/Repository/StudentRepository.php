@@ -2,10 +2,12 @@
 
 namespace App\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\Student;
+use App\Repository\Trait\ActionTrait;
+use App\Repository\Trait\SoftDeleteTrait;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
-use App\Entity\Student;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Student>
@@ -18,6 +20,7 @@ use App\Entity\Student;
 class StudentRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
     use ActionTrait;
+    use SoftDeleteTrait;
     use PasswordUpgraderTrait;
 
     public function __construct(ManagerRegistry $registry)
