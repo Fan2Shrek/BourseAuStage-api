@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Company;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Repository\Trait\ActionTrait;
+use App\Repository\Trait\SoftDeleteTrait;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Company>
@@ -17,6 +19,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class CompanyRepository extends ServiceEntityRepository
 {
     use ActionTrait;
+    use SoftDeleteTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
