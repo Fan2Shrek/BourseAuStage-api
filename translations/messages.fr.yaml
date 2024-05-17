@@ -18,6 +18,7 @@ dashboard:
     users: "Utilisateurs"
     companies: "Entreprises"
     students: "Étudiants"
+    collaborators: "Collaborateurs"
 
 entity:
   action:
@@ -44,6 +45,8 @@ user:
     new: "Créer un administrateur"
     desactivate: "Désactiver"
     revive: "Réactiver"
+    specialDetail: "Consulter"
+    specialUpdate: "Modifier"
   field:
     gender:
       label: "Genre"
@@ -88,12 +91,14 @@ form:
 company:
   pageTitle:
     index: "Entreprises"
+    new: "Créer une entreprise"
     edit: "Modifier l'entreprise"
   infoTitle:
     basic: "Informations de base"
     localisation: "Localisation"
     additional: "Informations complémentaires"
   action:
+    new: "Créer une entreprise"
     desactivate: "Désactiver"
     revive: "Réactiver"
   field:
@@ -172,7 +177,36 @@ student:
         minLength: "Votre mot de passe doit contenir au moins {{ limit }} caractères."
 
 collaborator:
+  pageTitle:
+    index: "Collaborateurs"
+    new: "Créer un collaborateur"
+    edit: "Modifier le collaborateur"
+  infoTitle:
+      basic: "Informations de base"
+      authentication: "Authentification"
+      additional: "Informations complémentaires"
+  action:
+    new: "Créer un collaborateur"
+    desactivate: "Désactiver"
+    revive: "Réactiver"
   field:
+    gender:
+      label: "Genre"
+    firstName:
+      label: "Prénom"
+    lastName:
+      label: "Nom"
     company:
       label: "Entreprise"
+    email:
+      label: "Mail"
+      error:
+        notBlank: "Veuillez entrer une adresse mail."
+        email: "L'adresse mail n'est pas valide."
+        lenght: "Votre adresse mail est trop longue."
+    password:
+      label: "Mot de passe"
+      repeat: "Confirmer le mot de passe"
+      error:
+        minLength: "Votre mot de passe doit contenir au moins {{ limit }} caractères."
     
