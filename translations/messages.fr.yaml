@@ -97,11 +97,18 @@ company:
     basic: "Informations de base"
     localisation: "Localisation"
     additional: "Informations complémentaires"
+    presentation: "Présentation"
   action:
     new: "Créer une entreprise"
     desactivate: "Désactiver"
     revive: "Réactiver"
   field:
+    phone:
+      label: Téléphonec
+    age:
+      label: "Âge"
+    presentation:
+      label: "Présentation"
     name:
       label: "Nom"
       error:

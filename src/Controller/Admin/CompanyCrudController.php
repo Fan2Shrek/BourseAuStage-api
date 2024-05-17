@@ -15,7 +15,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use Symfony\Component\Validator\Constraints\Luhn;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 
 class CompanyCrudController extends AbstractCrudController
 {
@@ -53,8 +55,8 @@ class CompanyCrudController extends AbstractCrudController
             FormField::addFieldset($this->translator->trans('company.infoTitle.basic')),
             TextField::new('name', $this->translator->trans('company.field.name.label')),
             TextField::new('legalStatus', $this->translator->trans('company.field.legalStatus.label')),
-            TextField::new('socialLink', $this->translator->trans('company.field.socialLink.label'))
-                ->hideOnIndex(),
+            TextField::new('socialLink', $this->translator->trans('company.field.socialLink.label')),
+            TextField::new('age', $this->translator->trans('company.field.age.label'))->hideOnIndex(),
             TextField::new('siretNumber', $this->translator->trans('company.field.siretNumber.label'))
                 ->setFormTypeOptions([
                     'constraints' => [
@@ -70,16 +72,16 @@ class CompanyCrudController extends AbstractCrudController
                     ],
                 ])
                 ->hideOnIndex(),
+            TelephoneField::new('phone', $this->translator->trans('company.field.phone.label'))
+                ->hideOnIndex(),
             NumberField::new('numberActiveOffer', $this->translator->trans('company.field.numberActiveOffer.label'))
                 ->hideOnForm(),
-
             FormField::addColumn(6),
             FormField::addFieldset($this->translator->trans('company.infoTitle.localisation')),
             TextField::new('city', $this->translator->trans('company.field.city.label')),
             TextField::new('postCode', $this->translator->trans('company.field.postCode.label')),
             TextField::new('address', $this->translator->trans('company.field.address.label'))
                 ->hideOnIndex(),
-
             FormField::addColumn(6)
                 ->hideOnForm(),
             FormField::addFieldset($this->translator->trans('company.infoTitle.additional'))
@@ -105,6 +107,17 @@ class CompanyCrudController extends AbstractCrudController
                 ->hideOnForm(),
             DateTimeField::new('deletedAt', $this->translator->trans('entity.action.deletedAt.dateLabel'))
                 ->onlyOnDetail(),
+            FormField::addColumn(6)
+                ->hideOnForm(),
+            FormField::addFieldset($this->translator->trans('company.infoTitle.presentation'))
+                ->hideOnForm(),
+            TextField::new('presentation', $this->translator->trans('company.field.presentation.label'))
+                ->hideOnIndex(),
+            AssociationField::new('activities')->formatValue(function ($value, ?Company $entities) {
+                return array_reduce(iterator_to_array($value), fn ($cur, $acc) => sprintf('%s %s', $cur, $acc->getName()), '');
+            })
+                ->hideOnForm()
+                ->hideOnIndex(),
         ];
     }
 
