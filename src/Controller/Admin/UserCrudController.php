@@ -8,7 +8,6 @@ use App\Entity\Student;
 use App\Enum\GenderEnum;
 use App\Entity\Collaborator;
 use Doctrine\ORM\EntityManagerInterface;
-use App\CustomEasyAdmin\Field\CustomField;
 use Symfony\Bundle\SecurityBundle\Security;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -156,21 +155,6 @@ class UserCrudController extends AbstractCrudController
             ->hideOnForm();
         yield TextField::new('firstName', $this->translator->trans('user.field.firstName.label'));
         yield TextField::new('lastName', $this->translator->trans('user.field.lastName.label'));
-        if ($user instanceof Collaborator) {
-            $company = $user->getCompany();
-
-            yield CustomField::create(
-                sprintf(
-                    '<a href="%s">%s</a>',
-                    $this->adminUrlGenerator
-                        ->setController(CompanyCrudController::class)
-                        ->setAction(Action::DETAIL)
-                        ->setEntityId($company->getId()),
-                    $company->getName(),
-                ),
-                $this->translator->trans('collaborator.field.company.label')
-            );
-        }
 
         yield FormField::addColumn(6);
         yield FormField::addFieldset($this->translator->trans('user.infoTitle.authentication'));
