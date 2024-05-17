@@ -287,8 +287,33 @@ class UserCrudController extends AbstractCrudController
                 Action::DETAIL,
                 fn (Action $action) => $action->displayIf(fn ($entity) => !($entity instanceof Student || $entity instanceof Collaborator))
             )
+            ->add(
+                Crud::PAGE_INDEX,
+                Action::new('specialUserUpdate', $this->translator->trans('user.action.specialUpdate'))
+                    ->displayIf(fn ($entity) => $entity instanceof Student || $entity instanceof Collaborator)
+                    ->linkToUrl(function ($entity) {
+                        $adminUrlGenerator = $this->adminUrlGenerator;
+
+                        if ($entity instanceof Student) {
+                            $adminUrlGenerator->setController(StudentCrudController::class);
+                        }
+
+                        if ($entity instanceof Collaborator) {
+                            $adminUrlGenerator->setController(CollaboratorCrudController::class);
+                        }
+
+                        return $adminUrlGenerator
+                            ->setAction(Action::EDIT)
+                            ->setEntityId($entity->getId());
+                    })
+            )
+            ->update(
+                Crud::PAGE_INDEX,
+                Action::EDIT,
+                fn (Action $action) => $action->displayIf(fn ($entity) => !($entity instanceof Student || $entity instanceof Collaborator))
+            )
             ->reorder(Crud::PAGE_NEW, [Action::INDEX, Action::SAVE_AND_RETURN])
-            ->reorder(Crud::PAGE_INDEX, [Action::NEW, 'specialUserDetail', Action::DETAIL, Action::EDIT, 'reviveEntity', 'desactivateEntity'])
+            ->reorder(Crud::PAGE_INDEX, [Action::NEW, 'specialUserDetail', Action::DETAIL, 'specialUserUpdate', Action::EDIT, 'reviveEntity', 'desactivateEntity'])
             ->reorder(Crud::PAGE_DETAIL, [Action::INDEX, Action::EDIT, 'reviveEntity', 'desactivateEntity'])
             ->reorder(Crud::PAGE_EDIT, [Action::INDEX, Action::DETAIL, Action::SAVE_AND_RETURN]);
     }

@@ -46,6 +46,7 @@ user:
     desactivate: "Désactiver"
     revive: "Réactiver"
     specialDetail: "Consulter"
+    specialUpdate: "Modifier"
   field:
     gender:
       label: "Genre"
