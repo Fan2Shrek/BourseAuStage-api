@@ -19,6 +19,7 @@ dashboard:
     companies: "Entreprises"
     students: "Étudiants"
     collaborators: "Collaborateurs"
+    categories: "Catégories"
 
 entity:
   action:
@@ -98,13 +99,14 @@ company:
     localisation: "Localisation"
     additional: "Informations complémentaires"
     presentation: "Présentation"
+    socialsMedia: "Résaux sociaux"
   action:
     new: "Créer une entreprise"
     desactivate: "Désactiver"
     revive: "Réactiver"
   field:
     phone:
-      label: Téléphonec
+      label: Téléphone
     age:
       label: "Âge"
     presentation:
@@ -141,6 +143,24 @@ company:
         notBlank: "Veuillez entrer une adresse."
     numberActiveOffer:
       label: "Offre active"
+
+activity: 
+  action:
+    new: "Ajouter un secteur d'activité"
+  pageTitle:
+    index: "Activités"
+    new: "Créer un secteur d'activité"
+    edit: "Modifier le secteur d'activité"
+    view: "Secteurs d'activités"
+  field:
+    name:
+      label: "Nom"
+      error:
+        notBlank: "Veuillez entrer un nom."
+    color:
+      label: "Couleur"
+      error:
+        notBlank: "Veuillez entrer une couleur."
 
 student:
   pageTitle:

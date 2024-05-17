@@ -31,6 +31,10 @@ final class CompanyFactory extends ModelFactory
             'effective' => self::faker()->numberBetween(1, 100),
             'turnover' => self::faker()->numberBetween(1000, 1000000),
             'presentation' => self::faker()->text(),
+            'twitterLink' => self::faker()->url(),
+            'facebookLink' => self::faker()->url(),
+            'linkedInLink' => self::faker()->url(),
+            'instagramLink' => self::faker()->url(),
         ];
     }
 

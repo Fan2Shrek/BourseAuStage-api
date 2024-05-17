@@ -9,21 +9,27 @@ use App\Entity\Activity;
 class ActivityFixtures extends Fixture
 {
     private const ACTIVITIES = [
-        'Sport',
-        'Musique',
-        'Cuisine',
-        'Informatique',
-        'Théâtre',
-        'Sciences',
+        'Design' => '#56cdad',
+        'Marketing' => '#eb8533',
+        'Commercial' => '#f5c400',
+        'Business' => '#6a4c93',
+        'Finance' => '#4640de',
+        'Management' => '#26a4ff',
+        'Informatique' => '#ff6550',
+        'Industrie' => '#ff007a',
     ];
 
     public function load(ObjectManager $manager): void
     {
-        foreach (self::ACTIVITIES as $k => $activity) {
-            $activity = new Activity($activity);
+        $i = 0;
+        foreach (self::ACTIVITIES as $name => $color) {
+            $activity = new Activity();
+            $activity
+                ->setName($name)
+                ->setColor($color);
             $manager->persist($activity);
 
-            $this->addReference('activity_'.$k, $activity);
+            $this->addReference('activity_'.$i++, $activity);
         }
 
         $manager->flush();

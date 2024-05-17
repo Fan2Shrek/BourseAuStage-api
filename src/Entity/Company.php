@@ -67,11 +67,23 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $turnover = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 65535, nullable: true, type: 'text')]
     private ?string $presentation = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $openingTime = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $twitterLink = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $linkedInLink = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $facebookLink = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $instagramLink = null;
 
     /**
      * @var Collection<int, Activity>
@@ -286,6 +298,54 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     public function removeActivity(Activity $activity): static
     {
         $this->activities->removeElement($activity);
+
+        return $this;
+    }
+
+    public function getTwitterLink(): ?string
+    {
+        return $this->twitterLink;
+    }
+
+    public function setTwitterLink(?string $twitterLink): static
+    {
+        $this->twitterLink = $twitterLink;
+
+        return $this;
+    }
+
+    public function getLinkedInLink(): ?string
+    {
+        return $this->linkedInLink;
+    }
+
+    public function setLinkedInLink(?string $linkedInLink): static
+    {
+        $this->linkedInLink = $linkedInLink;
+
+        return $this;
+    }
+
+    public function getFacebookLink(): ?string
+    {
+        return $this->facebookLink;
+    }
+
+    public function setFacebookLink(?string $facebookLink): static
+    {
+        $this->facebookLink = $facebookLink;
+
+        return $this;
+    }
+
+    public function getInstagramLink(): ?string
+    {
+        return $this->instagramLink;
+    }
+
+    public function setInstagramLink(?string $instagramLink): static
+    {
+        $this->instagramLink = $instagramLink;
 
         return $this;
     }
