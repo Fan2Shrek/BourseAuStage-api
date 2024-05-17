@@ -261,16 +261,6 @@ class UserCrudController extends AbstractCrudController
                             ->setEntityId($entity->getId());
                     })
             )
-            ->update(
-                Crud::PAGE_INDEX,
-                Action::NEW,
-                fn (Action $action) => $action->setLabel($this->translator->trans('user.action.new'))
-            )
-            ->update(
-                Crud::PAGE_INDEX,
-                Action::DETAIL,
-                fn (Action $action) => $action->displayIf(fn ($entity) => !($entity instanceof Student || $entity instanceof Collaborator))
-            )
             ->add(
                 Crud::PAGE_INDEX,
                 Action::new('specialUserUpdate', $this->translator->trans('user.action.specialUpdate'))
@@ -290,6 +280,16 @@ class UserCrudController extends AbstractCrudController
                             ->setAction(Action::EDIT)
                             ->setEntityId($entity->getId());
                     })
+            )
+            ->update(
+                Crud::PAGE_INDEX,
+                Action::NEW,
+                fn (Action $action) => $action->setLabel($this->translator->trans('user.action.new'))
+            )
+            ->update(
+                Crud::PAGE_INDEX,
+                Action::DETAIL,
+                fn (Action $action) => $action->displayIf(fn ($entity) => !($entity instanceof Student || $entity instanceof Collaborator))
             )
             ->update(
                 Crud::PAGE_INDEX,
