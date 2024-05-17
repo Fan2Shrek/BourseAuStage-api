@@ -285,7 +285,7 @@ class UserCrudController extends AbstractCrudController
             ->update(
                 Crud::PAGE_INDEX,
                 Action::DETAIL,
-                fn (Action $action) => $action->displayIf(fn ($entity) => !($entity instanceof Student))
+                fn (Action $action) => $action->displayIf(fn ($entity) => !($entity instanceof Student || $entity instanceof Collaborator))
             )
             ->reorder(Crud::PAGE_NEW, [Action::INDEX, Action::SAVE_AND_RETURN])
             ->reorder(Crud::PAGE_INDEX, [Action::NEW, 'specialUserDetail', Action::DETAIL, Action::EDIT, 'reviveEntity', 'desactivateEntity'])

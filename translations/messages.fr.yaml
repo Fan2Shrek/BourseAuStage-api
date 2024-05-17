@@ -183,6 +183,7 @@ collaborator:
   infoTitle:
       basic: "Informations de base"
       authentication: "Authentification"
+      additional: "Informations complémentaires"
   action:
     new: "Créer un collaborateur"
     desactivate: "Désactiver"
