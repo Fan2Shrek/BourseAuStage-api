@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\Get;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Trait\SoftDeleteTrait;
@@ -53,9 +55,46 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     #[ORM\Column()]
     private int $numberActiveOffer = 0;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $phone = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $age = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $effective = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $turnover = null;
+
+    #[ORM\Column(length: 65535, nullable: true, type: 'text')]
+    private ?string $presentation = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $openingTime = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $twitterLink = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $linkedInLink = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $facebookLink = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $instagramLink = null;
+
+    /**
+     * @var Collection<int, Activity>
+     */
+    #[ORM\ManyToMany(targetEntity: Activity::class)]
+    private Collection $activities;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->activities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -163,6 +202,150 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     {
         $this->numberActiveOffer = $numberActiveOffer;
         $this->updatedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): static
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getAge(): ?string
+    {
+        return $this->age;
+    }
+
+    public function setAge(?string $age): static
+    {
+        $this->age = $age;
+
+        return $this;
+    }
+
+    public function getEffective(): ?int
+    {
+        return $this->effective;
+    }
+
+    public function setEffective(?int $effective): static
+    {
+        $this->effective = $effective;
+
+        return $this;
+    }
+
+    public function getTurnover(): ?string
+    {
+        return $this->turnover;
+    }
+
+    public function setTurnover(?string $turnover): static
+    {
+        $this->turnover = $turnover;
+
+        return $this;
+    }
+
+    public function getPresentation(): ?string
+    {
+        return $this->presentation;
+    }
+
+    public function setPresentation(?string $presentation): static
+    {
+        $this->presentation = $presentation;
+
+        return $this;
+    }
+
+    public function getOpeningTime(): ?string
+    {
+        return $this->openingTime;
+    }
+
+    public function setOpeningTime(?string $openingTime): static
+    {
+        $this->openingTime = $openingTime;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Activity>
+     */
+    public function getActivities(): Collection
+    {
+        return $this->activities;
+    }
+
+    public function addActivity(Activity $activity): static
+    {
+        if (!$this->activities->contains($activity)) {
+            $this->activities->add($activity);
+        }
+
+        return $this;
+    }
+
+    public function removeActivity(Activity $activity): static
+    {
+        $this->activities->removeElement($activity);
+
+        return $this;
+    }
+
+    public function getTwitterLink(): ?string
+    {
+        return $this->twitterLink;
+    }
+
+    public function setTwitterLink(?string $twitterLink): static
+    {
+        $this->twitterLink = $twitterLink;
+
+        return $this;
+    }
+
+    public function getLinkedInLink(): ?string
+    {
+        return $this->linkedInLink;
+    }
+
+    public function setLinkedInLink(?string $linkedInLink): static
+    {
+        $this->linkedInLink = $linkedInLink;
+
+        return $this;
+    }
+
+    public function getFacebookLink(): ?string
+    {
+        return $this->facebookLink;
+    }
+
+    public function setFacebookLink(?string $facebookLink): static
+    {
+        $this->facebookLink = $facebookLink;
+
+        return $this;
+    }
+
+    public function getInstagramLink(): ?string
+    {
+        return $this->instagramLink;
+    }
+
+    public function setInstagramLink(?string $instagramLink): static
+    {
+        $this->instagramLink = $instagramLink;
 
         return $this;
     }

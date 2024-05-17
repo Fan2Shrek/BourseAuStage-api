@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Activity;
 use App\Entity\User;
 use App\Entity\Company;
 use App\Entity\Student;
@@ -57,5 +58,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud($this->translator->trans('dashboard.menu.collaborators'), 'fas fa-user-tie', Collaborator::class);
         yield MenuItem::linkToCrud($this->translator->trans('dashboard.menu.companies'), 'fas fa-building', Company::class);
         yield MenuItem::linkToCrud($this->translator->trans('dashboard.menu.students'), 'fas fa-book', Student::class);
+        yield MenuItem::linkToCrud($this->translator->trans('dashboard.menu.categories'), 'fas fa-tags', Activity::class);
     }
 }

@@ -26,6 +26,15 @@ final class CompanyFactory extends ModelFactory
             'postCode' => self::faker()->postCode(),
             'address' => self::faker()->address(),
             'numberActiveOffer' => self::faker()->numberBetween(0, 20),
+            'phone' => self::faker()->phoneNumber(),
+            'age' => self::faker()->numberBetween(1, 20).' ans',
+            'effective' => self::faker()->numberBetween(1, 100),
+            'turnover' => self::faker()->numberBetween(1000, 1000000),
+            'presentation' => self::faker()->text(),
+            'twitterLink' => self::faker()->url(),
+            'facebookLink' => self::faker()->url(),
+            'linkedInLink' => self::faker()->url(),
+            'instagramLink' => self::faker()->url(),
         ];
     }
 
