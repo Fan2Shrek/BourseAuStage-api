@@ -45,6 +45,7 @@ user:
     new: "Créer un administrateur"
     desactivate: "Désactiver"
     revive: "Réactiver"
+    specialDetail: "Consulter"
   field:
     gender:
       label: "Genre"

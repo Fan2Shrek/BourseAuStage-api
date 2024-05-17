@@ -4,11 +4,11 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use App\Enum\RoleEnum;
+use App\Entity\Student;
 use App\Enum\GenderEnum;
 use App\Entity\Collaborator;
 use Doctrine\ORM\EntityManagerInterface;
 use App\CustomEasyAdmin\Field\CustomField;
-use App\Controller\Admin\Trait\SoftDeleteActionsTrait;
 use Symfony\Bundle\SecurityBundle\Security;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -19,6 +19,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use App\Controller\Admin\Trait\SoftDeleteActionsTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
@@ -256,13 +257,34 @@ class UserCrudController extends AbstractCrudController
             ->add(Crud::PAGE_NEW, Action::INDEX)
             ->add(Crud::PAGE_EDIT, Action::INDEX)
             ->add(Crud::PAGE_EDIT, Action::DETAIL)
+            ->add(
+                Crud::PAGE_INDEX,
+                Action::new('specialUserDetail', $this->translator->trans('user.action.specialDetail'))
+                    ->displayIf(fn ($entity) => $entity instanceof Student)
+                    ->linkToUrl(function ($entity) {
+                        $adminUrlGenerator = $this->adminUrlGenerator;
+
+                        if ($entity instanceof Student) {
+                            $adminUrlGenerator->setController(StudentCrudController::class);
+                        }
+
+                        return $adminUrlGenerator
+                            ->setAction(Action::DETAIL)
+                            ->setEntityId($entity->getId());
+                    })
+            )
             ->update(
                 Crud::PAGE_INDEX,
                 Action::NEW,
                 fn (Action $action) => $action->setLabel($this->translator->trans('user.action.new'))
             )
+            ->update(
+                Crud::PAGE_INDEX,
+                Action::DETAIL,
+                fn (Action $action) => $action->displayIf(fn ($entity) => !($entity instanceof Student))
+            )
             ->reorder(Crud::PAGE_NEW, [Action::INDEX, Action::SAVE_AND_RETURN])
-            ->reorder(Crud::PAGE_INDEX, [Action::NEW, Action::DETAIL, Action::EDIT, 'reviveEntity', 'desactivateEntity'])
+            ->reorder(Crud::PAGE_INDEX, [Action::NEW, 'specialUserDetail', Action::DETAIL, Action::EDIT, 'reviveEntity', 'desactivateEntity'])
             ->reorder(Crud::PAGE_DETAIL, [Action::INDEX, Action::EDIT, 'reviveEntity', 'desactivateEntity'])
             ->reorder(Crud::PAGE_EDIT, [Action::INDEX, Action::DETAIL, Action::SAVE_AND_RETURN]);
     }
