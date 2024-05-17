@@ -260,12 +260,16 @@ class UserCrudController extends AbstractCrudController
             ->add(
                 Crud::PAGE_INDEX,
                 Action::new('specialUserDetail', $this->translator->trans('user.action.specialDetail'))
-                    ->displayIf(fn ($entity) => $entity instanceof Student)
+                    ->displayIf(fn ($entity) => $entity instanceof Student || $entity instanceof Collaborator)
                     ->linkToUrl(function ($entity) {
                         $adminUrlGenerator = $this->adminUrlGenerator;
 
                         if ($entity instanceof Student) {
                             $adminUrlGenerator->setController(StudentCrudController::class);
+                        }
+
+                        if ($entity instanceof Collaborator) {
+                            $adminUrlGenerator->setController(CollaboratorCrudController::class);
                         }
 
                         return $adminUrlGenerator
