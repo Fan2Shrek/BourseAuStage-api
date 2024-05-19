@@ -28,6 +28,7 @@ final class CompanyFactory extends ModelFactory
             'numberActiveOffer' => self::faker()->numberBetween(0, 20),
             'phone' => self::faker()->phoneNumber(),
             'age' => self::faker()->numberBetween(1, 20).' ans',
+            'openingTime' => self::faker()->sentence(),
             'effective' => self::faker()->numberBetween(1, 100),
             'turnover' => self::faker()->numberBetween(1000, 1000000),
             'presentation' => self::faker()->text(),
