@@ -2,8 +2,9 @@
 
 namespace App\Api\Provider;
 
-use App\Entity\Collaborator;
 use App\Api\Resource\Facets;
+use App\Entity\Collaborator;
+use App\Enum\FacetOptionEnum;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Repository\CollaboratorRepository;
@@ -30,9 +31,38 @@ class CollaboratorFacetsProvider implements ProviderInterface
 
         $facets = new Facets();
 
-        $facets->facets = array_reduce($collaborators, $this->buildFacets(...), [
-            'company.name' => [],
-        ]);
+        $facets->facets = [
+            ...array_reduce($collaborators, $this->buildFacets(...), [
+                'company.name' => [],
+            ]),
+            'company.effective' => [
+                '1-9',
+                '10-49',
+                '50-99',
+                '100-249',
+                '250-999',
+                '1000',
+            ],
+        ];
+
+        sort($facets->facets['company.name']);
+
+        // ici inutile car on a mis l'option DEFAULT_ALL
+        // mais c'est pour l'exemple
+        $facets->defaultFacets = $facets->facets;
+
+        $facets->options = [
+            'company.name' => [
+                FacetOptionEnum::ALL,
+                FacetOptionEnum::DEFAULT_ALL,
+            ],
+            'company.effective' => [
+                FacetOptionEnum::ALL,
+                FacetOptionEnum::DEFAULT_ALL,
+                FacetOptionEnum::BETWEEN,
+                FacetOptionEnum::BETWEEN_AND_MORE,
+            ],
+        ];
 
         return $facets;
     }
