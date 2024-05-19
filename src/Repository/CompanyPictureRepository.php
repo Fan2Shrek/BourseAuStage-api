@@ -2,10 +2,11 @@
 
 namespace App\Repository;
 
-use App\Entity\Files\CompanyPicture;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Company;
+use App\Entity\Files\CompanyPicture;
+use App\Repository\Trait\ActionTrait;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<CompanyPicture>
