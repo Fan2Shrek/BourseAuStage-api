@@ -26,12 +26,12 @@ use App\Api\Provider\CollaboratorFacetsProvider;
 class Facets
 {
     /**
-     * @var array<string, string[]>
+     * @var array<string, string[]|array<string, int>>
      */
     public array $facets;
 
     /**
-     * @var array<string, string[]>
+     * @var array<string, string[]|array<string, int>>
      */
     public array $defaultFacets;
 
