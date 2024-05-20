@@ -34,22 +34,29 @@ class CollaboratorFacetsProvider implements ProviderInterface
         $facets->facets = [
             ...array_reduce($collaborators, $this->buildFacets(...), [
                 'company.name' => [],
+                'company.effective' => [
+                    '1-9',
+                    '10-49',
+                    '50-99',
+                    '100-249',
+                    '250-999',
+                    '1000',
+                ],
+                'company.range' => [
+                    'min' => 0,
+                    'max' => 100,
+                    'step' => 10,
+                ],
             ]),
-            'company.effective' => [
-                '1-9',
-                '10-49',
-                '50-99',
-                '100-249',
-                '250-999',
-                '1000',
-            ],
         ];
 
         sort($facets->facets['company.name']);
 
-        // ici inutile car on a mis l'option DEFAULT_ALL
-        // mais c'est pour l'exemple
-        $facets->defaultFacets = $facets->facets;
+        $facets->defaultFacets = [
+            'company.range' => [
+                'value' => 20,
+            ],
+        ];
 
         $facets->options = [
             'company.name' => [
@@ -61,6 +68,9 @@ class CollaboratorFacetsProvider implements ProviderInterface
                 FacetOptionEnum::DEFAULT_ALL,
                 FacetOptionEnum::BETWEEN,
                 FacetOptionEnum::BETWEEN_AND_MORE,
+            ],
+            'company.range' => [
+                FacetOptionEnum::RANGE,
             ],
         ];
 
