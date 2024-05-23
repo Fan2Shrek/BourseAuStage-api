@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\Get;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,6 +14,8 @@ use ApiPlatform\Metadata\GetCollection;
 use App\Entity\Trait\ActionTrackingTrait;
 use App\Entity\Interface\SoftDeleteInterface;
 use App\Entity\Interface\ActionTrackingInterface;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
 
 #[ApiResource(
     operations: [
@@ -20,6 +23,8 @@ use App\Entity\Interface\ActionTrackingInterface;
         new GetCollection(),
     ],
 )]
+#[ApiFilter(SearchFilter::class, properties: ['activities.name' => 'exact'])]
+#[ApiFilter(RangeFilter::class, properties: ['effective'])]
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
 class Company implements ActionTrackingInterface, SoftDeleteInterface
 {
