@@ -32,6 +32,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
     {
         return [
             ActivityFixtures::class,
+            CompanyCategoryFixtures::class,
         ];
     }
 

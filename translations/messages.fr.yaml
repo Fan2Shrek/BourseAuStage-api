@@ -19,7 +19,8 @@ dashboard:
     companies: "Entreprises"
     students: "Étudiants"
     collaborators: "Collaborateurs"
-    categories: "Catégories"
+    categories: "Catégories d'entreprise"
+    activities: "Secteurs d'activité"
 
 entity:
   action:
@@ -153,10 +154,9 @@ activity:
   action:
     new: "Ajouter un secteur d'activité"
   pageTitle:
-    index: "Activités"
+    index: "Secteurs d'activité"
     new: "Créer un secteur d'activité"
     edit: "Modifier le secteur d'activité"
-    view: "Secteurs d'activités"
   field:
     name:
       label: "Nom"
@@ -166,6 +166,25 @@ activity:
       label: "Couleur"
       error:
         notBlank: "Veuillez entrer une couleur."
+  flash:
+    error:
+      inUse: "Ce secteur d'activité est utilisé et ne peut donc pas être supprimé."
+
+companyCategory: 
+  action:
+    new: "Ajouter une catégorie d'entreprise"
+  pageTitle:
+    index: "Catégories d'entreprise"
+    new: "Créer une catégorie d'entreprise"
+    edit: "Modifier la catégorie d'entreprise"
+  field:
+    name:
+      label: "Nom"
+      error:
+        notBlank: "Veuillez entrer un nom."
+  flash:
+    error:
+      inUse: "Cette catégorie est utilisée et ne peut donc pas être supprimée."
 
 student:
   pageTitle:

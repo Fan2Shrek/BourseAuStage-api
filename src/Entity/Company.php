@@ -12,8 +12,10 @@ use ApiPlatform\Metadata\GetCollection;
 use App\Entity\Trait\ActionTrackingTrait;
 use Doctrine\Common\Collections\Collection;
 use App\Entity\Interface\SoftDeleteInterface;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
 use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Entity\Interface\ActionTrackingInterface;
 use App\Api\Provider\Company\CompanyHighlightProvider;
@@ -30,8 +32,13 @@ use App\Api\Provider\Company\CompanyHighlightProvider;
         new Get(),
     ],
 )]
-#[ApiFilter(SearchFilter::class, properties: ['activities.name' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: [
+    'activities.name' => 'exact',
+    'category.name' => 'exact',
+])]
 #[ApiFilter(RangeFilter::class, properties: ['effective'])]
+#[ApiFilter(OrderFilter::class, properties: ['name'])]
+#[ApiFilter(ExistsFilter::class, properties: ['deletedAt'])]
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
 class Company implements ActionTrackingInterface, SoftDeleteInterface
 {
@@ -108,6 +115,10 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
      */
     #[ORM\ManyToMany(targetEntity: Activity::class)]
     private Collection $activities;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?CompanyCategory $category = null;
 
     public function __construct()
     {
@@ -388,6 +399,18 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     public function setLogoIcon(string $logoIcon): static
     {
         $this->logoIcon = $logoIcon;
+
+        return $this;
+    }
+
+    public function getCategory(): ?CompanyCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?CompanyCategory $category): static
+    {
+        $this->category = $category;
 
         return $this;
     }

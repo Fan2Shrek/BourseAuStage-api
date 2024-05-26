@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Company;
+use App\Entity\Activity;
+use App\Entity\CompanyCategory;
 use App\Repository\Trait\ActionTrait;
 use App\Repository\Trait\SoftDeleteTrait;
 use Doctrine\Persistence\ManagerRegistry;
@@ -24,6 +26,27 @@ class CompanyRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Company::class);
+    }
+
+    public function countCompanyWithCategory(CompanyCategory $category): int
+    {
+        return $this->createQueryBuilder('c')
+            ->select('COUNT(c)')
+            ->andWhere('c.category = :category')
+            ->setParameter('category', $category)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function countCompanyWithActivity(Activity $activity): int
+    {
+        return $this->createQueryBuilder('c')
+            ->select('COUNT(c)')
+            ->leftJoin('c.activities', 'a')
+            ->andWhere('a = :activity')
+            ->setParameter('activity', $activity)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     /**
