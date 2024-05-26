@@ -108,7 +108,7 @@ class CompanyCrudController extends AbstractCrudController
             ImageField::new('logo', $this->translator->trans('company.field.logo.label'))
                 ->setBasePath('')
                 ->setUploadDir('public/img/company/logo')
-                ->setUploadedFileNamePattern('[randomhash].[extension]')
+                ->setUploadedFileNamePattern('public/img/company/logo/[randomhash].[extension]')
                 ->setRequired(Crud::PAGE_NEW === $pageName)
                 ->formatValue(function ($value, ?Company $entity) {
                     if (null === $entity) {
@@ -121,7 +121,7 @@ class CompanyCrudController extends AbstractCrudController
             ImageField::new('logoIcon', $this->translator->trans('company.field.logoIcon.label'))
                 ->setBasePath('')
                 ->setUploadDir('public/img/company/logoIcon')
-                ->setUploadedFileNamePattern('[randomhash].[extension]')
+                ->setUploadedFileNamePattern('public/img/company/logoIcon/[randomhash].[extension]')
                 ->setRequired(Crud::PAGE_NEW === $pageName)
                 ->formatValue(function ($value, ?Company $entity) {
                     if (null === $entity) {
