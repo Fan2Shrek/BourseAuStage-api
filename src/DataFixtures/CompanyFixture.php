@@ -11,6 +11,18 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
+        if (!is_dir('public/img/company')) {
+            mkdir('public/img/company');
+        }
+
+        if (!is_dir('public/img/company/logo')) {
+            mkdir('public/img/company/logo');
+        }
+
+        if (!is_dir('public/img/company/logoIcon')) {
+            mkdir('public/img/company/logoIcon');
+        }
+
         CompanyFactory::createMany(10, fn () => [
             'activities' => $this->randomActivities(),
         ]);

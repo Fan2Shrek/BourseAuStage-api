@@ -4,21 +4,23 @@ namespace App\Controller\Admin;
 
 use App\Entity\Company;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Controller\Admin\Trait\SoftDeleteActionsTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use Symfony\Component\Validator\Constraints\Luhn;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 use Symfony\Component\Validator\Constraints\Length;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use App\Controller\Admin\Trait\SoftDeleteActionsTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use Symfony\Component\Validator\Constraints\Luhn;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class CompanyCrudController extends AbstractCrudController
 {
@@ -101,6 +103,51 @@ class CompanyCrudController extends AbstractCrudController
             TextField::new('address', $this->translator->trans('company.field.address.label'))
                 ->hideOnIndex(),
 
+            FormField::addColumn(6),
+            FormField::addFieldset($this->translator->trans('company.infoTitle.logo')),
+            ImageField::new('logo', $this->translator->trans('company.field.logo.label'))
+                ->setBasePath('')
+                ->setUploadDir('public/img/company/logo')
+                ->setUploadedFileNamePattern('[randomhash].[extension]')
+                ->setRequired(Crud::PAGE_NEW === $pageName)
+                ->formatValue(function ($value, ?Company $entity) {
+                    if (null === $entity) {
+                        return '';
+                    }
+
+                    return str_replace('public/', '', $value);
+                })
+                ->hideOnIndex(),
+            ImageField::new('logoIcon', $this->translator->trans('company.field.logoIcon.label'))
+                ->setBasePath('')
+                ->setUploadDir('public/img/company/logoIcon')
+                ->setUploadedFileNamePattern('[randomhash].[extension]')
+                ->setRequired(Crud::PAGE_NEW === $pageName)
+                ->formatValue(function ($value, ?Company $entity) {
+                    if (null === $entity) {
+                        return '';
+                    }
+
+                    return str_replace('public/', '', $value);
+                })
+                ->hideOnIndex(),
+
+            FormField::addColumn(6),
+            FormField::addFieldset($this->translator->trans('company.infoTitle.socialsMedia')),
+            UrlField::new('twitterLink', 'Twitter')
+                ->hideOnIndex(),
+            UrlField::new('facebookLink', 'Facebook')
+                ->hideOnIndex(),
+            UrlField::new('linkedInLink', 'LinkedIn')
+                ->hideOnIndex(),
+            UrlField::new('instagramLink', 'Intragram')
+                ->hideOnIndex(),
+
+            FormField::addColumn(12),
+            FormField::addFieldset($this->translator->trans('company.infoTitle.presentation')),
+            TextField::new('presentation', $this->translator->trans('company.field.presentation.label'))
+                ->hideOnIndex(),
+
             FormField::addColumn(6)
                 ->hideOnForm(),
             FormField::addFieldset($this->translator->trans('company.infoTitle.additional'))
@@ -126,24 +173,6 @@ class CompanyCrudController extends AbstractCrudController
                 ->hideOnForm(),
             DateTimeField::new('deletedAt', $this->translator->trans('entity.action.deletedAt.dateLabel'))
                 ->onlyOnDetail(),
-
-            FormField::addColumn(6)
-                ->hideOnForm(),
-            FormField::addFieldset($this->translator->trans('company.infoTitle.socialsMedia')),
-            UrlField::new('twitterLink', 'Twitter')
-                ->hideOnIndex(),
-            UrlField::new('facebookLink', 'Facebook')
-                ->hideOnIndex(),
-            UrlField::new('linkedInLink', 'LinkedIn')
-                ->hideOnIndex(),
-            UrlField::new('instagramLink', 'Intragram')
-                ->hideOnIndex(),
-
-            FormField::addColumn(12)
-                ->hideOnForm(),
-            FormField::addFieldset($this->translator->trans('company.infoTitle.presentation')),
-            TextField::new('presentation', $this->translator->trans('company.field.presentation.label'))
-                ->hideOnIndex(),
         ];
     }
 
@@ -171,5 +200,10 @@ class CompanyCrudController extends AbstractCrudController
             ->reorder(Crud::PAGE_INDEX, [Action::NEW, Action::DETAIL, Action::EDIT, 'reviveEntity', 'desactivateEntity'])
             ->reorder(Crud::PAGE_DETAIL, [Action::INDEX, Action::EDIT, 'reviveEntity', 'desactivateEntity'])
             ->reorder(Crud::PAGE_EDIT, [Action::INDEX, Action::DETAIL, Action::SAVE_AND_RETURN]);
+    }
+
+    public function configureAssets(Assets $assets): Assets
+    {
+        return $assets->addCssFile('css/styles.css');
     }
 }

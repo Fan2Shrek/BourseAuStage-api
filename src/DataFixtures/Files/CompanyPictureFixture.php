@@ -17,7 +17,7 @@ class CompanyPictureFixture extends Fixture implements DependentFixtureInterface
             mkdir('public/img/company');
         }
 
-        $faker = \Faker\Factory::create();
+        $faker = CompanyFactory::faker();
         $company = CompanyFactory::random();
 
         for ($i = 0; $i < 3; ++$i) {

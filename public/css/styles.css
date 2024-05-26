@@ -140,3 +140,8 @@
 .custom-page .form .call-to-reset a:focus {
     color: #FFF;
 }
+
+/* IMAGE FIELD */
+.ea-detail .field-image img {
+    max-width: 100%;
+}

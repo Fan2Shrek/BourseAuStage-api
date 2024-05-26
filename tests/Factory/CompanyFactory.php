@@ -27,7 +27,7 @@ final class CompanyFactory extends ModelFactory
             'address' => self::faker()->address(),
             'numberActiveOffer' => self::faker()->numberBetween(0, 20),
             'phone' => self::faker()->phoneNumber(),
-            'age' => self::faker()->numberBetween(1, 20).' ans',
+            'age' => sprintf('%d ans', self::faker()->numberBetween(1, 20)),
             'openingTime' => self::faker()->sentence(),
             'effective' => self::faker()->numberBetween(1, 100),
             'turnover' => self::faker()->numberBetween(1000, 1000000),
@@ -36,6 +36,8 @@ final class CompanyFactory extends ModelFactory
             'facebookLink' => self::faker()->url(),
             'linkedInLink' => self::faker()->url(),
             'instagramLink' => self::faker()->url(),
+            'logo' => self::faker()->image('public/img/company/logo', 340, 60, 'placeholder', true, true, 'logo'),
+            'logoIcon' => self::faker()->image('public/img/company/logoIcon', 50, 50, 'placeholder', true, true, 'icon'),
         ];
     }
 
