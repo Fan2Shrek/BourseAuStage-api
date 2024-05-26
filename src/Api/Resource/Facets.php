@@ -5,8 +5,8 @@ namespace App\Api\Resource;
 use ApiPlatform\Metadata\Get;
 use App\Enum\FacetOptionEnum;
 use ApiPlatform\Metadata\ApiResource;
-use App\Api\Provider\UserFacetsProvider;
-use App\Api\Provider\CollaboratorFacetsProvider;
+use App\Api\Provider\Facets\UserFacetsProvider;
+use App\Api\Provider\Facets\CollaboratorFacetsProvider;
 
 #[ApiResource(
     operations: [
@@ -17,7 +17,7 @@ use App\Api\Provider\CollaboratorFacetsProvider;
             provider: UserFacetsProvider::class
         ),
         new Get(
-            name: 'collaborators_facets',
+            name: 'collaborator_facets',
             uriTemplate: '/collaborators/facets',
             provider: CollaboratorFacetsProvider::class
         ),

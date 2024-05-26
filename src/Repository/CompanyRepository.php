@@ -25,4 +25,18 @@ class CompanyRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Company::class);
     }
+
+    /**
+     * @return Company[]
+     */
+    public function findHighlighted(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c.id, c.name, c.logo')
+            ->orderBy('c.numberActiveOffer', 'DESC')
+            ->addOrderBy('c.name', 'ASC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+    }
 }

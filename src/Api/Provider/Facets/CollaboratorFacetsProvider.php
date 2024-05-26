@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Api\Provider;
+namespace App\Api\Provider\Facets;
 
 use App\Api\Resource\Facets;
 use App\Entity\Collaborator;
