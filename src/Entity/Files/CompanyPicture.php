@@ -27,7 +27,7 @@ class CompanyPicture
     #[ORM\Column(length: 255)]
     private string $name;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column()]
     private string $path;
 
     #[ORM\ManyToOne]
