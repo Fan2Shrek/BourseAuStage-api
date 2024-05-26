@@ -110,8 +110,6 @@ class UserCrudController extends AbstractCrudController
             RoleEnum::SPONSOR->value => 'dark',
         ];
 
-        $user = $this->getContext()->getEntity()->getInstance();
-
         yield FormField::addColumn(6);
         yield FormField::addFieldset($this->translator->trans('user.infoTitle.basic'));
         yield ChoiceField::new('gender', $this->translator->trans('user.field.gender.label'))
@@ -195,9 +193,7 @@ class UserCrudController extends AbstractCrudController
                 ],
             ])
             ->setRequired(Crud::PAGE_NEW === $pageName)
-            ->onlyOnForms()
-            ->hideOnIndex()
-            ->hideOnDetail();
+            ->onlyOnForms();
 
         yield FormField::addColumn(6)
             ->hideOnForm();

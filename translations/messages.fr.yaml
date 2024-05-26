@@ -100,6 +100,7 @@ company:
     additional: "Informations complémentaires"
     presentation: "Présentation"
     socialsMedia: "Résaux sociaux"
+    logo: "Logo"
   action:
     new: "Créer une entreprise"
     desactivate: "Désactiver"
@@ -143,6 +144,10 @@ company:
         notBlank: "Veuillez entrer une adresse."
     numberActiveOffer:
       label: "Offre active"
+    logo:
+      label: "Logo de l'entreprise"
+    logoIcon:
+      label: "Logo réduit (50x50)"
 
 activity: 
   action:

@@ -90,6 +90,12 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $instagramLink = null;
 
+    #[ORM\Column()]
+    private string $logo;
+
+    #[ORM\Column()]
+    private string $logoIcon;
+
     /**
      * @var Collection<int, Activity>
      */
@@ -351,6 +357,30 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     public function setInstagramLink(?string $instagramLink): static
     {
         $this->instagramLink = $instagramLink;
+
+        return $this;
+    }
+
+    public function getLogo(): string
+    {
+        return $this->logo;
+    }
+
+    public function setLogo(string $logo): static
+    {
+        $this->logo = $logo;
+
+        return $this;
+    }
+
+    public function getLogoIcon(): string
+    {
+        return $this->logoIcon;
+    }
+
+    public function setLogoIcon(string $logoIcon): static
+    {
+        $this->logoIcon = $logoIcon;
 
         return $this;
     }
