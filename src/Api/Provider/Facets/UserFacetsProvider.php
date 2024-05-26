@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Api\Provider;
+namespace App\Api\Provider\Facets;
 
 use App\Entity\User;
 use App\Enum\RoleEnum;
