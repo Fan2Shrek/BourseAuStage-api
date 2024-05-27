@@ -81,18 +81,21 @@ class CompanyCrudController extends AbstractCrudController
                 ->hideOnIndex(),
             NumberField::new('numberActiveOffer', $this->translator->trans('company.field.numberActiveOffer.label'))
                 ->hideOnForm(),
-            AssociationField::new('activities')->formatValue(function ($value) {
-                return array_reduce(
-                    iterator_to_array($value),
-                    fn ($cur, $acc) => sprintf(
-                        '%s <span style="color: %s;">%s</span>',
-                        $cur,
-                        $acc->getColor(),
-                        $acc->getName()
-                    ),
-                    ''
-                );
-            })
+            AssociationField::new('category')
+                ->hideOnIndex(),
+            AssociationField::new('activities')
+                ->formatValue(function ($value) {
+                    return array_reduce(
+                        iterator_to_array($value),
+                        fn ($cur, $acc) => sprintf(
+                            '%s <span style="color: %s;">%s</span>',
+                            $cur,
+                            $acc->getColor(),
+                            $acc->getName()
+                        ),
+                        ''
+                    );
+                })
                 ->hideOnForm()
                 ->hideOnIndex(),
 
