@@ -373,9 +373,11 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
         return $this->logo;
     }
 
-    public function setLogo(string $logo): static
+    public function setLogo(?string $logo): static
     {
-        $this->logo = $logo;
+        if ($logo) {
+            $this->logo = $logo;
+        }
 
         return $this;
     }
@@ -385,9 +387,11 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
         return $this->logoIcon;
     }
 
-    public function setLogoIcon(string $logoIcon): static
+    public function setLogoIcon(?string $logoIcon): static
     {
-        $this->logoIcon = $logoIcon;
+        if ($logoIcon) {
+            $this->logoIcon = $logoIcon;
+        }
 
         return $this;
     }
