@@ -120,10 +120,17 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?CompanyCategory $category = null;
 
+    /**
+     * @var Collection<int, Offer>
+     */
+    #[ORM\OneToMany(targetEntity: Offer::class, mappedBy: 'company', orphanRemoval: true)]
+    private Collection $offers;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->activities = new ArrayCollection();
+        $this->offers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -422,5 +429,35 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     public function __toString(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection<int, Offer>
+     */
+    public function getOffers(): Collection
+    {
+        return $this->offers;
+    }
+
+    public function addOffer(Offer $offer): static
+    {
+        if (!$this->offers->contains($offer)) {
+            $this->offers->add($offer);
+            $offer->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOffer(Offer $offer): static
+    {
+        if ($this->offers->removeElement($offer)) {
+            // set the owning side to null (unless already changed)
+            if ($offer->getCompany() === $this) {
+                $offer->setCompany(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -36,8 +36,8 @@ final class CompanyFactory extends ModelFactory
             'facebookLink' => self::faker()->url(),
             'linkedInLink' => self::faker()->url(),
             'instagramLink' => self::faker()->url(),
-            'logo' => self::faker()->image('public/img/company/logo', 340, 60, 'placeholder', true, true, 'logo'),
-            'logoIcon' => self::faker()->image('public/img/company/logoIcon', 50, 50, 'placeholder', true, true, 'icon'),
+            // 'logo' => self::faker()->image('public/img/company/logo', 340, 60, 'placeholder', true, true, 'logo'),
+            // 'logoIcon' => self::faker()->image('public/img/company/logoIcon', 50, 50, 'placeholder', true, true, 'icon'),
             'category' => CompanyCategoryFactory::random(),
         ];
     }

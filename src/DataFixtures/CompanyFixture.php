@@ -25,6 +25,8 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
 
         CompanyFactory::createMany(10, fn () => [
             'activities' => $this->randomActivities(),
+            'logo' => 'public/img/company/logo/img.jpg', // TODO : enlever quand l'api marchera
+            'logoIcon' => 'public/img/company/logoIcon/img.jpg', // TODO : enlever quand l'api marchera
         ]);
     }
 
