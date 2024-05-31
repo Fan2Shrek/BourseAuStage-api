@@ -17,6 +17,7 @@ final class CollaboratorFactory extends UserFactory
             [
                 'roles' => [RoleEnum::COLLABORATOR->value],
                 'company' => CompanyFactory::randomOrCreate(),
+                'jobTitle' => self::faker()->jobTitle(),
             ]
         );
     }
