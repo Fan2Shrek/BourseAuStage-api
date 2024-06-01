@@ -77,6 +77,9 @@ class Offer
     #[ORM\ManyToMany(targetEntity: Skill::class)]
     private Collection $searchSkills;
 
+    #[ORM\ManyToOne]
+    private ?StudyLevel $studyLevel = null;
+
     public function __construct()
     {
         $this->activities = new ArrayCollection();
@@ -291,6 +294,18 @@ class Offer
     public function removeSearchSkill(Skill $searchSkill): static
     {
         $this->searchSkills->removeElement($searchSkill);
+
+        return $this;
+    }
+
+    public function getStudyLevel(): ?StudyLevel
+    {
+        return $this->studyLevel;
+    }
+
+    public function setStudyLevel(?StudyLevel $studyLevel): static
+    {
+        $this->studyLevel = $studyLevel;
 
         return $this;
     }

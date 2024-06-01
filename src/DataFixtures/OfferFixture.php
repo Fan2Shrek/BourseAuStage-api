@@ -14,7 +14,7 @@ class OfferFixture extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        OfferFactory::createMany(15, fn () => ['searchSkills' => $this->doSkills()]);
+        OfferFactory::createMany(15, fn () => ['searchSkills' => $this->doSkills(), 'studyLevel' => $this->getReference('studyLevel_'.rand(0, 4))]);
 
         ProfilFactory::createMany(25, fn () => ['offer' => OfferFactory::random()]);
         MissionFactory::createMany(25, fn () => ['offer' => OfferFactory::random()]);
@@ -40,6 +40,7 @@ class OfferFixture extends Fixture implements DependentFixtureInterface
         return [
             CompanyFixture::class,
             SkillFixture::class,
+            StudyLevelFixtures::class,
         ];
     }
 }
