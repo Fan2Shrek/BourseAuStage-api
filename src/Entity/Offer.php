@@ -3,21 +3,18 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\Get;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiFilter;
 use App\Repository\OfferRepository;
 use ApiPlatform\Metadata\ApiResource;
-use App\Entity\Trait\SoftDeleteTrait;
 use ApiPlatform\Metadata\GetCollection;
-use App\Entity\Trait\ActionTrackingTrait;
-use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use Doctrine\Common\Collections\ArrayCollection;
-use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
 
 #[ApiResource(operations: [
     new Get(
@@ -34,27 +31,12 @@ use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 #[ApiFilter(ExistsFilter::class, properties: ['deletedAt'])]
 #[ApiFilter(DateFilter::class, properties: ['availableAt'])]
 #[ORM\Entity(repositoryClass: OfferRepository::class)]
-class Offer
+class Offer extends AbstractOffer
 {
-    use SoftDeleteTrait;
-    use ActionTrackingTrait;
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private int $id;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $name = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $start = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $end = null;
-
-    #[ORM\Column]
-    private ?bool $isInternship = null;
+    private ?int $id = null;
 
     #[ORM\Column]
     private ?bool $isPayed = null;
@@ -84,9 +66,6 @@ class Offer
     #[ORM\Column]
     private ?\DateTimeImmutable $availableAt = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $description = null;
-
     /**
      * @var Collection<int, Skill>
      */
@@ -101,61 +80,14 @@ class Offer
         $this->activities = new ArrayCollection();
         $this->missions = new ArrayCollection();
         $this->profils = new ArrayCollection();
-        $this->createdAt = new \DateTimeImmutable();
         $this->searchSkills = new ArrayCollection();
+
+        parent::__construct();
     }
 
     public function getId(): ?int
     {
         return $this->id ?? null;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): static
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getStart(): ?\DateTimeInterface
-    {
-        return $this->start;
-    }
-
-    public function setStart(\DateTimeInterface $start): static
-    {
-        $this->start = $start;
-
-        return $this;
-    }
-
-    public function getEnd(): ?\DateTimeInterface
-    {
-        return $this->end;
-    }
-
-    public function setEnd(\DateTimeInterface $end): static
-    {
-        $this->end = $end;
-
-        return $this;
-    }
-
-    public function isInternship(): ?bool
-    {
-        return $this->isInternship;
-    }
-
-    public function setIsInternship(bool $isInternship): static
-    {
-        $this->isInternship = $isInternship;
-
-        return $this;
     }
 
     public function isPayed(): ?bool
@@ -274,18 +206,6 @@ class Offer
     public function setAvailableAt(\DateTimeImmutable $availableAt): static
     {
         $this->availableAt = $availableAt;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): static
-    {
-        $this->description = $description;
 
         return $this;
     }
