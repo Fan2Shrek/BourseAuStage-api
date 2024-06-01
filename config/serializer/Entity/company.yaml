@@ -8,7 +8,7 @@ App\Entity\Company:
             groups:
                 - 'api:offer:read'
                 - 'api:collaborator:read'
-        description: 
+        presentation: 
             groups:
                 - 'api:offer:read'
         logo:
