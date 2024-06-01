@@ -21,7 +21,7 @@ class Activity
 
     public function getId(): ?int
     {
-        return $this->id;
+        return $this->id ?? null;
     }
 
     public function getName(): string
