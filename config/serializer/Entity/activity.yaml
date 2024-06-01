@@ -1,0 +1,8 @@
+App\Entity\Activity:
+    attributes:
+        name:
+            groups:
+                - 'api:offer:read'
+        color: 
+            groups:
+                - 'api:offer:read'
