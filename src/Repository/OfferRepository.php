@@ -31,14 +31,14 @@ class OfferRepository extends ServiceEntityRepository
      *    after:  string,
      *    before: string,
      * } | null $availableAtFilter
-     * 
+     *
      * @return Offer[]
      */
     public function findAllActive(?bool $isInternship = null, ?array $availableAtFilter = null): array
     {
         $query = $this->createQueryBuilder('o');
 
-        if ($isInternship !== null) {
+        if (null !== $isInternship) {
             $query
                 ->andWhere('o.isInternship = :isInternship')
                 ->setParameter('isInternship', $isInternship);

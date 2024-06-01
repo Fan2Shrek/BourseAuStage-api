@@ -2,12 +2,13 @@
 
 namespace App\DataFixtures;
 
+use App\Tests\Factory\ActivityFactory;
 use App\Tests\Factory\CompanyFactory;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class CompanyFixture extends Fixture implements DependentFixtureInterface
+class CompanyFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -47,7 +48,11 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
         $activities = [];
 
         for ($i = 0; $i < rand(1, 3); ++$i) {
-            $activities[] = $this->getReference('activity_'.rand(0, 5));
+            $activity = ActivityFactory::random();
+
+            if (!in_array($activity, $activities)) {
+                $activities[] = $activity;
+            }
         }
 
         return $activities;

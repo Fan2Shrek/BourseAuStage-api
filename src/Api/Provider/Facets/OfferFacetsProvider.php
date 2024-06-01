@@ -2,13 +2,12 @@
 
 namespace App\Api\Provider\Facets;
 
-use App\Entity\Company;
 use App\Api\Resource\Facets;
 use App\Enum\FacetOptionEnum;
 use ApiPlatform\Metadata\Operation;
 use App\Repository\OfferRepository;
-use App\Repository\CompanyRepository;
 use ApiPlatform\State\ProviderInterface;
+use App\Entity\Offer;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -33,7 +32,7 @@ class OfferFacetsProvider implements ProviderInterface
             ]
             : null;
 
-        $offers = $this->offerRepository->findAllActive($query['isInternship'] === 'true', $availableAtFilter);
+        $offers = $this->offerRepository->findAllActive('true' === $query['isInternship'], $availableAtFilter);
 
         $facets = new Facets();
 
@@ -73,9 +72,9 @@ class OfferFacetsProvider implements ProviderInterface
         return $facets;
     }
 
-    private function buildFacets(array $carry, Company $company): array
+    private function buildFacets(array $carry, Offer $offer): array
     {
-        $activities = $company->getActivities();
+        $activities = $offer->getActivities();
         foreach ($activities as $activity) {
             $activityName = $activity->getName();
             if (!in_array($activityName, $carry['activities.name'])) {
@@ -83,9 +82,9 @@ class OfferFacetsProvider implements ProviderInterface
             }
         }
 
-        $categoryName = $company->getCategory()->getName();
-        if (!in_array($categoryName, $carry['category.name'])) {
-            $carry['category.name'][] = $categoryName;
+        $studyLevelName = $offer->getStudyLevel()->getName();
+        if (!in_array($studyLevelName, $carry['studyLevel.name'])) {
+            $carry['studyLevel.name'][] = $studyLevelName;
         }
 
         return $carry;

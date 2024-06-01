@@ -16,6 +16,7 @@ use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 
 #[ApiResource(operations: [
@@ -23,6 +24,10 @@ use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
         normalizationContext: ['groups' => ['api:offer:read']],
     ),
     new GetCollection(),
+])]
+#[ApiFilter(SearchFilter::class, properties: [
+    'activities.name' => 'exact',
+    'studyLevel.name' => 'exact',
 ])]
 #[ApiFilter(OrderFilter::class, properties: ['name'])]
 #[ApiFilter(BooleanFilter::class, properties: ['isInternship'])]

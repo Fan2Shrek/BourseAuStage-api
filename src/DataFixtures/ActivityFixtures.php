@@ -4,7 +4,7 @@ namespace App\DataFixtures;
 
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use App\Entity\Activity;
+use App\Tests\Factory\ActivityFactory;
 
 class ActivityFixtures extends Fixture
 {
@@ -21,17 +21,11 @@ class ActivityFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $i = 0;
         foreach (self::ACTIVITIES as $name => $color) {
-            $activity = new Activity();
-            $activity
-                ->setName($name)
-                ->setColor($color);
-            $manager->persist($activity);
-
-            $this->addReference('activity_'.$i++, $activity);
+            ActivityFactory::createOne([
+                'name' => $name,
+                'color' => $color,
+            ]);
         }
-
-        $manager->flush();
     }
 }
