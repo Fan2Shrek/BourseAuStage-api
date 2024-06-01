@@ -1,0 +1,20 @@
+App\Entity\Request:
+    attributes:
+        id:
+            groups: 
+                - 'api:request:read'
+        student:
+            groups: 
+                - 'api:request:read'
+        location:
+            groups: 
+                - 'api:request:read'
+        start:
+            groups: 
+                - 'api:request:read'
+        end:
+            groups: 
+                - 'api:request:read'
+        internship:
+            groups: 
+                - 'api:request:read'
