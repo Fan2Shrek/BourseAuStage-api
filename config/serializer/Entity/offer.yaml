@@ -1,0 +1,50 @@
+App\Entity\Offer:
+    attributes:
+        name:
+            groups:
+                - 'api:offer:read'
+        start:
+            groups:
+                - 'api:offer:read'
+        end:
+            groups:
+                - 'api:offer:read'
+        intership:
+            groups:
+                - 'api:offer:read'
+        isPayed:
+            groups:
+                - 'api:offer:read'
+        company:
+            groups:
+                - 'api:offer:read'
+        description:
+            groups:
+                - 'api:offer:read'
+        activities:
+            groups:
+                - 'api:offer:read'
+        missions:
+            groups:
+                - 'api:offer:read'
+        profils:
+            groups:
+                - 'api:offer:read'
+
+App\Entity\Mission:
+    attributes:
+        description:
+            groups:
+                - 'api:offer:read'
+
+App\Entity\Skills:
+    attributes:
+        description:
+            groups:
+                - 'api:offer:read'
+
+App\Entity\Profil:
+    attributes:
+        description:
+            groups:
+                - 'api:offer:read'

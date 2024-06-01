@@ -6,3 +6,7 @@ App\Entity\Company:
         name:
             groups:
                 - 'api:collaborator:read'
+                - 'api:offer:read'
+        decription: 
+            groups:
+                - 'api:offer:read'
