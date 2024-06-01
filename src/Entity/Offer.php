@@ -2,16 +2,21 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-use App\Entity\Trait\ActionTrackingTrait;
-use App\Entity\Trait\SoftDeleteTrait;
-use App\Repository\OfferRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiFilter;
+use App\Repository\OfferRepository;
+use ApiPlatform\Metadata\ApiResource;
+use App\Entity\Trait\SoftDeleteTrait;
+use ApiPlatform\Metadata\GetCollection;
+use App\Entity\Trait\ActionTrackingTrait;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 
 #[ApiResource(operations: [
     new Get(
@@ -19,6 +24,10 @@ use Doctrine\ORM\Mapping as ORM;
     ),
     new GetCollection(),
 ])]
+#[ApiFilter(OrderFilter::class, properties: ['name'])]
+#[ApiFilter(BooleanFilter::class, properties: ['isInternship'])]
+#[ApiFilter(ExistsFilter::class, properties: ['deletedAt'])]
+#[ApiFilter(DateFilter::class, properties: ['availableAt'])]
 #[ORM\Entity(repositoryClass: OfferRepository::class)]
 class Offer
 {
@@ -28,7 +37,7 @@ class Offer
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $name = null;
@@ -93,7 +102,7 @@ class Offer
 
     public function getId(): ?int
     {
-        return $this->id;
+        return $this->id ?? null;
     }
 
     public function getName(): ?string

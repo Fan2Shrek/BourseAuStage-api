@@ -11,6 +11,13 @@ resetPassword:
     subject: "Demande de réinitialisation de mot de passe"
     message: "Cliquez sur le lien suivant pour réinitialiser votre mot de passe :"
 
+facets:
+  duration:
+    '-2': "Moins de 2 mois"
+    '2-6': "Entre 2 et 6 mois"
+    '6-12': "Entre 6 et 12 mois"
+    '+12': "Plus de 12 mois"
+
 dashboard:
   title: "Tableau de bord"
   menu:

@@ -2,44 +2,50 @@
 
 namespace App\Api\Provider\Facets;
 
+use App\Entity\Company;
 use App\Api\Resource\Facets;
 use App\Enum\FacetOptionEnum;
 use ApiPlatform\Metadata\Operation;
-use ApiPlatform\State\ProviderInterface;
-use App\Entity\Company;
+use App\Repository\OfferRepository;
 use App\Repository\CompanyRepository;
+use ApiPlatform\State\ProviderInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @implements ProviderInterface<Facets>
  */
-class CompanyFacetsProvider implements ProviderInterface
+class OfferFacetsProvider implements ProviderInterface
 {
     public function __construct(
-        private readonly CompanyRepository $companyRepository,
+        private readonly OfferRepository $offerRepository,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
-        $companies = $this->companyRepository->findAllActive();
+        $query = $context['request']->query->all();
 
-        if (!$companies) {
-            return null;
-        }
+        $availableAtFilter = $query['availableAt']
+            ? [
+                'after' => $query['availableAt']['after'] ?? null,
+                'before' => $query['availableAt']['before'] ?? null,
+            ]
+            : null;
+
+        $offers = $this->offerRepository->findAllActive($query['isInternship'] === 'true', $availableAtFilter);
 
         $facets = new Facets();
 
         $facets->facets = [
-            ...array_reduce($companies, $this->buildFacets(...), [
+            ...array_reduce($offers, $this->buildFacets(...), [
                 'activities.name' => [],
-                'category.name' => [],
-                'effective' => [
-                    '1-9',
-                    '10-49',
-                    '50-99',
-                    '100-249',
-                    '250-999',
-                    '1000',
+                'studyLevel.name' => [],
+                'end' => [
+                    $this->translator->trans('facets.duration.-2'),
+                    $this->translator->trans('facets.duration.2-6'),
+                    $this->translator->trans('facets.duration.6-12'),
+                    $this->translator->trans('facets.duration.+12'),
                 ],
                 'range' => [
                     'min' => 0,
@@ -50,7 +56,7 @@ class CompanyFacetsProvider implements ProviderInterface
         ];
 
         sort($facets->facets['activities.name']);
-        sort($facets->facets['category.name']);
+        sort($facets->facets['studyLevel.name']);
 
         $facets->defaultFacets = [
             'range' => [
@@ -59,14 +65,6 @@ class CompanyFacetsProvider implements ProviderInterface
         ];
 
         $facets->options = [
-            'activities.name' => [
-                FacetOptionEnum::ALL,
-                FacetOptionEnum::DEFAULT_ALL,
-            ],
-            'effective' => [
-                FacetOptionEnum::BETWEEN,
-                FacetOptionEnum::BETWEEN_AND_MORE,
-            ],
             'range' => [
                 FacetOptionEnum::RANGE,
             ],
