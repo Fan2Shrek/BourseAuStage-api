@@ -29,16 +29,6 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
         ),
     ],
 )]
-// EXEMPLE
-#[ApiFilter(SearchFilter::class, properties: [
-    'company.name' => 'exact',
-])]
-// EXEMPLE
-#[ApiFilter(RangeFilter::class, properties: ['company.effective'])]
-// EXEMPLE
-#[ApiFilter(OrderFilter::class, properties: ['company.name'])]
-// EXEMPLE
-#[ApiFilter(ExistsFilter::class, properties: ['deletedAt'])]
 #[ORM\Entity(repositoryClass: CollaboratorRepository::class)]
 class Collaborator extends User
 {

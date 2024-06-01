@@ -31,15 +31,6 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
         ),
     ],
 )]
-// EXEMPLE
-#[ApiFilter(SearchFilter::class, properties: [
-    'firstName' => 'exact',
-    'roles' => 'partial',
-])]
-// EXEMPLE
-#[ApiFilter(OrderFilter::class, properties: ['firstName', 'lastName'])]
-// EXEMPLE
-#[ApiFilter(ExistsFilter::class, properties: ['deletedAt'])]
 #[UniqueEntity('email')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\InheritanceType('JOINED')]
