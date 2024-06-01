@@ -4,11 +4,11 @@ namespace App\DataFixtures;
 
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use App\Entity\StudyLevel;
+use App\Tests\Factory\StudyLevelFactory;
 
 class StudyLevelFixtures extends Fixture
 {
-    private const ACTIVITIES = [
+    private const STUDY_LEVELS = [
         'Master, DEA, DESS',
         'Licence',
         'BTS, DUT, BUT',
@@ -18,14 +18,10 @@ class StudyLevelFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        foreach (self::ACTIVITIES as $i => $name) {
-            $study = new StudyLevel();
-            $study->setName($name);
-            $manager->persist($study);
-
-            $this->addReference('studyLevel_'.$i, $study);
+        foreach (self::STUDY_LEVELS as $name) {
+            StudyLevelFactory::createOne([
+                'name' => $name,
+            ]);
         }
-
-        $manager->flush();
     }
 }

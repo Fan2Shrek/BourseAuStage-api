@@ -6,14 +6,9 @@ use ApiPlatform\Metadata\Link;
 use App\Enum\RoleEnum;
 use ApiPlatform\Metadata\Get;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use App\Repository\CollaboratorRepository;
-use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
-use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
-use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 
 #[ApiResource(
     operations: [
@@ -29,16 +24,6 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
         ),
     ],
 )]
-// EXEMPLE
-#[ApiFilter(SearchFilter::class, properties: [
-    'company.name' => 'exact',
-])]
-// EXEMPLE
-#[ApiFilter(RangeFilter::class, properties: ['company.effective'])]
-// EXEMPLE
-#[ApiFilter(OrderFilter::class, properties: ['company.name'])]
-// EXEMPLE
-#[ApiFilter(ExistsFilter::class, properties: ['deletedAt'])]
 #[ORM\Entity(repositoryClass: CollaboratorRepository::class)]
 class Collaborator extends User
 {

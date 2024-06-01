@@ -7,7 +7,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 
-class CollaboratorFixture extends Fixture implements DependentFixtureInterface
+class CollaboratorFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -17,7 +17,7 @@ class CollaboratorFixture extends Fixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return [
-            CompanyFixture::class,
+            CompanyFixtures::class,
         ];
     }
 }

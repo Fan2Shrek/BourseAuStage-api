@@ -63,13 +63,7 @@ class CompanyFacetsProvider implements ProviderInterface
                 FacetOptionEnum::ALL,
                 FacetOptionEnum::DEFAULT_ALL,
             ],
-            'category.name' => [
-                FacetOptionEnum::ALL,
-                FacetOptionEnum::DEFAULT_ALL,
-            ],
             'effective' => [
-                FacetOptionEnum::ALL,
-                FacetOptionEnum::DEFAULT_ALL,
                 FacetOptionEnum::BETWEEN,
                 FacetOptionEnum::BETWEEN_AND_MORE,
             ],

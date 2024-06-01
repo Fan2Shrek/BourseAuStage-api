@@ -2,14 +2,14 @@
 
 namespace App\DataFixtures\Files;
 
-use App\DataFixtures\CompanyFixture;
+use App\DataFixtures\CompanyFixtures;
 use App\Tests\Factory\CompanyFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Files\CompanyPicture;
 
-class CompanyPictureFixture extends Fixture implements DependentFixtureInterface
+class CompanyPictureFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $em): void
     {
@@ -42,7 +42,7 @@ class CompanyPictureFixture extends Fixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return [
-            CompanyFixture::class,
+            CompanyFixtures::class,
         ];
     }
 }
