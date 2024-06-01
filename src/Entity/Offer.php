@@ -14,7 +14,9 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ApiResource(operations: [
-    new Get(normalizationContext: ['groups' => ['api:offer:read']]),
+    new Get(
+        normalizationContext: ['groups' => ['api:offer:read']],
+    ),
     new GetCollection(),
 ])]
 #[ORM\Entity(repositoryClass: OfferRepository::class)]

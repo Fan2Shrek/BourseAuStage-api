@@ -1,5 +1,8 @@
 App\Entity\Offer:
     attributes:
+        id:
+            groups:
+                - 'api:offer:read'
         name:
             groups:
                 - 'api:offer:read'
@@ -12,7 +15,7 @@ App\Entity\Offer:
         intership:
             groups:
                 - 'api:offer:read'
-        isPayed:
+        payed:
             groups:
                 - 'api:offer:read'
         company:
@@ -30,21 +33,15 @@ App\Entity\Offer:
         profils:
             groups:
                 - 'api:offer:read'
-
-App\Entity\Mission:
-    attributes:
-        description:
+        searchSkills:
             groups:
                 - 'api:offer:read'
-
-App\Entity\Skills:
-    attributes:
-        description:
+        studyLevel:
             groups:
                 - 'api:offer:read'
-
-App\Entity\Profil:
-    attributes:
-        description:
+        availableAt:
+            groups:
+                - 'api:offer:read'
+        createdAt:
             groups:
                 - 'api:offer:read'
