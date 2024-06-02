@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\GetCollection;
 use App\Repository\RequestRepository;
-use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
 
 #[ApiResource(
     operations: [
@@ -17,6 +18,7 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
     ]
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id'], arguments: ['orderParameterName' => 'order'])]
+#[ApiFilter(ExistsFilter::class, properties: ['deletedAt'])]
 #[ORM\Entity(repositoryClass: RequestRepository::class)]
 class Request extends AbstractOffer
 {
