@@ -27,6 +27,7 @@ use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
             'companyId' => new Link(fromClass: Company::class, toProperty: 'company'),
         ],
         normalizationContext: ['groups' => ['api:companies:offers:read']],
+        paginationEnabled: false,
     ),
     new GetCollection(
         normalizationContext: ['groups' => ['api:offers:read']],
@@ -36,7 +37,7 @@ use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
     'activities.name' => 'exact',
     'studyLevel.name' => 'exact',
 ])]
-#[ApiFilter(OrderFilter::class, properties: ['name'])]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'createdAt', 'availableAt'])]
 #[ApiFilter(BooleanFilter::class, properties: ['isInternship'])]
 #[ApiFilter(ExistsFilter::class, properties: ['deletedAt'])]
 #[ApiFilter(DateFilter::class, properties: ['availableAt'])]

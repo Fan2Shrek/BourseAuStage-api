@@ -1,5 +1,8 @@
 App\Entity\Skill:
     attributes:
-        description:
+        id:
+            groups:
+                - 'api:offer:read'
+        name:
             groups:
                 - 'api:offer:read'

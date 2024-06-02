@@ -15,7 +15,7 @@ final class OfferFactory extends ModelFactory
         return [
             'isInternship' => self::faker()->boolean(),
             'isPayed' => self::faker()->boolean(),
-            'name' => self::faker()->sentence(),
+            'name' => join(' ', self::faker()->words(3)),
             'end' => self::faker()->dateTime(),
             'start' => self::faker()->dateTime(),
             'company' => CompanyFactory::random(),

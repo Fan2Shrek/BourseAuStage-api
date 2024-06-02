@@ -18,12 +18,14 @@ App\Entity\Company:
                 - 'api:companies:read'
         city:
             groups:
+                - 'api:offer:read'
                 - 'api:offers:read'
         logo:
             groups:
                 - 'api:offer:read'
         logoIcon:
             groups:
+                - 'api:offer:read'
                 - 'api:offers:read'
                 - 'api:companies:read'
         activities:

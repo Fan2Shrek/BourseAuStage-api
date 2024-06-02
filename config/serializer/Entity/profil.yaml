@@ -1,5 +1,8 @@
 App\Entity\Profil:
     attributes:
+        id:
+            groups:
+                - 'api:offer:read'
         description:
             groups:
                 - 'api:offer:read'
