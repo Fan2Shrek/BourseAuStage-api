@@ -21,3 +21,6 @@ phpstan.neon
 ###> BDD dump ###
 /dump/
 ###< BDD ###
+
+/public/img/*
+!/**/.gitkeep

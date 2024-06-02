@@ -1,0 +1,26 @@
+App\Entity\Collaborator:
+    attributes:
+        id:
+            groups:
+                - 'api:collaborator:read'
+        email:
+            groups:
+                - 'api:collaborator:read'
+        roles:
+            groups:
+                - 'api:collaborator:read'
+        phone:
+            groups:
+                - 'api:collaborator:read'
+        gender:
+            groups:
+                - 'api:collaborator:read'
+        firstName:
+            groups:
+                - 'api:collaborator:read'
+        lastName:
+            groups:
+                - 'api:collaborator:read'
+        company:
+            groups:
+                - 'api:collaborator:read'

@@ -11,6 +11,13 @@ resetPassword:
     subject: "Demande de réinitialisation de mot de passe"
     message: "Cliquez sur le lien suivant pour réinitialiser votre mot de passe :"
 
+facets:
+  duration:
+    '-2': "Moins de 2 mois"
+    '2-6': "Entre 2 et 6 mois"
+    '6-12': "Entre 6 et 12 mois"
+    '+12': "Plus de 12 mois"
+
 dashboard:
   title: "Tableau de bord"
   menu:
@@ -18,6 +25,9 @@ dashboard:
     users: "Utilisateurs"
     companies: "Entreprises"
     students: "Étudiants"
+    collaborators: "Collaborateurs"
+    categories: "Catégories d'entreprise"
+    activities: "Secteurs d'activité"
 
 entity:
   action:
@@ -44,6 +54,8 @@ user:
     new: "Créer un administrateur"
     desactivate: "Désactiver"
     revive: "Réactiver"
+    specialDetail: "Consulter"
+    specialUpdate: "Modifier"
   field:
     gender:
       label: "Genre"
@@ -88,15 +100,26 @@ form:
 company:
   pageTitle:
     index: "Entreprises"
+    new: "Créer une entreprise"
     edit: "Modifier l'entreprise"
   infoTitle:
     basic: "Informations de base"
     localisation: "Localisation"
     additional: "Informations complémentaires"
+    presentation: "Présentation"
+    socialsMedia: "Résaux sociaux"
+    logo: "Logo"
   action:
+    new: "Créer une entreprise"
     desactivate: "Désactiver"
     revive: "Réactiver"
   field:
+    phone:
+      label: Téléphone
+    age:
+      label: "Âge"
+    presentation:
+      label: "Présentation"
     name:
       label: "Nom"
       error:
@@ -129,6 +152,46 @@ company:
         notBlank: "Veuillez entrer une adresse."
     numberActiveOffer:
       label: "Offre active"
+    logo:
+      label: "Logo de l'entreprise"
+    logoIcon:
+      label: "Logo réduit (50x50)"
+
+activity: 
+  action:
+    new: "Ajouter un secteur d'activité"
+  pageTitle:
+    index: "Secteurs d'activité"
+    new: "Créer un secteur d'activité"
+    edit: "Modifier le secteur d'activité"
+  field:
+    name:
+      label: "Nom"
+      error:
+        notBlank: "Veuillez entrer un nom."
+    color:
+      label: "Couleur"
+      error:
+        notBlank: "Veuillez entrer une couleur."
+  flash:
+    error:
+      inUse: "Ce secteur d'activité est utilisé et ne peut donc pas être supprimé."
+
+companyCategory: 
+  action:
+    new: "Ajouter une catégorie d'entreprise"
+  pageTitle:
+    index: "Catégories d'entreprise"
+    new: "Créer une catégorie d'entreprise"
+    edit: "Modifier la catégorie d'entreprise"
+  field:
+    name:
+      label: "Nom"
+      error:
+        notBlank: "Veuillez entrer un nom."
+  flash:
+    error:
+      inUse: "Cette catégorie est utilisée et ne peut donc pas être supprimée."
 
 student:
   pageTitle:
@@ -172,7 +235,36 @@ student:
         minLength: "Votre mot de passe doit contenir au moins {{ limit }} caractères."
 
 collaborator:
+  pageTitle:
+    index: "Collaborateurs"
+    new: "Créer un collaborateur"
+    edit: "Modifier le collaborateur"
+  infoTitle:
+      basic: "Informations de base"
+      authentication: "Authentification"
+      additional: "Informations complémentaires"
+  action:
+    new: "Créer un collaborateur"
+    desactivate: "Désactiver"
+    revive: "Réactiver"
   field:
+    gender:
+      label: "Genre"
+    firstName:
+      label: "Prénom"
+    lastName:
+      label: "Nom"
     company:
       label: "Entreprise"
+    email:
+      label: "Mail"
+      error:
+        notBlank: "Veuillez entrer une adresse mail."
+        email: "L'adresse mail n'est pas valide."
+        lenght: "Votre adresse mail est trop longue."
+    password:
+      label: "Mot de passe"
+      repeat: "Confirmer le mot de passe"
+      error:
+        minLength: "Votre mot de passe doit contenir au moins {{ limit }} caractères."
     

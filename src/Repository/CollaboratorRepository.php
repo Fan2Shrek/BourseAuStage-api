@@ -3,10 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Company;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\Collaborator;
+use App\Repository\Trait\ActionTrait;
+use App\Repository\Trait\SoftDeleteTrait;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
-use App\Entity\Collaborator;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Collaborator>
@@ -19,6 +21,7 @@ use App\Entity\Collaborator;
 class CollaboratorRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
     use ActionTrait;
+    use SoftDeleteTrait;
     use PasswordUpgraderTrait;
 
     public function __construct(ManagerRegistry $registry)

@@ -4,11 +4,10 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use App\Enum\RoleEnum;
+use App\Entity\Student;
 use App\Enum\GenderEnum;
 use App\Entity\Collaborator;
 use Doctrine\ORM\EntityManagerInterface;
-use App\CustomEasyAdmin\Field\CustomField;
-use App\Controller\Admin\Trait\SoftDeleteActionsTrait;
 use Symfony\Bundle\SecurityBundle\Security;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -19,6 +18,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use App\Controller\Admin\Trait\SoftDeleteActionsTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
@@ -110,8 +110,6 @@ class UserCrudController extends AbstractCrudController
             RoleEnum::SPONSOR->value => 'dark',
         ];
 
-        $user = $this->getContext()->getEntity()->getInstance();
-
         yield FormField::addColumn(6);
         yield FormField::addFieldset($this->translator->trans('user.infoTitle.basic'));
         yield ChoiceField::new('gender', $this->translator->trans('user.field.gender.label'))
@@ -155,21 +153,6 @@ class UserCrudController extends AbstractCrudController
             ->hideOnForm();
         yield TextField::new('firstName', $this->translator->trans('user.field.firstName.label'));
         yield TextField::new('lastName', $this->translator->trans('user.field.lastName.label'));
-        if ($user instanceof Collaborator) {
-            $company = $user->getCompany();
-
-            yield CustomField::create(
-                sprintf(
-                    '<a href="%s">%s</a>',
-                    $this->adminUrlGenerator
-                        ->setController(CompanyCrudController::class)
-                        ->setAction(Action::DETAIL)
-                        ->setEntityId($company->getId()),
-                    $company->getName(),
-                ),
-                $this->translator->trans('collaborator.field.company.label')
-            );
-        }
 
         yield FormField::addColumn(6);
         yield FormField::addFieldset($this->translator->trans('user.infoTitle.authentication'));
@@ -210,9 +193,7 @@ class UserCrudController extends AbstractCrudController
                 ],
             ])
             ->setRequired(Crud::PAGE_NEW === $pageName)
-            ->onlyOnForms()
-            ->hideOnIndex()
-            ->hideOnDetail();
+            ->onlyOnForms();
 
         yield FormField::addColumn(6)
             ->hideOnForm();
@@ -256,13 +237,63 @@ class UserCrudController extends AbstractCrudController
             ->add(Crud::PAGE_NEW, Action::INDEX)
             ->add(Crud::PAGE_EDIT, Action::INDEX)
             ->add(Crud::PAGE_EDIT, Action::DETAIL)
+            ->add(
+                Crud::PAGE_INDEX,
+                Action::new('specialUserDetail', $this->translator->trans('user.action.specialDetail'))
+                    ->displayIf(fn ($entity) => $entity instanceof Student || $entity instanceof Collaborator)
+                    ->linkToUrl(function ($entity) {
+                        $adminUrlGenerator = $this->adminUrlGenerator;
+
+                        if ($entity instanceof Student) {
+                            $adminUrlGenerator->setController(StudentCrudController::class);
+                        }
+
+                        if ($entity instanceof Collaborator) {
+                            $adminUrlGenerator->setController(CollaboratorCrudController::class);
+                        }
+
+                        return $adminUrlGenerator
+                            ->setAction(Action::DETAIL)
+                            ->setEntityId($entity->getId());
+                    })
+            )
+            ->add(
+                Crud::PAGE_INDEX,
+                Action::new('specialUserUpdate', $this->translator->trans('user.action.specialUpdate'))
+                    ->displayIf(fn ($entity) => $entity instanceof Student || $entity instanceof Collaborator)
+                    ->linkToUrl(function ($entity) {
+                        $adminUrlGenerator = $this->adminUrlGenerator;
+
+                        if ($entity instanceof Student) {
+                            $adminUrlGenerator->setController(StudentCrudController::class);
+                        }
+
+                        if ($entity instanceof Collaborator) {
+                            $adminUrlGenerator->setController(CollaboratorCrudController::class);
+                        }
+
+                        return $adminUrlGenerator
+                            ->setAction(Action::EDIT)
+                            ->setEntityId($entity->getId());
+                    })
+            )
             ->update(
                 Crud::PAGE_INDEX,
                 Action::NEW,
                 fn (Action $action) => $action->setLabel($this->translator->trans('user.action.new'))
             )
+            ->update(
+                Crud::PAGE_INDEX,
+                Action::DETAIL,
+                fn (Action $action) => $action->displayIf(fn ($entity) => !($entity instanceof Student || $entity instanceof Collaborator))
+            )
+            ->update(
+                Crud::PAGE_INDEX,
+                Action::EDIT,
+                fn (Action $action) => $action->displayIf(fn ($entity) => !($entity instanceof Student || $entity instanceof Collaborator))
+            )
             ->reorder(Crud::PAGE_NEW, [Action::INDEX, Action::SAVE_AND_RETURN])
-            ->reorder(Crud::PAGE_INDEX, [Action::NEW, Action::DETAIL, Action::EDIT, 'reviveEntity', 'desactivateEntity'])
+            ->reorder(Crud::PAGE_INDEX, [Action::NEW, 'specialUserDetail', Action::DETAIL, 'specialUserUpdate', Action::EDIT, 'reviveEntity', 'desactivateEntity'])
             ->reorder(Crud::PAGE_DETAIL, [Action::INDEX, Action::EDIT, 'reviveEntity', 'desactivateEntity'])
             ->reorder(Crud::PAGE_EDIT, [Action::INDEX, Action::DETAIL, Action::SAVE_AND_RETURN]);
     }

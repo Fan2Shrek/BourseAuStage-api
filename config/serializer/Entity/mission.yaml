@@ -1,0 +1,8 @@
+App\Entity\Mission:
+    attributes:
+        id:
+            groups:
+                - 'api:offer:read'
+        description:
+            groups:
+                - 'api:offer:read'

@@ -2,14 +2,14 @@
 
 namespace App\DataFixtures;
 
-use App\Tests\Factory\CompanyFactory;
+use App\Tests\Factory\SkillFactory;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 
-class CompanyFixture extends Fixture
+class SkillFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        CompanyFactory::createMany(10);
+        SkillFactory::createMany(20);
     }
 }

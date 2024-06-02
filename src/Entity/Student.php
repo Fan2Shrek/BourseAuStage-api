@@ -3,10 +3,25 @@
 namespace App\Entity;
 
 use App\Enum\RoleEnum;
-use App\Repository\StudentRepository;
-use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Get;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use App\Repository\StudentRepository;
+use ApiPlatform\Metadata\GetCollection;
 
+#[ApiResource(
+    operations: [
+        new Get(
+            normalizationContext: ['groups' => ['api:student:read']],
+        ),
+        new GetCollection(
+            normalizationContext: ['groups' => ['api:student:read']],
+        ),
+    ],
+)]
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
 class Student extends User
 {
@@ -15,6 +30,7 @@ class Student extends User
         $this->setRoles([RoleEnum::STUDENT->value]);
 
         parent::__construct();
+        $this->requests = new ArrayCollection();
     }
 
     #[ORM\Column(length: 180)]
@@ -28,6 +44,12 @@ class Student extends User
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private \DateTimeInterface $birthdayAt;
+
+    /**
+     * @var Collection<int, Request>
+     */
+    #[ORM\OneToMany(targetEntity: Request::class, mappedBy: 'student', orphanRemoval: true)]
+    private Collection $requests;
 
     public function getAddress(): string
     {
@@ -92,5 +114,35 @@ class Student extends User
         $age = $now->diff($birthday)->y;
 
         return $age;
+    }
+
+    /**
+     * @return Collection<int, Request>
+     */
+    public function getRequests(): Collection
+    {
+        return $this->requests;
+    }
+
+    public function addRequest(Request $request): static
+    {
+        if (!$this->requests->contains($request)) {
+            $this->requests->add($request);
+            $request->setStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRequest(Request $request): static
+    {
+        if ($this->requests->removeElement($request)) {
+            // set the owning side to null (unless already changed)
+            if ($request->getStudent() === $this) {
+                $request->setStudent(null);
+            }
+        }
+
+        return $this;
     }
 }
