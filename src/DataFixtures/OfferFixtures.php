@@ -41,10 +41,6 @@ class OfferFixtures extends Fixture implements DependentFixtureInterface
 
     private function randomActivities(): array
     {
-        if (rand(0, 1)) {
-            return [];
-        }
-
         $activities = [];
 
         for ($i = 0; $i < rand(1, 3); ++$i) {

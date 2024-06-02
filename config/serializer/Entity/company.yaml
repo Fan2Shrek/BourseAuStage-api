@@ -4,16 +4,28 @@ App\Entity\Company:
             groups:
                 - 'api:offer:read'
                 - 'api:collaborator:read'
+                - 'api:companies:read'
         name:
             groups:
                 - 'api:offer:read'
+                - 'api:offers:read'
                 - 'api:collaborator:read'
+                - 'api:companies:read'
         presentation: 
             groups:
                 - 'api:offer:read'
+                - 'api:offers:read'
+                - 'api:companies:read'
+        city:
+            groups:
+                - 'api:offers:read'
         logo:
             groups:
                 - 'api:offer:read'
         logoIcon:
             groups:
-                - 'api:offer:read'
+                - 'api:offers:read'
+                - 'api:companies:read'
+        activities:
+            groups:
+                - 'api:companies:read'
