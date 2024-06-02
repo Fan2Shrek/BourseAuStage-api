@@ -3,30 +3,46 @@ App\Entity\Offer:
         id:
             groups:
                 - 'api:offer:read'
+                - 'api:offers:read'
+                - 'api:companies:offers:read'
         name:
             groups:
                 - 'api:offer:read'
+                - 'api:offers:read'
+                - 'api:companies:offers:read'
         start:
             groups:
                 - 'api:offer:read'
+                - 'api:offers:read'
+                - 'api:companies:offers:read'
         end:
             groups:
                 - 'api:offer:read'
-        intership:
+                - 'api:offers:read'
+                - 'api:companies:offers:read'
+        internship:
             groups:
                 - 'api:offer:read'
+                - 'api:offers:read'
+                - 'api:companies:offers:read'
         payed:
             groups:
                 - 'api:offer:read'
+                - 'api:offers:read'
         company:
             groups:
                 - 'api:offer:read'
+                - 'api:offers:read'
         description:
             groups:
                 - 'api:offer:read'
+                - 'api:offers:read'
+                - 'api:companies:offers:read'
         activities:
             groups:
                 - 'api:offer:read'
+                - 'api:offers:read'
+                - 'api:companies:offers:read'
         missions:
             groups:
                 - 'api:offer:read'
@@ -42,6 +58,7 @@ App\Entity\Offer:
         availableAt:
             groups:
                 - 'api:offer:read'
+                - 'api:offers:read'
         createdAt:
             groups:
                 - 'api:offer:read'

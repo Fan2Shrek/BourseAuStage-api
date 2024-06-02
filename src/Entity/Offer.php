@@ -3,24 +3,34 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Link;
+use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiFilter;
 use App\Repository\OfferRepository;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
+use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
-use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
 
 #[ApiResource(operations: [
     new Get(
         normalizationContext: ['groups' => ['api:offer:read']],
     ),
-    new GetCollection(),
+    new GetCollection(
+        uriTemplate: '/companies/{companyId}/offers',
+        uriVariables: [
+            'companyId' => new Link(fromClass: Company::class, toProperty: 'company'),
+        ],
+        normalizationContext: ['groups' => ['api:companies:offers:read']],
+    ),
+    new GetCollection(
+        normalizationContext: ['groups' => ['api:offers:read']],
+    ),
 ])]
 #[ApiFilter(SearchFilter::class, properties: [
     'activities.name' => 'exact',

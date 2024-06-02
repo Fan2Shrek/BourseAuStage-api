@@ -1,8 +1,21 @@
 App\Entity\Activity:
     attributes:
+        id:
+            groups:
+                - 'api:offer:read'
+                - 'api:offers:read'
+                - 'api:companies:read'
+                - 'api:companies:offers:read'
+
         name:
             groups:
                 - 'api:offer:read'
+                - 'api:offers:read'
+                - 'api:companies:read'
+                - 'api:companies:offers:read'
         color: 
             groups:
                 - 'api:offer:read'
+                - 'api:offers:read'
+                - 'api:companies:read'
+                - 'api:companies:offers:read'

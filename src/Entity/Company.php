@@ -28,7 +28,9 @@ use App\Api\Provider\Company\CompanyHighlightProvider;
             provider: CompanyHighlightProvider::class,
             paginationEnabled: false,
         ),
-        new GetCollection(),
+        new GetCollection(
+            normalizationContext: ['groups' => ['api:companies:read']],
+        ),
         new Get(),
     ],
 )]

@@ -19,7 +19,7 @@ final class OfferFactory extends ModelFactory
             'end' => self::faker()->dateTime(),
             'start' => self::faker()->dateTime(),
             'company' => CompanyFactory::random(),
-            'availableAt' => self::faker()->randomElement([new \DateTime('+ 1 month'), new \DateTime('+ 2 day'), new \DateTime('+ 5 day')]),
+            'availableAt' => self::faker()->randomElement([new \DateTime('+ 1 month'), new \DateTime('+ 2 day'), new \DateTime('+ 7 day')]),
             'description' => self::faker()->text(255),
             'studyLevel' => StudyLevelFactory::random(),
         ];
