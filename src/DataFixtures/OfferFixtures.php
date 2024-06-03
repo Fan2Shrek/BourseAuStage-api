@@ -15,7 +15,7 @@ class OfferFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        OfferFactory::createMany(15, fn () => [
+        OfferFactory::createMany(200, fn () => [
             'searchSkills' => $this->doSkills(),
             'activities' => $this->randomActivities(),
         ]);
