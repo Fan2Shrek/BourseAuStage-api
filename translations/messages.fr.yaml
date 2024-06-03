@@ -254,6 +254,8 @@ collaborator:
       label: "Prénom"
     lastName:
       label: "Nom"
+    jobTitle:
+      label: "Fonction"
     company:
       label: "Entreprise"
     email:

@@ -87,6 +87,7 @@ class CollaboratorCrudController extends AbstractCrudController
                 }),
             TextField::new('firstName', $this->translator->trans('collaborator.field.firstName.label')),
             TextField::new('lastName', $this->translator->trans('collaborator.field.lastName.label')),
+            TextField::new('jobTitle', $this->translator->trans('collaborator.field.jobTitle.label')),
             AssociationField::new('company', $this->translator->trans('collaborator.field.company.label')),
 
             FormField::addColumn(6),
