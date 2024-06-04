@@ -16,6 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use App\Api\Filter\DurationFilter;
 
 #[ApiResource(operations: [
     new Get(
@@ -41,6 +42,7 @@ use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 #[ApiFilter(BooleanFilter::class, properties: ['isInternship'])]
 #[ApiFilter(ExistsFilter::class, properties: ['deletedAt'])]
 #[ApiFilter(DateFilter::class, properties: ['availableAt'])]
+#[ApiFilter(DurationFilter::class, properties: ['end' => 'start'])]
 #[ORM\Entity(repositoryClass: OfferRepository::class)]
 class Offer extends AbstractOffer
 {
