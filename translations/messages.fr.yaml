@@ -295,3 +295,13 @@ offer:
       label: "Date de début"
     endAt:
       label: "Date de fin"
+    description:
+      label: "Description"
+    isPayed:
+      label: "Payé"
+    company:
+      label: "Entreprise"
+    studyLevel:
+      label: "Niveau requis"
+    isInternship:
+      label: "Type"

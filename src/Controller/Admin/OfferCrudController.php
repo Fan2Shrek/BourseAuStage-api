@@ -10,8 +10,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use App\Controller\Admin\Trait\SoftDeleteActionsTrait;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 
 class OfferCrudController extends AbstractCrudController
 {
@@ -48,8 +51,18 @@ class OfferCrudController extends AbstractCrudController
             TextField::new('name', $this->translator->trans('offer.field.name.label')),
             DateTimeField::new('start', $this->translator->trans('offer.field.startAt.label')),
             DateTimeField::new('end', $this->translator->trans('offer.field.endAt.label')),
+            BooleanField::new('isPayed', $this->translator->trans('offer.field.isPayed.label'))
+                ->hideOnIndex(),
+            TextField::new('description', $this->translator->trans('offer.field.description.label'))
+                ->hideOnIndex(),
+            AssociationField::new('company', $this->translator->trans('offer.field.company.label')),
+            AssociationField::new('studyLevel', $this->translator->trans('offer.field.studyLevel.label')),
+
+            ChoiceField::new('isInternship', $this->translator->trans('offer.field.isInternship.label'))
+                ->renderExpanded(),
+
             DateTimeField::new('availableAt', $this->translator->trans('offer.action.availableAt'))
-                ->onlyOnDetail(),
+                ->hideOnIndex(),
             DateTimeField::new('createdAt', $this->translator->trans('entity.action.createdAt.label'))
                 ->onlyOnDetail(),
             DateTimeField::new('updatedAt', $this->translator->trans('entity.action.updatedAt.label'))
