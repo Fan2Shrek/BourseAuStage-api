@@ -8,11 +8,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use App\Controller\Admin\Trait\SoftDeleteActionsTrait;
-use App\Entity\Interface\SoftDeleteInterface;
-use App\Entity\Trait\SoftDeleteTrait;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 
 class OfferCrudController extends AbstractCrudController
 {
@@ -41,6 +40,38 @@ class OfferCrudController extends AbstractCrudController
             ->setPageTitle(Crud::PAGE_NEW, $this->translator->trans('offer.pageTitle.new'))
             ->setPageTitle(Crud::PAGE_DETAIL, fn (Offer $offer) => $offer->getName())
             ->setPageTitle(Crud::PAGE_EDIT, $this->translator->trans('offer.pageTitle.edit'));
+    }
+
+    public function configureFields(string $pageName): iterable
+    {
+        return [
+            TextField::new('name', $this->translator->trans('offer.field.name.label')),
+            DateTimeField::new('start', $this->translator->trans('offer.field.startAt.label')),
+            DateTimeField::new('end', $this->translator->trans('offer.field.endAt.label')),
+            DateTimeField::new('availableAt', $this->translator->trans('offer.action.availableAt'))
+                ->onlyOnDetail(),
+            DateTimeField::new('createdAt', $this->translator->trans('entity.action.createdAt.label'))
+                ->onlyOnDetail(),
+            DateTimeField::new('updatedAt', $this->translator->trans('entity.action.updatedAt.label'))
+                ->onlyOnDetail(),
+            DateTimeField::new('deletedAt', $this->translator->trans('entity.action.deletedAt.label'))
+                ->formatValue(function ($value, ?Offer $entity) {
+                    if (null === $entity) {
+                        return '';
+                    }
+
+                    $date = $entity->getDeletedAt();
+
+                    return sprintf(
+                        '<span class="badge badge-%s">%s</span>',
+                        $date ? 'danger' : 'success',
+                        $date ? $this->translator->trans('entity.action.deletedAt.inactive') : $this->translator->trans('entity.action.deletedAt.active')
+                    );
+                })
+                ->hideOnForm(),
+            DateTimeField::new('deletedAt', $this->translator->trans('entity.action.deletedAt.dateLabel'))
+                ->onlyOnDetail(),
+        ];
     }
 
     public function configureActions(Actions $actions): Actions

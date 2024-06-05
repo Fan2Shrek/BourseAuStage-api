@@ -287,3 +287,11 @@ offer:
     new: "Créer une offre"
     desactivate: "Désactiver"
     revive: "Réactiver"
+    availableAt: "A partir du"
+  field:
+    name:
+      label: "Nom"
+    startAt:
+      label: "Date de début"
+    endAt:
+      label: "Date de fin"
