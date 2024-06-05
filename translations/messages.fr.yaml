@@ -17,6 +17,13 @@ facets:
     '2-6': "Entre 2 et 6 mois"
     '6-12': "Entre 6 et 12 mois"
     '+12': "Plus de 12 mois"
+  between:
+    '1-9': "1-9"
+    '10-49': "10-49"
+    '50-99': "50-99"
+    '100-249': "100-249"
+    '250-999': "250-999"
+    '+1000': "1000 et plus"
 
 dashboard:
   title: "Tableau de bord"

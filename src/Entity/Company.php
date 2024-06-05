@@ -13,10 +13,10 @@ use App\Entity\Trait\ActionTrackingTrait;
 use Doctrine\Common\Collections\Collection;
 use App\Entity\Interface\SoftDeleteInterface;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
-use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use App\Api\Filter\BetweenFilter;
 use App\Entity\Interface\ActionTrackingInterface;
 use App\Api\Provider\Company\CompanyHighlightProvider;
 
@@ -38,7 +38,7 @@ use App\Api\Provider\Company\CompanyHighlightProvider;
     'activities.name' => 'exact',
     'category.name' => 'exact',
 ])]
-#[ApiFilter(RangeFilter::class, properties: ['effective'])]
+#[ApiFilter(BetweenFilter::class, properties: ['effective'])]
 #[ApiFilter(OrderFilter::class, properties: ['name'])]
 #[ApiFilter(ExistsFilter::class, properties: ['deletedAt'])]
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]

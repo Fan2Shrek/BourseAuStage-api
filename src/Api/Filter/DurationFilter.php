@@ -82,7 +82,7 @@ final class DurationFilter extends AbstractCustomFilter
                 'type' => Type::BUILTIN_TYPE_ARRAY,
                 'required' => false,
                 'description' => 'Duration filter. Use to filter by duration between two dates.
-                    It can be used with the following subfilters: gt (greater than), lt (lower then), bt (between).
+                    It can be used with the following subfilters: gt (greater than), lt (lower than), bt (between).
                     If used with bt and lt and/or gt are also wanted, put it into [] like the following example.
                     This example will return any data with duration less than 8, between 30 and 31, between 60 and 70 and greater than 130.
                 ',
