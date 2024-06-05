@@ -8,6 +8,7 @@ use App\Entity\Company;
 use App\Entity\Student;
 use App\Entity\Collaborator;
 use App\Entity\CompanyCategory;
+use App\Entity\Offer;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -61,5 +62,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud($this->translator->trans('dashboard.menu.students'), 'fas fa-book', Student::class);
         yield MenuItem::linkToCrud($this->translator->trans('dashboard.menu.categories'), 'fas fa-table-cells-large', CompanyCategory::class);
         yield MenuItem::linkToCrud($this->translator->trans('dashboard.menu.activities'), 'fas fa-tags', Activity::class);
+        yield MenuItem::linkToCrud($this->translator->trans('dashboard.menu.offers'), 'fas fa-tags', Offer::class);
     }
 }
