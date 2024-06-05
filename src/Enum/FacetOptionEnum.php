@@ -8,5 +8,6 @@ enum FacetOptionEnum: string
     case DEFAULT_ALL = 'default_all';
     case BETWEEN = 'between';
     case BETWEEN_AND_MORE = 'between_and_more';
+    case DURATION = 'duration';
     case RANGE = 'range';
 }
