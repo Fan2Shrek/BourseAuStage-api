@@ -130,11 +130,15 @@ abstract class AbstractCustomFilter extends AbstractFilter
             $multiple = $this->setMultiple($queryProperty);
 
             if (is_array($firstLevel)) {
-                $querySubFilter = array_key_first($firstLevel);
-                $queryValue = $firstLevel[$querySubFilter];
+                if (1 === count($firstLevel)) {
+                    $querySubFilter = array_key_first($firstLevel);
+                    $queryValue = $firstLevel[$querySubFilter];
 
-                // cas au on ajoute un item {{filter}}[{{property}}][]={{value}}
-                $multiple = $this->setMultiple($querySubFilter);
+                    // cas au on ajoute un item {{filter}}[{{property}}][]={{value}}
+                    $multiple = $this->setMultiple($querySubFilter);
+                } else {
+                    $queryValue = $firstLevel;
+                }
             } else {
                 $queryValue = $firstLevel;
             }

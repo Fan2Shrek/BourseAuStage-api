@@ -29,7 +29,7 @@ final class CompanyFactory extends ModelFactory
             'phone' => self::faker()->phoneNumber(),
             'age' => sprintf('%d ans', self::faker()->numberBetween(1, 20)),
             'openingTime' => self::faker()->sentence(),
-            'effective' => self::faker()->numberBetween(1, 100),
+            'effective' => self::faker()->numberBetween(1, 1100),
             'turnover' => self::faker()->numberBetween(1000, 1000000),
             'presentation' => self::faker()->text(),
             'twitterLink' => self::faker()->url(),
