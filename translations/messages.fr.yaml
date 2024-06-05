@@ -35,6 +35,7 @@ dashboard:
     collaborators: "Collaborateurs"
     categories: "Catégories d'entreprise"
     activities: "Secteurs d'activité"
+    offers: "Offres"
 
 entity:
   action:
@@ -276,4 +277,13 @@ collaborator:
       repeat: "Confirmer le mot de passe"
       error:
         minLength: "Votre mot de passe doit contenir au moins {{ limit }} caractères."
-    
+
+offer:
+  pageTitle:
+    index: "Offres"
+    new: "Créer une offre"
+    edit: "Modifier l'offre"
+  action:
+    new: "Créer une offre"
+    desactivate: "Désactiver"
+    revive: "Réactiver"

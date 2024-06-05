@@ -62,6 +62,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud($this->translator->trans('dashboard.menu.students'), 'fas fa-book', Student::class);
         yield MenuItem::linkToCrud($this->translator->trans('dashboard.menu.categories'), 'fas fa-table-cells-large', CompanyCategory::class);
         yield MenuItem::linkToCrud($this->translator->trans('dashboard.menu.activities'), 'fas fa-tags', Activity::class);
-        yield MenuItem::linkToCrud($this->translator->trans('dashboard.menu.offers'), 'fas fa-tags', Offer::class);
+        yield MenuItem::linkToCrud($this->translator->trans('dashboard.menu.offers'), 'fas fa-computer', Offer::class);
     }
 }
