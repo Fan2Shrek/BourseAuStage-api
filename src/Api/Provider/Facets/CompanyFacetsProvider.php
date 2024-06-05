@@ -41,7 +41,7 @@ class CompanyFacetsProvider implements ProviderInterface
                     $this->translator->trans('facets.between.50-99') => ['50', '99'],
                     $this->translator->trans('facets.between.100-249') => ['100', '249'],
                     $this->translator->trans('facets.between.250-999') => ['250', '999'],
-                    $this->translator->trans('facets.between.+1000') => '>1000',
+                    $this->translator->trans('facets.between.+1000') => '>999',
                 ],
                 'range' => [
                     'min' => 0,
