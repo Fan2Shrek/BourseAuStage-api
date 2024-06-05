@@ -9,9 +9,9 @@ use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 
 abstract class AbstractCustomFilter extends AbstractFilter
 {
-    public const LOWER = 'lt';
-    public const GREATER = 'gt';
-    public const BETWEEN = 'bt';
+    protected const LOWER = 'lt';
+    protected const GREATER = 'gt';
+    protected const BETWEEN = 'bt';
 
     /**
      * @return array {
@@ -151,12 +151,12 @@ abstract class AbstractCustomFilter extends AbstractFilter
         ];
     }
 
-    protected function handleBetween(mixed $parameters, string $dateDiff, QueryBuilder $queryBuilder): void
+    protected function handleBetween(mixed $parameters, string $expression, QueryBuilder $queryBuilder): void
     {
         if (!is_array($parameters)) {
             $queryBuilder->andWhere(
                 $this->getBetweenExpression(
-                    $dateDiff,
+                    $expression,
                     explode(',', $parameters),
                     $queryBuilder
                 )
@@ -169,37 +169,42 @@ abstract class AbstractCustomFilter extends AbstractFilter
             $subFilter = array_key_first($parameters);
             $value = $parameters[$subFilter];
 
-            match ($subFilter) {
-                self::GREATER => $queryBuilder->andWhere(
-                    $queryBuilder->expr()->gt(
-                        $dateDiff,
-                        (int) $value
-                    )
+            $queryBuilder->andWhere(match ($subFilter) {
+                self::GREATER => $queryBuilder->expr()->gt(
+                    $expression,
+                    (int) $value
                 ),
-                self::LOWER => $queryBuilder->andWhere(
-                    $queryBuilder->expr()->lt(
-                        $dateDiff,
-                        (int) $value
-                    )
+                self::LOWER => $queryBuilder->expr()->lt(
+                    $expression,
+                    (int) $value
                 ),
-                default => $this->getBetweenExpression($dateDiff, explode(',', $value), $queryBuilder),
-            };
+                default => $this->getBetweenExpression($expression, explode(',', $value), $queryBuilder),
+            });
 
             return;
         }
 
         $queryBuilder->andWhere(
-            $queryBuilder->expr()->orX(...$this->handleMultipleValues($parameters, $dateDiff, $queryBuilder))
+            $queryBuilder->expr()->orX(...$this->handleMultipleValues($parameters, $expression, $queryBuilder))
         );
     }
 
-    protected function handleMultipleValues(mixed $parameters, string $dateDiff, QueryBuilder $queryBuilder)
+    protected function getBetweenExpression(string $expression, array $boundaries, QueryBuilder $queryBuilder)
+    {
+        if (2 !== count($boundaries)) {
+            return;
+        }
+
+        return $queryBuilder->expr()->between($expression, (int) $boundaries[0], (int) $boundaries[1]);
+    }
+
+    private function handleMultipleValues(mixed $parameters, string $expression, QueryBuilder $queryBuilder)
     {
         $queries = [];
 
         foreach ($parameters as $key => $value) {
             if (self::GREATER === $key) {
-                $greaterQuery = $queryBuilder->expr()->gt($dateDiff, (int) $value);
+                $greaterQuery = $queryBuilder->expr()->gt($expression, (int) $value);
 
                 $queries[] = $greaterQuery;
 
@@ -207,36 +212,20 @@ abstract class AbstractCustomFilter extends AbstractFilter
             }
 
             if (self::LOWER === $key) {
-                $lowerQuery = $queryBuilder->expr()->lt($dateDiff, (int) $value);
+                $lowerQuery = $queryBuilder->expr()->lt($expression, (int) $value);
 
                 $queries[] = $lowerQuery;
 
                 continue;
             }
 
-            $boundaries = explode(',', $value);
-
-            // Vérifier s'il y a bien les 2 bornes
-            if (2 !== count($boundaries)) {
-                return;
-            }
-
-            $queries[] = $this->getBetweenExpression($dateDiff, $boundaries, $queryBuilder);
+            $queries[] = $this->getBetweenExpression($expression, explode(',', $value), $queryBuilder);
         }
 
         return $queries;
     }
 
-    protected function getBetweenExpression(string $dateDiff, array $boundaries, QueryBuilder $queryBuilder)
-    {
-        if (2 !== count($boundaries)) {
-            return;
-        }
-
-        return $queryBuilder->expr()->between($dateDiff, (int) $boundaries[0], (int) $boundaries[1]);
-    }
-
-    private function setMultiple(&$condition): bool
+    private function setMultiple(?string &$condition): bool
     {
         if (!$condition) {
             $condition = null;

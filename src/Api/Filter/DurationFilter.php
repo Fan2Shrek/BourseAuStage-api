@@ -51,19 +51,19 @@ final class DurationFilter extends AbstractCustomFilter
         $dateDiff = sprintf('DATE_DIFF(%s, %s)', $endField, $startField);
 
         match ($prerequisites['subFilter']) {
-            self::GREATER => $queryBuilder->andWhere(
+            static::GREATER => $queryBuilder->andWhere(
                 $queryBuilder->expr()->gt(
                     $dateDiff,
                     (int) $prerequisites['value']
                 )
             ),
-            self::LOWER => $queryBuilder->andWhere(
+            static::LOWER => $queryBuilder->andWhere(
                 $queryBuilder->expr()->lt(
                     $dateDiff,
                     (int) $prerequisites['value']
                 )
             ),
-            self::BETWEEN => $this->handleBetween($prerequisites['value'], $dateDiff, $queryBuilder),
+            static::BETWEEN => $this->handleBetween($prerequisites['value'], $dateDiff, $queryBuilder),
             default => null,
         };
     }
