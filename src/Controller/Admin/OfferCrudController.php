@@ -68,9 +68,9 @@ class OfferCrudController extends AbstractCrudController
             CollectionField::new('missions', 'Missions')
                 ->setEntryType(MissionFormType::class)
                 ->hideOnIndex(),
-            CollectionField::new('activities', 'Activités')
-                ->setEntryType(ActivityFormType::class)
-                ->hideOnIndex(),
+            AssociationField::new('activities', 'Activités')
+                ->setFormTypeOption('choice_label', 'name')
+                ->setFormTypeOption('by_reference', false),
             DateTimeField::new('availableAt', $this->translator->trans('offer.action.availableAt'))
                 ->hideOnIndex(),
             DateTimeField::new('createdAt', $this->translator->trans('entity.action.createdAt.label'))
