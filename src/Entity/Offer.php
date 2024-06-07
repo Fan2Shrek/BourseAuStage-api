@@ -61,13 +61,13 @@ class Offer extends AbstractOffer implements SoftDeleteInterface
     /**
      * @var Collection<int, Activity>
      */
-    #[ORM\ManyToMany(targetEntity: Activity::class)]
+    #[ORM\ManyToMany(targetEntity: Activity::class, mappedBy: 'offer', cascade: ['persist'])]
     private Collection $activities;
 
     /**
      * @var Collection<int, Mission>
      */
-    #[ORM\OneToMany(targetEntity: Mission::class, mappedBy: 'offer', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Mission::class, mappedBy: 'offer', orphanRemoval: true, cascade: ['persist'])]
     private Collection $missions;
 
     /**

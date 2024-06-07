@@ -9,12 +9,16 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use App\Controller\Admin\Trait\SoftDeleteActionsTrait;
+use App\Entity\Mission;
+use App\Form\ActivityFormType;
+use App\Form\MissionFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 
 class OfferCrudController extends AbstractCrudController
 {
@@ -61,6 +65,12 @@ class OfferCrudController extends AbstractCrudController
                 ->renderExpanded()
                 ->setRequired(true)
                 ->setChoices(['stage' => '0', 'alternance' => '1']),
+            CollectionField::new('missions', 'Missions')
+                ->setEntryType(MissionFormType::class)
+                ->hideOnIndex(),
+            CollectionField::new('activities', 'Activités')
+                ->setEntryType(ActivityFormType::class)
+                ->hideOnIndex(),
             DateTimeField::new('availableAt', $this->translator->trans('offer.action.availableAt'))
                 ->hideOnIndex(),
             DateTimeField::new('createdAt', $this->translator->trans('entity.action.createdAt.label'))
