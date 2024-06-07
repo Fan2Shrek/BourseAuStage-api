@@ -23,7 +23,7 @@ facets:
     '50-99': "50-99"
     '100-249': "100-249"
     '250-999': "250-999"
-    '+1000': "1000 et plus"
+    '+1000': "1000 et supérieur"
 
 dashboard:
   title: "Tableau de bord"

@@ -42,7 +42,7 @@ class OfferFacetsProvider implements ProviderInterface
                 'studyLevel.name' => [],
                 'end' => [
                     $this->translator->trans('facets.duration.-2') => '<61',
-                    $this->translator->trans('facets.duration.2-6') => ['62', '182'],
+                    $this->translator->trans('facets.duration.2-6') => ['61', '182'],
                     $this->translator->trans('facets.duration.6-12') => ['183', '365'],
                     $this->translator->trans('facets.duration.+12') => '>365',
                 ],
