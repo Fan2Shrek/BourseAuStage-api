@@ -70,7 +70,12 @@ class OfferCrudController extends AbstractCrudController
                 ->hideOnIndex(),
             AssociationField::new('activities', 'Activités')
                 ->setFormTypeOption('choice_label', 'name')
-                ->setFormTypeOption('by_reference', false),
+                ->setFormTypeOption('by_reference', false)
+                ->hideOnIndex(),
+            AssociationField::new('searchSkills', 'Compétences')
+                ->setFormTypeOption('choice_label', 'name')
+                ->setFormTypeOption('by_reference', false)
+                ->hideOnIndex(),
             DateTimeField::new('availableAt', $this->translator->trans('offer.action.availableAt'))
                 ->hideOnIndex(),
             DateTimeField::new('createdAt', $this->translator->trans('entity.action.createdAt.label'))
