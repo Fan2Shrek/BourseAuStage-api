@@ -57,10 +57,10 @@ class OfferCrudController extends AbstractCrudController
                 ->hideOnIndex(),
             AssociationField::new('company', $this->translator->trans('offer.field.company.label')),
             AssociationField::new('studyLevel', $this->translator->trans('offer.field.studyLevel.label')),
-
             ChoiceField::new('isInternship', $this->translator->trans('offer.field.isInternship.label'))
-                ->renderExpanded(),
-
+                ->renderExpanded()
+                ->setRequired(true)
+                ->setChoices(['stage' => '0', 'alternance' => '1']),
             DateTimeField::new('availableAt', $this->translator->trans('offer.action.availableAt'))
                 ->hideOnIndex(),
             DateTimeField::new('createdAt', $this->translator->trans('entity.action.createdAt.label'))
