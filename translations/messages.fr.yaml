@@ -283,6 +283,10 @@ offer:
     index: "Offres"
     new: "Créer une offre"
     edit: "Modifier l'offre"
+  infoTitle:
+    basic: "Informations de base"
+    description: "Description"
+    additional: "Informations complémentaires"
   action:
     new: "Créer une offre"
     desactivate: "Désactiver"

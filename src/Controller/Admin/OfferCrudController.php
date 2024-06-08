@@ -19,6 +19,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 
 class OfferCrudController extends AbstractCrudController
 {
@@ -52,15 +53,12 @@ class OfferCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
+            FormField::addColumn(6),
+            FormField::addFieldset($this->translator->trans('offer.infoTitle.basic')),
             TextField::new('name', $this->translator->trans('offer.field.name.label')),
+            AssociationField::new('company', $this->translator->trans('offer.field.company.label')),
             DateTimeField::new('start', $this->translator->trans('offer.field.startAt.label')),
             DateTimeField::new('end', $this->translator->trans('offer.field.endAt.label')),
-            BooleanField::new('isPayed', $this->translator->trans('offer.field.isPayed.label'))
-                ->hideOnIndex(),
-            TextField::new('description', $this->translator->trans('offer.field.description.label'))
-                ->hideOnIndex(),
-            AssociationField::new('company', $this->translator->trans('offer.field.company.label')),
-            AssociationField::new('studyLevel', $this->translator->trans('offer.field.studyLevel.label')),
             ChoiceField::new('isInternship', $this->translator->trans('offer.field.isInternship.label'))
                 ->setChoices([
                     'Stage' => '0',
@@ -68,6 +66,13 @@ class OfferCrudController extends AbstractCrudController
                 ])
                 ->renderExpanded()
                 ->setRequired(true),
+            BooleanField::new('isPayed', $this->translator->trans('offer.field.isPayed.label'))
+                ->hideOnIndex(),
+            FormField::addColumn(6),
+            FormField::addFieldset($this->translator->trans('offer.infoTitle.description')),
+            TextField::new('description', $this->translator->trans('offer.field.description.label'))
+                ->hideOnIndex(),
+            AssociationField::new('studyLevel', $this->translator->trans('offer.field.studyLevel.label')),
             CollectionField::new('missions', 'Missions')
                 ->setEntryType(MissionFormType::class)
                 ->hideOnIndex()
@@ -94,6 +99,10 @@ class OfferCrudController extends AbstractCrudController
                         return $skill->getName();
                     })->toArray());
                 }),
+            FormField::addColumn(6)
+                ->hideOnForm(),
+            FormField::addFieldset($this->translator->trans('offer.infoTitle.additional'))
+                ->hideOnForm(),
             DateTimeField::new('availableAt', $this->translator->trans('offer.action.availableAt'))
                 ->hideOnIndex(),
             DateTimeField::new('createdAt', $this->translator->trans('entity.action.createdAt.label'))
