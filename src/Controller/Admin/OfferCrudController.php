@@ -62,20 +62,38 @@ class OfferCrudController extends AbstractCrudController
             AssociationField::new('company', $this->translator->trans('offer.field.company.label')),
             AssociationField::new('studyLevel', $this->translator->trans('offer.field.studyLevel.label')),
             ChoiceField::new('isInternship', $this->translator->trans('offer.field.isInternship.label'))
+                ->setChoices([
+                    'Stage' => '0',
+                    'Alternance' => '1'
+                ])
                 ->renderExpanded()
-                ->setRequired(true)
-                ->setChoices(['stage' => '0', 'alternance' => '1']),
+                ->setRequired(true),
             CollectionField::new('missions', 'Missions')
                 ->setEntryType(MissionFormType::class)
-                ->hideOnIndex(),
+                ->hideOnIndex()
+                ->formatValue(function ($value, $entity) {
+                    return implode(', ', $entity->getMissions()->map(function ($mission) {
+                        return $mission->getDescription();
+                    })->toArray());
+                }),
             AssociationField::new('activities', 'Activités')
                 ->setFormTypeOption('choice_label', 'name')
                 ->setFormTypeOption('by_reference', false)
-                ->hideOnIndex(),
+                ->hideOnIndex()
+                ->formatValue(function ($value, $entity) {
+                    return implode(', ', $entity->getActivities()->map(function ($activity) {
+                        return $activity->getName();
+                    })->toArray());
+                }),
             AssociationField::new('searchSkills', 'Compétences')
                 ->setFormTypeOption('choice_label', 'name')
                 ->setFormTypeOption('by_reference', false)
-                ->hideOnIndex(),
+                ->hideOnIndex()
+                ->formatValue(function ($value, $entity) {
+                    return join(', ', $entity->getSearchSkills()->map(function ($skill) {
+                        return $skill->getName();
+                    })->toArray());
+                }),
             DateTimeField::new('availableAt', $this->translator->trans('offer.action.availableAt'))
                 ->hideOnIndex(),
             DateTimeField::new('createdAt', $this->translator->trans('entity.action.createdAt.label'))
