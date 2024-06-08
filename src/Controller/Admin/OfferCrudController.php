@@ -9,8 +9,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use App\Controller\Admin\Trait\SoftDeleteActionsTrait;
-use App\Entity\Mission;
-use App\Form\ActivityFormType;
 use App\Form\MissionFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -64,7 +62,7 @@ class OfferCrudController extends AbstractCrudController
             ChoiceField::new('isInternship', $this->translator->trans('offer.field.isInternship.label'))
                 ->setChoices([
                     'Alternance' => '0',
-                    'Stage' => '1'
+                    'Stage' => '1',
                 ])
                 ->renderExpanded()
                 ->setRequired(true),
