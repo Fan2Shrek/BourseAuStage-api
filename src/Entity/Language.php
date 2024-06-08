@@ -19,7 +19,7 @@ class Language
     #[ORM\Column(length: 255)]
     private ?string $level = null;
 
-    #[ORM\ManyToOne(inversedBy: 'laguages')]
+    #[ORM\ManyToOne(inversedBy: 'languages')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Student $student = null;
 

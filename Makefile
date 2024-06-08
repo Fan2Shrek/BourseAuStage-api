@@ -8,7 +8,7 @@ include .boing/makes/symfony.mk
 
 git = $(shell which git)
 
-deploy:
+deploy: public/img/user
 	$(git) pull -fr
 	$(MAKE) vendor
 	$(MAKE) database-migration
@@ -23,3 +23,6 @@ pipeline-phpcs:
 
 pipeline-phpstan:
 	php vendor/bin/phpstan analyse $(PHPSTAN_CODE_PATH) --configuration=$(PHPSTAN_CONFIGURATION_FILE)
+
+public/img/user:
+	mkdir -p public/img/user

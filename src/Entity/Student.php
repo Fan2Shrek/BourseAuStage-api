@@ -33,7 +33,7 @@ class Student extends User
         $this->requests = new ArrayCollection();
         $this->skills = new ArrayCollection();
         $this->experiences = new ArrayCollection();
-        $this->laguages = new ArrayCollection();
+        $this->languages = new ArrayCollection();
     }
 
     #[ORM\Column(length: 180)]
@@ -57,7 +57,7 @@ class Student extends User
     #[ORM\Column(length: 255)]
     private ?string $postalCode = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $additionalAddress = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -104,7 +104,7 @@ class Student extends User
      * @var Collection<int, Language>
      */
     #[ORM\OneToMany(targetEntity: Language::class, mappedBy: 'student', orphanRemoval: true)]
-    private Collection $laguages;
+    private Collection $languages;
 
     public function getAddress(): string
     {
@@ -390,27 +390,27 @@ class Student extends User
     /**
      * @return Collection<int, Language>
      */
-    public function getLaguages(): Collection
+    public function getLanguages(): Collection
     {
-        return $this->laguages;
+        return $this->languages;
     }
 
-    public function addLaguage(Language $laguage): static
+    public function addLanguage(Language $language): static
     {
-        if (!$this->laguages->contains($laguage)) {
-            $this->laguages->add($laguage);
-            $laguage->setStudent($this);
+        if (!$this->languages->contains($language)) {
+            $this->languages->add($language);
+            $language->setStudent($this);
         }
 
         return $this;
     }
 
-    public function removeLaguage(Language $laguage): static
+    public function removeLanguage(Language $language): static
     {
-        if ($this->laguages->removeElement($laguage)) {
+        if ($this->languages->removeElement($language)) {
             // set the owning side to null (unless already changed)
-            if ($laguage->getStudent() === $this) {
-                $laguage->setStudent(null);
+            if ($language->getStudent() === $this) {
+                $language->setStudent(null);
             }
         }
 
