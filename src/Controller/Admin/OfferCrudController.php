@@ -63,8 +63,8 @@ class OfferCrudController extends AbstractCrudController
                 ->hideOnIndex(),
             ChoiceField::new('isInternship', $this->translator->trans('offer.field.isInternship.label'))
                 ->setChoices([
-                    'Stage' => '0',
-                    'Alternance' => '1'
+                    'Alternance' => '0',
+                    'Stage' => '1'
                 ])
                 ->renderExpanded()
                 ->setRequired(true),
