@@ -59,6 +59,8 @@ class OfferCrudController extends AbstractCrudController
             AssociationField::new('company', $this->translator->trans('offer.field.company.label')),
             DateTimeField::new('start', $this->translator->trans('offer.field.startAt.label')),
             DateTimeField::new('end', $this->translator->trans('offer.field.endAt.label')),
+            DateTimeField::new('availableAt', $this->translator->trans('offer.action.availableAt'))
+                ->hideOnIndex(),
             ChoiceField::new('isInternship', $this->translator->trans('offer.field.isInternship.label'))
                 ->setChoices([
                     'Stage' => '0',
@@ -103,8 +105,6 @@ class OfferCrudController extends AbstractCrudController
                 ->hideOnForm(),
             FormField::addFieldset($this->translator->trans('offer.infoTitle.additional'))
                 ->hideOnForm(),
-            DateTimeField::new('availableAt', $this->translator->trans('offer.action.availableAt'))
-                ->hideOnIndex(),
             DateTimeField::new('createdAt', $this->translator->trans('entity.action.createdAt.label'))
                 ->onlyOnDetail(),
             DateTimeField::new('updatedAt', $this->translator->trans('entity.action.updatedAt.label'))
