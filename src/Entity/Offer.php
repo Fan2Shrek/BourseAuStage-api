@@ -17,6 +17,8 @@ use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use App\Api\Filter\DurationFilter;
+use App\Entity\Interface\SoftDeleteInterface;
+use App\Entity\Trait\SoftDeleteTrait;
 
 #[ApiResource(operations: [
     new Get(
@@ -44,8 +46,10 @@ use App\Api\Filter\DurationFilter;
 #[ApiFilter(DateFilter::class, properties: ['availableAt'])]
 #[ApiFilter(DurationFilter::class, properties: ['end' => 'start'])]
 #[ORM\Entity(repositoryClass: OfferRepository::class)]
-class Offer extends AbstractOffer
+class Offer extends AbstractOffer implements SoftDeleteInterface
 {
+    use SoftDeleteTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -63,7 +67,7 @@ class Offer extends AbstractOffer
     /**
      * @var Collection<int, Mission>
      */
-    #[ORM\OneToMany(targetEntity: Mission::class, mappedBy: 'offer', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Mission::class, mappedBy: 'offer', orphanRemoval: true, cascade: ['persist'])]
     private Collection $missions;
 
     /**
