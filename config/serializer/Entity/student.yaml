@@ -29,13 +29,41 @@ App\Entity\Student:
             groups:
                 - 'api:student:read'
                 - 'api:request:read'
+                - 'api:user:read'
         postCode:
             groups:
                 - 'api:student:read'
+                - 'api:user:read'
         address:
             groups:
                 - 'api:student:read'
+                - 'api:user:read'
+        additionalAddress:
+            groups:
+                - 'api:user:read'
         birthdayAt:
             groups:
                 - 'api:student:read'
                 - 'api:request:read'
+                - 'api:user:read'
+        website: 
+            groups:
+                - 'api:user:read'
+        linkedIn: 
+            groups:
+                - 'api:user:read'
+        driverLicence: 
+            groups:
+                - 'api:user:read'
+        disabled: 
+            groups:
+                - 'api:user:read'
+        school: 
+            groups:
+                - 'api:user:read'
+        diploma: 
+            groups:
+                - 'api:user:read'
+        studyLevel: 
+            groups:
+                - 'api:user:read'
