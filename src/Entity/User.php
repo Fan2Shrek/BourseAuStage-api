@@ -27,7 +27,8 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
         ),
     ],
 )]
-#[UniqueEntity('email')]
+#[UniqueEntity('email', 'user.field.email.error.unique')]
+#[UniqueEntity('phone', 'user.field.phone.error.unique')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\InheritanceType('JOINED')]
 #[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
@@ -51,7 +52,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionT
     #[ORM\Column]
     private array $roles = [];
 
-    #[ORM\Column()]
+    #[ORM\Column]
     private string $phone;
 
     #[ORM\Column]

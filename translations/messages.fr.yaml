@@ -73,6 +73,10 @@ user:
         notBlank: "Veuillez entrer une adresse mail."
         email: "L'adresse mail n'est pas valide."
         lenght: "Votre adresse mail est trop longue."
+        unique: "Cette adresse mail est déjà utilisée."
+    phone: 
+      error:
+        unique: "Ce numéro de téléphone est déjà utilisée."
     password:
       label: "Mot de passe"
       repeat: "Confirmer le mot de passe"
@@ -264,6 +268,8 @@ student:
       label: "Langues"
     skills:
       label: "Compétences"
+    formation:
+      label: "Formation"
 
 collaborator:
   pageTitle:

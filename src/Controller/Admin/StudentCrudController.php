@@ -224,6 +224,8 @@ class StudentCrudController extends AbstractCrudController
                 ->hideOnIndex(),
             TextField::new('linkedIn', $this->translator->trans('student.field.linkedIn.label'))
                 ->hideOnIndex(),
+            TextField::new('formation', $this->translator->trans('student.field.formation.label'))
+            ->hideOnIndex(),
             BooleanField::new('hasDriverLicence', $this->translator->trans('student.field.hasDriverLicence.label'))
                 ->hideOnIndex(),
             BooleanField::new('isDisabled', $this->translator->trans('student.field.isDisabled.label'))

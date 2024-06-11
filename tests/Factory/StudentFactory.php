@@ -28,6 +28,7 @@ final class StudentFactory extends UserFactory
                 'birthdayAt' => self::faker()->dateTime(),
                 'diploma' => self::faker()->word(),
                 'school' => self::faker()->word(),
+                'formation' => self::faker()->word(),
                 'studyLevel' => StudyLevelFactory::new(),
                 'profilPicture' => 'https://www.informatiquegifs.com/humour/reseau-social/humour-mouche.jpg',
             ]

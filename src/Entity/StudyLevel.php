@@ -2,9 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\StudyLevelRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource(operations: [
+    new GetCollection(),
+])]
 #[ORM\Entity(repositoryClass: StudyLevelRepository::class)]
 class StudyLevel
 {

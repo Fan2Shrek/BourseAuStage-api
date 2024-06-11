@@ -67,3 +67,6 @@ App\Entity\Student:
         studyLevel: 
             groups:
                 - 'api:user:read'
+        formation: 
+            groups:
+                - 'api:user:read'
