@@ -270,6 +270,9 @@ student:
       label: "Compétences"
     formation:
       label: "Formation"
+    profilPicture:
+      error: 
+        extensions: "Seuls les fichiers jpg, jpeg, png sont autorisés."
 
 collaborator:
   pageTitle:

@@ -70,3 +70,37 @@ App\Entity\Student:
         formation: 
             groups:
                 - 'api:user:read'
+        profilPicture: 
+            groups:
+                - 'api:user:read'
+        skills: 
+            groups:
+                - 'api:user:read'
+        experiences: 
+            groups:
+                - 'api:user:read'
+        languages: 
+            groups:
+                - 'api:user:read'
+
+
+App\Entity\Language:
+    attributes:
+        id:
+            groups:
+                - 'api:user:read'
+        name:
+            groups:
+                - 'api:user:read'
+        level:
+            groups:
+                - 'api:user:read'
+
+App\Entity\Experience:
+    attributes:
+        id:
+            groups:
+                - 'api:user:read'
+        name:
+            groups:
+                - 'api:user:read'

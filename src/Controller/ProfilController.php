@@ -15,9 +15,14 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Entity\StudyLevel;
+use App\Entity\Experience;
+use App\Entity\Language;
+use App\Entity\Skill;
 
 class ProfilController extends AbstractController
 {
+    private const UPLOADS_DIRECTORY = 'img/user';
+
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly ValidatorInterface $validator,
@@ -28,7 +33,8 @@ class ProfilController extends AbstractController
     #[Route('/api/me', methods: ['POST'])]
     public function updateProfil(Request $request, #[CurrentUser] User $user): Response
     {
-        $payload = $request->getPayload();
+        $payload = $request->request;
+        $content = [];
 
         $user
             ->setEmail($payload->get('email', $user->getEmail()))
@@ -59,10 +65,83 @@ class ProfilController extends AbstractController
                 ->setDiploma($payload->get('diploma', $user->getDiploma()))
                 ->setFormation($payload->get('formation', $user->getFormation()))
             ;
+
+            if ($file = $request->files->get('profilPicture')) {
+                if (['png', 'jpg', 'jpeg'] !== $file->guessExtension()) {
+                    $content['profilPicture'] = $this->translator->trans('student.field.profilPicture.error.extensions');
+                } else {
+                    $newFilename = uniqid() . '.' . $file->guessExtension();
+
+                    $file->move(self::UPLOADS_DIRECTORY, $newFilename);
+                    $user->setProfilPicture($newFilename);
+                }
+            }
+
+            if ($payload->has('experiences')) {
+                $experiences = json_decode($payload->get('experiences'), true);
+
+                $ids = [];
+                foreach ($experiences as $experience) {
+                    if (!isset($experience['id'])) {
+                        $experience = (new Experience)->setName($experience['name'])->setStudent($user);
+                        $user->addExperience($experience);
+                        $this->em->persist($experience);
+                        $ids[] = $experience->getId();
+                    } else {
+                        $ids[] = $experience['id'];
+                    }
+                }
+
+                foreach ($user->getExperiences() as $experience) {
+                    if (!in_array($experience->getId(), $ids, true)) {
+                        $user->removeExperience($experience);
+                        $this->em->remove($experience);
+                    }
+                }
+            }
+
+            if ($payload->has('languages')) {
+                $languages = json_decode($payload->get('languages'), true);
+
+                $ids = [];
+                foreach ($languages as $language) {
+                    if (!isset($language['id'])) {
+                        $language = (new Language)->setName($language['name'])->setLevel($language['level'])->setStudent($user);
+                        $user->addLanguage($language);
+                        $this->em->persist($language);
+                        $ids[] = $language->getId();
+                    } else {
+                        $ids[] = $language['id'];
+                    }
+                }
+
+                foreach ($user->getLanguages() as $language) {
+                    if (!in_array($language->getId(), $ids, true)) {
+                        $user->removelanguage($language);
+                        $this->em->remove($language);
+                    }
+                }
+            }
+
+            if ($payload->has('skills')) {
+                $skills = json_decode($payload->get('skills'), true);
+
+                $ids = [];
+                foreach ($skills as $skill) {
+                    $this->em->getRepository(Skill::class)->find($skill['id']);
+                    $user->addSkill($skill);
+                    $ids[] = $skill['id'];
+                }
+
+                foreach ($user->getSkills() as $skill) {
+                    if (!in_array($skill->getId(), $ids, true)) {
+                        $user->removeSkill($skill);
+                    }
+                }
+            }
         }
 
         $errors = $this->validator->validate($user);
-        $content = [];
 
         foreach ($errors as $error) {
             $content[$error->getPropertyPath()] = $this->translator->trans($error->getConstraint()->message); // @phpstan-ignore-line
