@@ -19,7 +19,17 @@ final class StudentFactory extends UserFactory
                 'city' => self::faker()->city(),
                 'postCode' => self::faker()->postCode(),
                 'address' => self::faker()->address(),
+                'additionalAddress' => self::faker()->word(),
+                'hasDriverLicence' => self::faker()->boolean(),
+                'disabled' => self::faker()->boolean(),
+                'website' => rand(1, 10) > 7 ? self::faker()->url() : null,
+                'linkedIn' => rand(1, 10) > 2 ? self::faker()->url() : null,
+                'postalCode' => self::faker()->randomNumber(5, true),
                 'birthdayAt' => self::faker()->dateTime(),
+                'diploma' => self::faker()->word(),
+                'school' => self::faker()->word(),
+                'studyLevel' => StudyLevelFactory::new(),
+                'profilPicture' => 'https://www.informatiquegifs.com/humour/reseau-social/humour-mouche.jpg',
             ]
         );
     }

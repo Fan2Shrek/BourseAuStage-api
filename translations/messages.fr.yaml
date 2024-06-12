@@ -211,6 +211,7 @@ student:
       authentication: "Authentification"
       localisation: "Localisation"
       additional: "Informations complémentaires"
+      profil: "Profil"
   action:
     new: "Créer un étudiant"
     desactivate: "Désactiver"
@@ -241,6 +242,28 @@ student:
       repeat: "Confirmer le mot de passe"
       error:
         minLength: "Votre mot de passe doit contenir au moins {{ limit }} caractères."
+    additionalAddress:
+      label: "Adresse complémentaire"
+    website:
+      label: "Site personnel"
+    linkedIn:
+      label: "Lien linkedIn"
+    hasDriverLicence:
+      label: "Permis de conduire"
+    isDisabled:
+      label: "Handicape"
+    school:
+      label: "Etablissement"
+    diploma:
+      label: "Diplôme"
+    studyLevel:
+      label: "Niveau d'étude"
+    experiences:
+      label: "Expériences"
+    languages:
+      label: "Langues"
+    skills:
+      label: "Compétences"
 
 collaborator:
   pageTitle:
