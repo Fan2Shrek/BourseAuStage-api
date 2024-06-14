@@ -18,6 +18,7 @@ use App\Entity\StudyLevel;
 use App\Entity\Experience;
 use App\Entity\Language;
 use App\Entity\Skill;
+use App\Enum\GenderEnum;
 
 class ProfilController extends AbstractController
 {
@@ -42,6 +43,10 @@ class ProfilController extends AbstractController
             ->setLastName($payload->get('lastName', $user->getLastName()))
             ->setPhone($payload->get('phone', $user->getPhone()));
 
+        if ($payload->has('gender')) {
+            $user->setGender(GenderEnum::tryFrom($payload->get('gender')));
+        }
+
         if ($user instanceof Student) {
             if ($payload->has('birthdayAt')) {
                 $user->setBirthdayAt(new \DateTime($payload->get('birthdayAt')));
@@ -59,22 +64,29 @@ class ProfilController extends AbstractController
                 ->setAdditionalAddress($payload->get('additionalAddress', $user->getAdditionalAddress()))
                 ->setWebsite($payload->get('website', $user->getWebsite()))
                 ->setLinkedIn($payload->get('linkedIn', $user->getLinkedIn()))
-                ->setHasDriverLicence($payload->get('hasDriverLicence', $user->hasDriverLicence()))
-                ->setDisabled($payload->get('disabled', $user->isDisabled()))
+                ->setHasDriverLicence(filter_var($payload->get('hasDriverLicence', $user->hasDriverLicence()), FILTER_VALIDATE_BOOLEAN))
+                ->setDisabled(filter_var($payload->get('isDisabled', $user->isDisabled()), FILTER_VALIDATE_BOOLEAN))
                 ->setSchool($payload->get('school', $user->getSchool()))
                 ->setDiploma($payload->get('diploma', $user->getDiploma()))
                 ->setFormation($payload->get('formation', $user->getFormation()))
             ;
 
             if ($file = $request->files->get('profilPicture')) {
-                if (['png', 'jpg', 'jpeg'] !== $file->guessExtension()) {
+                if (!in_array($file->guessExtension(), ['png', 'jpg', 'jpeg'])) {
                     $content['profilPicture'] = $this->translator->trans('student.field.profilPicture.error.extensions');
                 } else {
-                    $newFilename = uniqid() . '.' . $file->guessExtension();
+                    $newFilename = uniqid().'.'.$file->guessExtension();
 
                     $file->move(self::UPLOADS_DIRECTORY, $newFilename);
                     $user->setProfilPicture($newFilename);
                 }
+            }
+
+            if ($file = $request->files->get('cv')) {
+                $newFilename = uniqid().'.'.$file->guessExtension();
+
+                $file->move(self::UPLOADS_DIRECTORY, $newFilename);
+                $user->setCv($newFilename);
             }
 
             if ($payload->has('experiences')) {
@@ -83,7 +95,7 @@ class ProfilController extends AbstractController
                 $ids = [];
                 foreach ($experiences as $experience) {
                     if (!isset($experience['id'])) {
-                        $experience = (new Experience)->setName($experience['name'])->setStudent($user);
+                        $experience = (new Experience())->setName($experience['name'])->setStudent($user);
                         $user->addExperience($experience);
                         $this->em->persist($experience);
                         $ids[] = $experience->getId();
@@ -106,7 +118,7 @@ class ProfilController extends AbstractController
                 $ids = [];
                 foreach ($languages as $language) {
                     if (!isset($language['id'])) {
-                        $language = (new Language)->setName($language['name'])->setLevel($language['level'])->setStudent($user);
+                        $language = (new Language())->setName($language['name'])->setLevel($language['level'])->setStudent($user);
                         $user->addLanguage($language);
                         $this->em->persist($language);
                         $ids[] = $language->getId();
@@ -128,9 +140,9 @@ class ProfilController extends AbstractController
 
                 $ids = [];
                 foreach ($skills as $skill) {
-                    $this->em->getRepository(Skill::class)->find($skill['id']);
+                    $skill = $this->em->getRepository(Skill::class)->find($skill['id']);
                     $user->addSkill($skill);
-                    $ids[] = $skill['id'];
+                    $ids[] = $skill->getId();
                 }
 
                 foreach ($user->getSkills() as $skill) {

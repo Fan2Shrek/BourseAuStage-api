@@ -8,7 +8,7 @@ use App\Repository\SkillRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ApiResource(operations: [
-    new GetCollection,
+    new GetCollection(),
 ])]
 #[ORM\Entity(repositoryClass: SkillRepository::class)]
 class Skill
