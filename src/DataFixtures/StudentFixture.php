@@ -14,7 +14,7 @@ class StudentFixture extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        StudentFactory::createMany(5, fn () => ['studyLevel' => StudyLevelFactory::random()]);
+        StudentFactory::createMany(5, fn () => ['studyLevel' => StudyLevelFactory::random(), 'password' => 'aa']);
 
         ExperienceFactory::createMany(10, fn () => ['student' => StudentFactory::random()]);
         LanguageFactory::createMany(10, fn () => ['student' => StudentFactory::random()]);

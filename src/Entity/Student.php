@@ -88,6 +88,9 @@ class Student extends User
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $cv = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $formation = null;
+
     /**
      * @var Collection<int, Skill>
      */
@@ -329,6 +332,18 @@ class Student extends User
     public function setCv(?string $cv): static
     {
         $this->cv = $cv;
+
+        return $this;
+    }
+
+    public function getFormation(): ?string
+    {
+        return $this->formation;
+    }
+
+    public function setFormation(?string $formation): static
+    {
+        $this->formation = $formation;
 
         return $this;
     }

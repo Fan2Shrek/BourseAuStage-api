@@ -3,6 +3,8 @@ App\Entity\Skill:
         id:
             groups:
                 - 'api:offer:read'
+                - 'api:user:read'
         name:
             groups:
                 - 'api:offer:read'
+                - 'api:user:read'
