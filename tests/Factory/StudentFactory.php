@@ -29,7 +29,7 @@ final class StudentFactory extends UserFactory
                 'diploma' => self::faker()->word(),
                 'school' => self::faker()->word(),
                 'formation' => self::faker()->word(),
-                'studyLevel' => StudyLevelFactory::new(),
+                'studyLevel' => StudyLevelFactory::random(),
                 'profilPicture' => 'https://www.informatiquegifs.com/humour/reseau-social/humour-mouche.jpg',
             ]
         );
