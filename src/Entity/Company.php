@@ -234,12 +234,12 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
         return $this;
     }
 
-    public function getNumberActiveOffer(): ?int
+    public function getNumberActiveOffer(): int
     {
         return $this->numberActiveOffer;
     }
 
-    public function setNumberActiveOffer(?int $numberActiveOffer): static
+    public function setNumberActiveOffer(int $numberActiveOffer): static
     {
         $this->numberActiveOffer = $numberActiveOffer;
         $this->updatedAt = new \DateTimeImmutable();
