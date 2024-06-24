@@ -73,8 +73,8 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     #[ORM\Column(length: 180)]
     private string $address;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $numberActiveOffer = 0;
+    #[ORM\Column()]
+    private int $numberActiveOffer = 0;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phone = null;
