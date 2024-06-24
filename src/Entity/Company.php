@@ -55,14 +55,14 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     #[ORM\Column(length: 180)]
     private string $name;
 
-    #[ORM\Column(length: 180)]
-    private string $legalStatus;
+    #[ORM\Column(length: 180, nullable: true)]
+    private ?string $legalStatus = null;
 
     #[ORM\Column(length: 14)]
     private string $siretNumber;
 
-    #[ORM\Column(length: 180)]
-    private string $socialLink;
+    #[ORM\Column(length: 180, nullable: true)]
+    private ?string $socialLink = null;
 
     #[ORM\Column(length: 180)]
     private string $city;
@@ -73,8 +73,8 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     #[ORM\Column(length: 180)]
     private string $address;
 
-    #[ORM\Column()]
-    private int $numberActiveOffer = 0;
+    #[ORM\Column(nullable: true)]
+    private ?int $numberActiveOffer = 0;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phone = null;
@@ -106,11 +106,14 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $instagramLink = null;
 
-    #[ORM\Column()]
-    private string $logo;
+    #[ORM\Column(nullable: true)]
+    private ?string $logo = null;
 
-    #[ORM\Column()]
-    private string $logoIcon;
+    #[ORM\Column(nullable: true)]
+    private ?string $logoIcon = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $additionalAddress = null;
 
     /**
      * @var Collection<int, Activity>
@@ -153,7 +156,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
         return $this;
     }
 
-    public function getLegalStatus(): string
+    public function getLegalStatus(): ?string
     {
         return $this->legalStatus;
     }
@@ -179,7 +182,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
         return $this;
     }
 
-    public function getSocialLink(): string
+    public function getSocialLink(): ?string
     {
         return $this->socialLink;
     }
@@ -231,7 +234,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
         return $this;
     }
 
-    public function getNumberActiveOffer(): int
+    public function getNumberActiveOffer(): ?int
     {
         return $this->numberActiveOffer;
     }
@@ -388,7 +391,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
         return $this;
     }
 
-    public function getLogo(): string
+    public function getLogo(): ?string
     {
         return $this->logo;
     }
@@ -402,7 +405,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
         return $this;
     }
 
-    public function getLogoIcon(): string
+    public function getLogoIcon(): ?string
     {
         return $this->logoIcon;
     }
@@ -412,6 +415,18 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
         if ($logoIcon) {
             $this->logoIcon = $logoIcon;
         }
+
+        return $this;
+    }
+
+    public function getAdditionalAddress(): ?string
+    {
+        return $this->additionalAddress;
+    }
+
+    public function setAdditionalAddress(string $additionalAddress): static
+    {
+        $this->additionalAddress = $additionalAddress;
 
         return $this;
     }
