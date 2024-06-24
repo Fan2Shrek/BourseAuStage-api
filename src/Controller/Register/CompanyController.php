@@ -5,6 +5,7 @@ namespace App\Controller\Register;
 use App\Entity\Collaborator;
 use App\Entity\Company;
 use App\Entity\Activity;
+use App\Entity\CompanyCategory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,7 +25,7 @@ class CompanyController extends AbstractController
     ) {
     }
 
-    #[Route('/inscription/entreprise', methods: ['POST'])]
+    #[Route('api/inscription/entreprise', methods: ['POST'])]
     public function registerCompany(Request $request): Response
     {
         $payload = $request->request;
@@ -40,18 +41,25 @@ class CompanyController extends AbstractController
             ->setName($payload->get('name'))
             ->setSiretNumber($payload->get('siretNumber'))
             ->setPhone($payload->get('phoneCompany'))
-            ->setCategory($payload->get('category'))
             ->setAddress($payload->get('address'))
             ->setCity($payload->get('city'))
             ->setPostCode($payload->get('postCode'))
             ->setAdditionalAddress($payload->get('additionalAddress'))
         ;
 
+        $category = $this->em->getRepository(CompanyCategory::class)->find($payload->get('category'));
+
+        if (null !== $category) {
+            $company->setCategory($category);
+        }
+
+        $this->em->persist($company);
+
         if ($payload->has('activities')) {
             $activities = json_decode($payload->get('activities'), true);
 
             foreach ($activities as $activity) {
-                $activity = $this->em->getRepository(Activity::class)->find($activity['id']);
+                $activity = $this->em->getRepository(Activity::class)->find($activity['value']);
                 $company->addActivity($activity);
             }
         }
@@ -64,7 +72,7 @@ class CompanyController extends AbstractController
 
         $collaborator
             ->setGender(GenderEnum::tryFrom($payload->get('gender')))
-            ->setLastName($payload->get('LastName'))
+            ->setLastName($payload->get('lastName'))
             ->setFirstname($payload->get('firstName'))
             ->setPhone($payload->get('phone'))
             ->setEmail($payload->get('email'))
@@ -73,16 +81,18 @@ class CompanyController extends AbstractController
             ->setCompany($company)
         ;
 
+        $this->em->persist($collaborator);
+
         $errors = $this->validator->validate($collaborator);
 
         foreach ($errors as $error) {
-            $content['collborator'][$error->getPropertyPath()] = $this->translator->trans($error->getConstraint()->message); // @phpstan-ignore-line
+            $content['collaborator'][$error->getPropertyPath()] = $this->translator->trans($error->getConstraint()->message); // @phpstan-ignore-line
         }
 
-        if (empty($content)) {
+        if ([] == $content['collaborator'] && [] == $content['company']) {
             $this->em->flush();
 
-            return new JsonResponse();
+            return new JsonResponse('', Response::HTTP_CREATED);
         }
 
         return new JsonResponse($content, Response::HTTP_BAD_REQUEST);
