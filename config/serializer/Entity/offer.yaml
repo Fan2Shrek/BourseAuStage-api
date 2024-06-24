@@ -62,3 +62,7 @@ App\Entity\Offer:
         createdAt:
             groups:
                 - 'api:offer:read'
+                - 'api:offers:read'
+        deletedAt:
+            groups:
+                - 'api:offers:read'

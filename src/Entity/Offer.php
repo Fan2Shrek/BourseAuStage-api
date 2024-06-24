@@ -37,6 +37,7 @@ use App\Entity\Trait\SoftDeleteTrait;
     ),
 ])]
 #[ApiFilter(SearchFilter::class, properties: [
+    'company.id' => 'exact',
     'activities.name' => 'exact',
     'studyLevel.name' => 'exact',
 ])]

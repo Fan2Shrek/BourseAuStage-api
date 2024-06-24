@@ -24,3 +24,4 @@ App\Entity\Collaborator:
         company:
             groups:
                 - 'api:collaborator:read'
+                - 'api:user:read'
