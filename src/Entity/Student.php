@@ -221,7 +221,7 @@ class Student extends User
         return $this->additionalAddress;
     }
 
-    public function setAdditionalAddress(string $additionalAddress): static
+    public function setAdditionalAddress(?string $additionalAddress): static
     {
         $this->additionalAddress = $additionalAddress;
 
@@ -305,7 +305,7 @@ class Student extends User
         return $this->diploma;
     }
 
-    public function setDiploma(string $diploma): static
+    public function setDiploma(?string $diploma): static
     {
         $this->diploma = $diploma;
 
