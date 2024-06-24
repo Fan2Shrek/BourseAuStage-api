@@ -161,7 +161,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
         return $this->legalStatus;
     }
 
-    public function setLegalStatus(string $legalStatus): static
+    public function setLegalStatus(?string $legalStatus): static
     {
         $this->legalStatus = $legalStatus;
         $this->updatedAt = new \DateTimeImmutable();
@@ -187,7 +187,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
         return $this->socialLink;
     }
 
-    public function setSocialLink(string $socialLink): static
+    public function setSocialLink(?string $socialLink): static
     {
         $this->socialLink = $socialLink;
         $this->updatedAt = new \DateTimeImmutable();
@@ -239,7 +239,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
         return $this->numberActiveOffer;
     }
 
-    public function setNumberActiveOffer(int $numberActiveOffer): static
+    public function setNumberActiveOffer(?int $numberActiveOffer): static
     {
         $this->numberActiveOffer = $numberActiveOffer;
         $this->updatedAt = new \DateTimeImmutable();
@@ -424,7 +424,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
         return $this->additionalAddress;
     }
 
-    public function setAdditionalAddress(string $additionalAddress): static
+    public function setAdditionalAddress(?string $additionalAddress): static
     {
         $this->additionalAddress = $additionalAddress;
 
