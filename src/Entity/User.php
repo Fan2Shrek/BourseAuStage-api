@@ -67,6 +67,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionT
     #[ORM\Column]
     private string $lastName;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $avatar = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -180,6 +183,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionT
     public function setLastName(string $lastName): static
     {
         $this->lastName = $lastName;
+        $this->updatedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): static
+    {
+        $this->avatar = $avatar;
         $this->updatedAt = new \DateTimeImmutable();
 
         return $this;

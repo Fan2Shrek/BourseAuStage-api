@@ -83,9 +83,6 @@ class Student extends User
     private ?string $diploma = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $profilPicture = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
     private ?string $cv = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -308,18 +305,6 @@ class Student extends User
     public function setDiploma(?string $diploma): static
     {
         $this->diploma = $diploma;
-
-        return $this;
-    }
-
-    public function getProfilPicture(): ?string
-    {
-        return $this->profilPicture;
-    }
-
-    public function setProfilPicture(?string $profilPicture): static
-    {
-        $this->profilPicture = $profilPicture;
 
         return $this;
     }

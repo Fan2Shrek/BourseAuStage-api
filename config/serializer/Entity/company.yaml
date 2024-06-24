@@ -12,6 +12,7 @@ App\Entity\Company:
                 - 'api:offers:read'
                 - 'api:collaborator:read'
                 - 'api:companies:read'
+                - 'api:user:read'   
         presentation: 
             groups:
                 - 'api:offer:read'
@@ -29,6 +30,7 @@ App\Entity\Company:
                 - 'api:offer:read'
                 - 'api:offers:read'
                 - 'api:companies:read'
+                - 'api:user:read'
         activities:
             groups:
                 - 'api:companies:read'

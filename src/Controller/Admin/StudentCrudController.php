@@ -172,7 +172,7 @@ class StudentCrudController extends AbstractCrudController
                 ->onlyOnDetail(),
             TextField::new('additionalAddress', $this->translator->trans('student.field.additionalAddress.label'))
                 ->hideOnIndex(),
-            ImageField::new('profilPicture')
+            ImageField::new('avatar')
                 ->hideOnIndex()
                 ->setUploadDir('public/img/user'),
             ImageField::new('cv')
@@ -208,8 +208,8 @@ class StudentCrudController extends AbstractCrudController
                 ->setFormTypeOption('choice_label', 'name')
                 ->hideOnIndex(),
             TextField::new('additionalAddress', $this->translator->trans('student.field.additionalAddress.label'))
-            ->hideOnIndex(),
-            ImageField::new('profilPicture')
+                ->hideOnIndex(),
+            ImageField::new('avatar')
                 ->hideOnIndex()
                 ->setUploadDir('public/img/user'),
             ImageField::new('cv')
@@ -225,7 +225,7 @@ class StudentCrudController extends AbstractCrudController
             TextField::new('linkedIn', $this->translator->trans('student.field.linkedIn.label'))
                 ->hideOnIndex(),
             TextField::new('formation', $this->translator->trans('student.field.formation.label'))
-            ->hideOnIndex(),
+                ->hideOnIndex(),
             BooleanField::new('hasDriverLicence', $this->translator->trans('student.field.hasDriverLicence.label'))
                 ->hideOnIndex(),
             BooleanField::new('isDisabled', $this->translator->trans('student.field.isDisabled.label'))
