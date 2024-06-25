@@ -70,9 +70,6 @@ App\Entity\Student:
         formation: 
             groups:
                 - 'api:user:read'
-        profilPicture: 
-            groups:
-                - 'api:user:read'
         skills: 
             groups:
                 - 'api:user:read'

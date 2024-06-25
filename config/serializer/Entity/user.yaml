@@ -26,3 +26,7 @@ App\Entity\User:
             groups:
                 - 'api:user:read'
                 - 'user:read'
+        avatar:
+            groups:
+                - 'api:user:read'
+                - 'user:read'

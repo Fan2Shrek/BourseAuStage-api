@@ -68,17 +68,16 @@ class ProfilController extends AbstractController
                 ->setDisabled(filter_var($payload->get('isDisabled', $user->isDisabled()), FILTER_VALIDATE_BOOLEAN))
                 ->setSchool($payload->get('school', $user->getSchool()))
                 ->setDiploma($payload->get('diploma', $user->getDiploma()))
-                ->setFormation($payload->get('formation', $user->getFormation()))
-            ;
+                ->setFormation($payload->get('formation', $user->getFormation()));
 
-            if ($file = $request->files->get('profilPicture')) {
+            if ($file = $request->files->get('avatar')) {
                 if (!in_array($file->guessExtension(), ['png', 'jpg', 'jpeg'])) {
-                    $content['profilPicture'] = $this->translator->trans('student.field.profilPicture.error.extensions');
+                    $content['avatar'] = $this->translator->trans('student.field.avatar.error.extensions');
                 } else {
                     $newFilename = uniqid().'.'.$file->guessExtension();
 
                     $file->move(self::UPLOADS_DIRECTORY, $newFilename);
-                    $user->setProfilPicture($newFilename);
+                    $user->setAvatar($newFilename);
                 }
             }
 
