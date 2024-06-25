@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Activity;
 use App\Entity\Collaborator;
-use App\Entity\Student;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,14 +12,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use App\Entity\StudyLevel;
-use App\Entity\Experience;
-use App\Entity\Language;
 use App\Entity\Skill;
-use App\Enum\GenderEnum;
+use App\Entity\Offer;
 
 class CompanyController extends AbstractController
 {
@@ -38,8 +34,69 @@ class CompanyController extends AbstractController
         }
 
         $company = $user->getCompany();
+        $payload = $request->getPayload();
+        $content = [];
+        $offer = new Offer();
 
-        dd($company);
-        return new JsonResponse('', Response::HTTP_BAD_REQUEST);
+        $offer
+            ->setCompany($company)
+            ->setName($payload->get('name'))
+            ->setAvailableAt(new \DateTimeImmutable($payload->get('availableAt')))
+            ->setMissions($payload->get('missions'))
+            ->setProfils($payload->get('profils'))
+            ->setDescription($payload->get('description'))
+            ->setStart(new \DateTime($payload->get('start')))
+            ->setEnd(new \DateTime($payload->get('end')))
+            ->setIsInternship($payload->get('isInternship'))
+        ;
+
+        if ($payload->has('remuneration')) {
+            $offer->setPay((int) $payload->get('remuneration'));
+        }
+
+        if ($payload->has('activities')) {
+            $activities = json_decode($payload->get('activities'), true);
+
+            foreach ($activities as $activity) {
+                $activity = $this->em->getRepository(Activity::class)->find($activity);
+
+                if (!$activity) {
+                    continue;
+                }
+
+                $offer->addActivity($activity);
+            }
+        }
+
+        if ($payload->has('skills')) {
+            $skills = json_decode($payload->get('skills'), true);
+
+            foreach ($skills as $skill) {
+                $skill = $this->em->getRepository(Skill::class)->find($skill);
+
+                if (!$skill) {
+                    continue;
+                }
+
+                $offer->addSearchSkill($skill);
+            }
+        }
+
+        $errors = $this->validator->validate($offer);
+
+        foreach ($errors as $error) {
+            $constraint = $error->getConstraint();
+
+            $content[$error->getPropertyPath()] = $this->translator->trans($constraint->message ?? $constraint->minMessage); // @phpstan-ignore-line
+        }
+
+        if (empty($content)) {
+            $this->em->persist($offer);
+            $this->em->flush();
+
+            return new JsonResponse(['id' => $offer->getId()], Response::HTTP_CREATED);
+        }
+
+        return new JsonResponse($content, Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 }

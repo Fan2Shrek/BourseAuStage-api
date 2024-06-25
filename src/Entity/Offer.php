@@ -20,6 +20,7 @@ use App\Api\Filter\DurationFilter;
 use App\Entity\Interface\SoftDeleteInterface;
 use App\Entity\Trait\SoftDeleteTrait;
 use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(operations: [
     new Get(
@@ -66,11 +67,13 @@ class Offer extends AbstractOffer implements SoftDeleteInterface
     #[ORM\ManyToMany(targetEntity: Activity::class)]
     private Collection $activities;
 
+    #[Assert\NotBlank(message: 'offer.field.missions.error.notBlank')]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $missions = null;
 
+    #[Assert\NotBlank(message: 'offer.field.profils.error.notBlank')]
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $profils = null; 
+    private ?string $profils = null;
 
     #[ORM\ManyToOne(inversedBy: 'offers')]
     #[ORM\JoinColumn(nullable: false)]
@@ -103,7 +106,7 @@ class Offer extends AbstractOffer implements SoftDeleteInterface
 
     public function isPayed(): ?bool
     {
-        return null !== $this->pay;
+        return null !== $this->pay && 0 !== $this->pay;
     }
 
     public function setPay(?int $pay): static

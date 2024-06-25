@@ -31,7 +31,7 @@ final class OfferFactory extends ModelFactory
 
         return [
             'isInternship' => self::faker()->boolean(),
-            'pay' => rand(1, 10) > 7 ? self::faker()->boolean() : null,
+            'pay' => rand(1, 10) > 7 ? self::faker()->randomNumber(4) : null,
             'name' => join(' ', self::faker()->words(3)),
             'end' => $endDate,
             'start' => $startDate,
