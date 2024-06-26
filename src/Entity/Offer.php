@@ -19,6 +19,8 @@ use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use App\Api\Filter\DurationFilter;
 use App\Entity\Interface\SoftDeleteInterface;
 use App\Entity\Trait\SoftDeleteTrait;
+use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(operations: [
     new Get(
@@ -56,8 +58,8 @@ class Offer extends AbstractOffer implements SoftDeleteInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?bool $isPayed = null;
+    #[ORM\Column(nullable: true)]
+    private ?int $pay = null;
 
     /**
      * @var Collection<int, Activity>
@@ -65,17 +67,13 @@ class Offer extends AbstractOffer implements SoftDeleteInterface
     #[ORM\ManyToMany(targetEntity: Activity::class)]
     private Collection $activities;
 
-    /**
-     * @var Collection<int, Mission>
-     */
-    #[ORM\OneToMany(targetEntity: Mission::class, mappedBy: 'offer', orphanRemoval: true, cascade: ['persist'])]
-    private Collection $missions;
+    #[Assert\NotBlank(message: 'offer.field.missions.error.notBlank')]
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $missions = null;
 
-    /**
-     * @var Collection<int, Profil>
-     */
-    #[ORM\OneToMany(targetEntity: Profil::class, mappedBy: 'offer', orphanRemoval: true)]
-    private Collection $profils;
+    #[Assert\NotBlank(message: 'offer.field.profils.error.notBlank')]
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $profils = null;
 
     #[ORM\ManyToOne(inversedBy: 'offers')]
     #[ORM\JoinColumn(nullable: false)]
@@ -96,8 +94,6 @@ class Offer extends AbstractOffer implements SoftDeleteInterface
     public function __construct()
     {
         $this->activities = new ArrayCollection();
-        $this->missions = new ArrayCollection();
-        $this->profils = new ArrayCollection();
         $this->searchSkills = new ArrayCollection();
 
         parent::__construct();
@@ -110,14 +106,19 @@ class Offer extends AbstractOffer implements SoftDeleteInterface
 
     public function isPayed(): ?bool
     {
-        return $this->isPayed;
+        return null !== $this->pay && 0 !== $this->pay;
     }
 
-    public function setIsPayed(bool $isPayed): static
+    public function setPay(?int $pay): static
     {
-        $this->isPayed = $isPayed;
+        $this->pay = $pay;
 
         return $this;
+    }
+
+    public function getPay(): ?int
+    {
+        return $this->pay;
     }
 
     /**
@@ -144,62 +145,26 @@ class Offer extends AbstractOffer implements SoftDeleteInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Mission>
-     */
-    public function getMissions(): Collection
+    public function getMissions(): ?string
     {
         return $this->missions;
     }
 
-    public function addMission(Mission $mission): static
+    public function setMissions(?string $missions): static
     {
-        if (!$this->missions->contains($mission)) {
-            $this->missions->add($mission);
-            $mission->setOffer($this);
-        }
+        $this->missions = $missions;
 
         return $this;
     }
 
-    public function removeMission(Mission $mission): static
-    {
-        if ($this->missions->removeElement($mission)) {
-            // set the owning side to null (unless already changed)
-            if ($mission->getOffer() === $this) {
-                $mission->setOffer(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Profil>
-     */
-    public function getProfils(): Collection
+    public function getProfils(): ?string
     {
         return $this->profils;
     }
 
-    public function addProfil(Profil $profil): static
+    public function setProfils(?string $profils): static
     {
-        if (!$this->profils->contains($profil)) {
-            $this->profils->add($profil);
-            $profil->setOffer($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProfil(Profil $profil): static
-    {
-        if ($this->profils->removeElement($profil)) {
-            // set the owning side to null (unless already changed)
-            if ($profil->getOffer() === $this) {
-                $profil->setOffer(null);
-            }
-        }
+        $this->profils = $profils;
 
         return $this;
     }

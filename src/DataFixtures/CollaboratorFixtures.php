@@ -11,7 +11,7 @@ class CollaboratorFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        CollaboratorFactory::createMany(5);
+        CollaboratorFactory::createMany(5, ['password' => 'aa']);
     }
 
     public function getDependencies(): array

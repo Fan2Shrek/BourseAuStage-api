@@ -327,12 +327,21 @@ offer:
   field:
     name:
       label: "Nom"
+      error: 
+        notBlank: "Veuillez entrer un nom."
+        length: "Le nom de l'offre doit etre entre 50 et 255 charactères."
     startAt:
       label: "Date de début"
+      error: 
+        lessThanOrEqual: "La date de début etre d'au moins aujourd'hui."
     endAt:
       label: "Date de fin"
+      error:
+        greaterThan: "La date de fin doit être supérieure à la date de début."
     description:
       label: "Description"
+      error: 
+        notBlank: "Veuillez entrer une description."
     isPayed:
       label: "Payé"
     company:
@@ -341,3 +350,9 @@ offer:
       label: "Niveau requis"
     isInternship:
       label: "Type"
+    missions: 
+      error: 
+        notBlank: "Veuillez entrer un contenu pour les missions."
+    profils: 
+      error: 
+        notBlank: "Veuillez entrer un contenu pour les profils recherchés."

@@ -4,8 +4,6 @@ namespace App\DataFixtures;
 
 use App\Tests\Factory\OfferFactory;
 use App\Tests\Factory\SkillFactory;
-use App\Tests\Factory\ProfilFactory;
-use App\Tests\Factory\MissionFactory;
 use App\Tests\Factory\ActivityFactory;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -19,9 +17,6 @@ class OfferFixtures extends Fixture implements DependentFixtureInterface
             'searchSkills' => $this->doSkills(),
             'activities' => $this->randomActivities(),
         ]);
-
-        ProfilFactory::createMany(25, fn () => ['offer' => OfferFactory::random()]);
-        MissionFactory::createMany(25, fn () => ['offer' => OfferFactory::random()]);
     }
 
     private function doSkills(): array

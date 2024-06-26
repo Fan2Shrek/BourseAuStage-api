@@ -9,14 +9,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use App\Controller\Admin\Trait\SoftDeleteActionsTrait;
-use App\Form\MissionFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 
 class OfferCrudController extends AbstractCrudController
@@ -73,14 +71,6 @@ class OfferCrudController extends AbstractCrudController
             TextField::new('description', $this->translator->trans('offer.field.description.label'))
                 ->hideOnIndex(),
             AssociationField::new('studyLevel', $this->translator->trans('offer.field.studyLevel.label')),
-            CollectionField::new('missions', 'Missions')
-                ->setEntryType(MissionFormType::class)
-                ->hideOnIndex()
-                ->formatValue(function ($value, $entity) {
-                    return implode(', ', $entity->getMissions()->map(function ($mission) {
-                        return $mission->getDescription();
-                    })->toArray());
-                }),
             AssociationField::new('activities', 'Activités')
                 ->setFormTypeOption('choice_label', 'name')
                 ->setFormTypeOption('by_reference', false)
@@ -88,15 +78,6 @@ class OfferCrudController extends AbstractCrudController
                 ->formatValue(function ($value, $entity) {
                     return implode(', ', $entity->getActivities()->map(function ($activity) {
                         return $activity->getName();
-                    })->toArray());
-                }),
-            AssociationField::new('searchSkills', 'Compétences')
-                ->setFormTypeOption('choice_label', 'name')
-                ->setFormTypeOption('by_reference', false)
-                ->hideOnIndex()
-                ->formatValue(function ($value, $entity) {
-                    return join(', ', $entity->getSearchSkills()->map(function ($skill) {
-                        return $skill->getName();
                     })->toArray());
                 }),
             FormField::addColumn(6)

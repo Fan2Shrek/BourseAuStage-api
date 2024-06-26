@@ -15,7 +15,7 @@ security:
             security: false
 
         private:
-            pattern: ^/api/me
+            pattern: ^/api/(me|offers)
             stateless: true 
             jwt: ~
 
@@ -49,3 +49,4 @@ security:
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/api/me, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/offers, methods: [POST], roles: IS_AUTHENTICATED_FULLY }
