@@ -45,7 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionT
     #[ORM\Column]
     private int $id;
 
-    #[Assert\Email(message: 'user.field.email.error.invalid',)]
+    #[Assert\Email(message: 'user.field.email.error.isEmail',)]
     #[ORM\Column(length: 180, unique: true)]
     private string $email;
 
