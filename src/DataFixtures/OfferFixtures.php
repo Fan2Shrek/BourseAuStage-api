@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class OfferFixtures extends Fixture implements DependentFixtureInterface
+class OfferFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
@@ -49,13 +49,13 @@ class OfferFixtures extends Fixture implements DependentFixtureInterface
         return $activities;
     }
 
-    public function getDependencies(): array
-    {
-        return [
-            ActivityFixtures::class,
-            CompanyFixtures::class,
-            SkillFixtures::class,
-            StudyLevelFixtures::class,
-        ];
-    }
+    // public function getDependencies(): array
+    // {
+    //     return [
+    //         ActivityFixtures::class,
+    //         CompanyFixtures::class,
+    //         SkillFixtures::class,
+    //         StudyLevelFixtures::class,
+    //     ];
+    // }
 }
