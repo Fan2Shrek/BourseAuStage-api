@@ -82,6 +82,9 @@ user:
     postCode:
       error:
         invalid: "Ce code postal n'est pas valide"
+    siret:
+      error:
+        invalid: "Ce numéro de siret n'est pas valide"
     password:
       label: "Mot de passe"
       repeat: "Confirmer le mot de passe"

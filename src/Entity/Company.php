@@ -59,6 +59,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     #[ORM\Column(length: 180, nullable: true)]
     private ?string $legalStatus = null;
 
+    #[Assert\Luhn(message: 'user.field.siret.error.invalid')]
     #[ORM\Column(length: 14)]
     private string $siretNumber;
 
