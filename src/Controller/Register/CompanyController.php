@@ -81,7 +81,7 @@ class CompanyController extends AbstractController
             ->setJobTitle($payload->get('jobTitle'))
             ->setCompany($company)
         ;
-            
+
         $hashedPassword = $this->passwordHasher->hashPassword($collaborator, $payload->get('password'));
         $collaborator->setPassword($hashedPassword);
 

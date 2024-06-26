@@ -45,7 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionT
     #[ORM\Column]
     private int $id;
 
-    #[Assert\Email(message: 'user.field.email.error.isEmail',)]
+    #[Assert\Email(message: 'user.field.email.error.isEmail', )]
     #[ORM\Column(length: 180, unique: true)]
     private string $email;
 
@@ -59,7 +59,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionT
     #[ORM\Column]
     private string $phone;
 
-    #[Assert\PasswordStrength(minScore: PasswordStrength::STRENGTH_WEAK)]
+    #[PasswordStrength(minScore: PasswordStrength::STRENGTH_WEAK)]
     #[ORM\Column]
     private string $password;
 
