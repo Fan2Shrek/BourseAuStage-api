@@ -16,6 +16,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 
 class OfferCrudController extends AbstractCrudController
 {
@@ -64,7 +65,7 @@ class OfferCrudController extends AbstractCrudController
                 ])
                 ->renderExpanded()
                 ->setRequired(true),
-            BooleanField::new('isPayed', $this->translator->trans('offer.field.isPayed.label'))
+            NumberField::new('pay', $this->translator->trans('offer.field.isPayed.label'))
                 ->hideOnIndex(),
             FormField::addColumn(6),
             FormField::addFieldset($this->translator->trans('offer.infoTitle.description')),
