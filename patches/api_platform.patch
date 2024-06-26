@@ -1,0 +1,33 @@
+--- a/vendor/api-platform/core/src/Doctrine/Common/PropertyHelperTrait.php	2024-06-26 18:17:22.390810391 +0200
++++ b/vendor/api-platform/core/src/Doctrine/Common/PropertyHelperTrait.php	2024-06-26 18:17:34.640783336 +0200
+@@ -73,7 +73,7 @@
+      *   - associations: array of associations according to nesting order
+      *   - field: string holding the actual field (leaf node)
+      */
+-    protected function splitPropertyParts(string $property, string $resourceClass): array
++    public function splitPropertyParts(string $property, string $resourceClass): array
+     {
+         $parts = explode('.', $property);
+ 
+--- a/vendor/api-platform/core/src/Doctrine/Odm/PropertyHelperTrait.php	2024-06-26 18:18:03.541659313 +0200
++++ b/vendor/api-platform/core/src/Doctrine/Odm/PropertyHelperTrait.php	2024-06-26 18:18:10.232555540 +0200
+@@ -32,7 +32,7 @@
+     /**
+      * Splits the given property into parts.
+      */
+-    abstract protected function splitPropertyParts(string $property, string $resourceClass): array;
++    abstract public function splitPropertyParts(string $property, string $resourceClass): array;
+ 
+     /**
+      * Gets class metadata for the given resource.
+--- a/vendor/api-platform/core/src/Doctrine/Orm/PropertyHelperTrait.php	2024-04-03 17:33:10.000000000 +0200
++++ b/vendor/api-platform/core/src/Doctrine/Orm/PropertyHelperTrait.php	2024-06-26 18:16:59.610027626 +0200
+@@ -34,7 +34,7 @@
+     /**
+      * Splits the given property into parts.
+      */
+-    abstract protected function splitPropertyParts(string $property, string $resourceClass): array;
++    abstract public function splitPropertyParts(string $property, string $resourceClass): array;
+ 
+     /**
+      * Gets class metadata for the given resource.
