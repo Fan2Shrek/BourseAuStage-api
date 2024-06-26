@@ -22,6 +22,7 @@ services:
     build:
       context: .boing/docker/php
       args:
+        - PHP_VERSION=8.2.19
         - INTL_REQUIRE=1
     volumes:
       - .:/srv
