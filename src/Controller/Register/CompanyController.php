@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Enum\GenderEnum;
 
 class CompanyController extends AbstractController
@@ -22,6 +23,7 @@ class CompanyController extends AbstractController
         private readonly EntityManagerInterface $em,
         private readonly ValidatorInterface $validator,
         private readonly TranslatorInterface $translator,
+        private readonly UserPasswordHasherInterface $passwordHasher
     ) {
     }
 
@@ -76,10 +78,12 @@ class CompanyController extends AbstractController
             ->setFirstname($payload->get('firstName'))
             ->setPhone($payload->get('phone'))
             ->setEmail($payload->get('email'))
-            ->setPassword($payload->get('password'))
             ->setJobTitle($payload->get('jobTitle'))
             ->setCompany($company)
         ;
+            
+        $hashedPassword = $this->passwordHasher->hashPassword($collaborator, $payload->get('password'));
+        $collaborator->setPassword($hashedPassword);
 
         $this->em->persist($collaborator);
 
