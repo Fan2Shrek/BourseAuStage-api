@@ -16,6 +16,8 @@ use App\Entity\Interface\ActionTrackingInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\PasswordStrength;
 
 #[ApiResource(
     operations: [
@@ -43,6 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionT
     #[ORM\Column]
     private int $id;
 
+    #[Assert\Email(message: 'user.field.email.error.isEmail', )]
     #[ORM\Column(length: 180, unique: true)]
     private string $email;
 
@@ -52,9 +55,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionT
     #[ORM\Column]
     private array $roles = [];
 
+    #[Assert\Regex('/^\d{10}$/', 'user.field.phone.error.invalid')]
     #[ORM\Column]
     private string $phone;
 
+    #[PasswordStrength(minScore: PasswordStrength::STRENGTH_WEAK)]
     #[ORM\Column]
     private string $password;
 

@@ -19,6 +19,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\BetweenFilter;
 use App\Entity\Interface\ActionTrackingInterface;
 use App\Api\Provider\Company\CompanyHighlightProvider;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
@@ -58,6 +59,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     #[ORM\Column(length: 180, nullable: true)]
     private ?string $legalStatus = null;
 
+    #[Assert\Luhn(message: 'user.field.siret.error.invalid')]
     #[ORM\Column(length: 14)]
     private string $siretNumber;
 
@@ -67,6 +69,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     #[ORM\Column(length: 180)]
     private string $city;
 
+    #[Assert\Regex('/^\d{5}$/', 'user.field.postCode.error.invalid')]
     #[ORM\Column(length: 10)]
     private string $postCode;
 
@@ -76,6 +79,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     #[ORM\Column()]
     private int $numberActiveOffer = 0;
 
+    #[Assert\Regex('/^\d{10}$/', 'user.field.phone.error.invalid')]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phone = null;
 
