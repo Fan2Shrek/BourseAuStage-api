@@ -74,10 +74,11 @@ user:
         email: "L'adresse mail n'est pas valide."
         lenght: "Votre adresse mail est trop longue."
         unique: "Cette adresse mail est déjà utilisée."
-        isEmail: "Cette adresse mail est incorrect."
+        isEmail: "Cette adresse mail n'est pas correct."
     phone: 
       error:
         unique: "Ce numéro de téléphone est déjà utilisée."
+        invalid: "Ce numéro de téléphone n'est pas valide"
     password:
       label: "Mot de passe"
       repeat: "Confirmer le mot de passe"

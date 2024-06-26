@@ -55,6 +55,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionT
     #[ORM\Column]
     private array $roles = [];
 
+    #[Assert\Regex('/^\d{10}$/', 'user.field.phone.error.invalid')]
     #[ORM\Column]
     private string $phone;
 
