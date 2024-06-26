@@ -9,7 +9,7 @@ use ApiPlatform\Metadata\GetCollection;
 
 #[ApiResource(
     operations: [
-        new GetCollection
+        new GetCollection(),
     ],
 )]
 #[ORM\Entity(repositoryClass: ActivityRepository::class)]

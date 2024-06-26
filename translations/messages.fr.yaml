@@ -74,6 +74,7 @@ user:
         email: "L'adresse mail n'est pas valide."
         lenght: "Votre adresse mail est trop longue."
         unique: "Cette adresse mail est déjà utilisée."
+        isEmail: "Cette adresse mail est incorrect."
     phone: 
       error:
         unique: "Ce numéro de téléphone est déjà utilisée."

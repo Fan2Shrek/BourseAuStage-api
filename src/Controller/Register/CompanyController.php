@@ -21,7 +21,7 @@ class CompanyController extends AbstractController
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly ValidatorInterface $validator,
-        private readonly TranslatorInterface $translator
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -36,7 +36,7 @@ class CompanyController extends AbstractController
 
         $company = new Company();
         $collaborator = new Collaborator();
-        
+
         $company
             ->setName($payload->get('name'))
             ->setSiretNumber($payload->get('siretNumber'))
