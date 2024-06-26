@@ -79,6 +79,9 @@ user:
       error:
         unique: "Ce numéro de téléphone est déjà utilisée."
         invalid: "Ce numéro de téléphone n'est pas valide"
+    postCode:
+      error:
+        invalid: "Ce code postal n'est pas valide"
     password:
       label: "Mot de passe"
       repeat: "Confirmer le mot de passe"
