@@ -24,7 +24,6 @@ final class StudentFactory extends UserFactory
                 'disabled' => self::faker()->boolean(),
                 'website' => rand(1, 10) > 7 ? self::faker()->url() : null,
                 'linkedIn' => rand(1, 10) > 2 ? self::faker()->url() : null,
-                'postalCode' => self::faker()->randomNumber(5, true),
                 'birthdayAt' => self::faker()->dateTime(),
                 'diploma' => self::faker()->word(),
                 'school' => self::faker()->word(),

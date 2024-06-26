@@ -55,6 +55,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionT
     #[ORM\Column]
     private array $roles = [];
 
+    #[Assert\NotBlank(message: 'user.field.phone.error.notBlank')]
     #[Assert\Regex('/^\d{10}$/', 'user.field.phone.error.invalid')]
     #[ORM\Column]
     private string $phone;
@@ -66,9 +67,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionT
     #[ORM\Column(type: 'string', enumType: GenderEnum::class)]
     private GenderEnum $gender;
 
+    #[Assert\NotBlank(message: 'user.field.firstName.error.notBlank')]
     #[ORM\Column]
     private string $firstName;
 
+    #[Assert\NotBlank(message: 'user.field.lastName.error.notBlank')]
     #[ORM\Column]
     private string $lastName;
 

@@ -54,9 +54,6 @@ class Student extends User
     #[ORM\OneToMany(targetEntity: Request::class, mappedBy: 'student', orphanRemoval: true)]
     private Collection $requests;
 
-    #[ORM\Column(length: 255)]
-    private ?string $postalCode = null;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $additionalAddress = null;
 
@@ -197,18 +194,6 @@ class Student extends User
                 $request->setStudent(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getPostalCode(): ?string
-    {
-        return $this->postalCode;
-    }
-
-    public function setPostalCode(?string $postalCode): static
-    {
-        $this->postalCode = $postalCode;
 
         return $this;
     }
