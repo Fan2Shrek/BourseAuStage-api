@@ -58,7 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionT
     #[ORM\Column]
     private string $phone;
 
-    #[Assert\PasswordStrength(['minScore' => PasswordStrength::STRENGTH_MEDIUM,])]
+    #[Assert\PasswordStrength(minScore: PasswordStrength::STRENGTH_WEAK)]
     #[ORM\Column]
     private string $password;
 
