@@ -371,6 +371,6 @@ offer:
       error: 
         notBlank: "Veuillez entrer un contenu pour les missions."
     profils: 
-      label: "Profil recherché"
+      label: "Profils recherchés"
       error: 
         notBlank: "Veuillez entrer un contenu pour les profils recherchés."
