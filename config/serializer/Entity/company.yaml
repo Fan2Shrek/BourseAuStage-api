@@ -6,6 +6,7 @@ App\Entity\Company:
                 - 'api:collaborator:read'
                 - 'api:companies:read'
                 - 'api:user:read'
+                - 'api:company:read'
         name:
             groups:
                 - 'api:offer:read'
@@ -13,24 +14,81 @@ App\Entity\Company:
                 - 'api:collaborator:read'
                 - 'api:companies:read'
                 - 'api:user:read'   
+                - 'api:company:read'
         presentation: 
             groups:
                 - 'api:offer:read'
                 - 'api:offers:read'
                 - 'api:companies:read'
+                - 'api:company:read'
         city:
             groups:
                 - 'api:offer:read'
                 - 'api:offers:read'
+                - 'api:company:read'
         logo:
             groups:
                 - 'api:offer:read'
+                - 'api:company:read'
         logoIcon:
             groups:
                 - 'api:offer:read'
                 - 'api:offers:read'
                 - 'api:companies:read'
                 - 'api:user:read'
+                - 'api:company:read'
         activities:
             groups:
                 - 'api:companies:read'
+                - 'api:company:read'
+        legalStatus:
+            groups:
+                - 'api:company:read'
+        siretNumber:
+            groups:
+                - 'api:company:read'
+        socialLink:
+            groups:
+                - 'api:company:read'
+        postCode:
+            groups:
+                - 'api:company:read'
+        address:
+            groups:
+                - 'api:company:read'
+        numberActiveOffer:
+            groups:
+                - 'api:company:read'
+        phone:
+            groups:
+                - 'api:company:read'
+        age:
+            groups:
+                - 'api:company:read'
+        effective:
+            groups:
+                - 'api:company:read'
+        turnover:
+            groups:
+                - 'api:company:read'
+        deleted:
+            groups:
+                - 'api:company:read'
+        openingTime:
+            groups:
+                - 'api:company:read'
+        twitterLink:
+            groups:
+                - 'api:company:read'
+        linkedInLink:
+            groups:
+                - 'api:company:read'
+        facebookLink:
+            groups:
+                - 'api:company:read'
+        instagramLink:
+            groups:
+                - 'api:company:read'
+        additionalAddress:
+            groups:
+                - 'api:company:read'
