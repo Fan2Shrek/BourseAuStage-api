@@ -7,8 +7,9 @@ use App\Tests\Factory\SkillFactory;
 use App\Tests\Factory\ActivityFactory;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class OfferFixtures extends Fixture
+class OfferFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -48,13 +49,13 @@ class OfferFixtures extends Fixture
         return $activities;
     }
 
-    // public function getDependencies(): array
-    // {
-    //     return [
-    //         ActivityFixtures::class,
-    //         CompanyFixtures::class,
-    //         SkillFixtures::class,
-    //         StudyLevelFixtures::class,
-    //     ];
-    // }
+    public function getDependencies(): array
+    {
+        return [
+            ActivityFixtures::class,
+            CompanyFixtures::class,
+            SkillFixtures::class,
+            StudyLevelFixtures::class,
+        ];
+    }
 }
