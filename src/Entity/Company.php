@@ -32,7 +32,9 @@ use Symfony\Component\Validator\Constraints as Assert;
         new GetCollection(
             normalizationContext: ['groups' => ['api:companies:read']],
         ),
-        new Get(),
+        new Get(
+            normalizationContext: ['groups' => ['api:company:read']],
+        ),
     ],
 )]
 #[ApiFilter(SearchFilter::class, properties: [

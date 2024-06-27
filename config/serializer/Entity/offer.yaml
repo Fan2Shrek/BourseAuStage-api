@@ -66,3 +66,4 @@ App\Entity\Offer:
         deletedAt:
             groups:
                 - 'api:offers:read'
+                - 'api:offer:read'

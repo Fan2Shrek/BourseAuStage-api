@@ -4,6 +4,7 @@ App\Entity\Activity:
             groups:
                 - 'api:offer:read'
                 - 'api:offers:read'
+                - 'api:company:read'
                 - 'api:companies:read'
                 - 'api:companies:offers:read'
 
@@ -11,6 +12,7 @@ App\Entity\Activity:
             groups:
                 - 'api:offer:read'
                 - 'api:offers:read'
+                - 'api:company:read'
                 - 'api:companies:read'
                 - 'api:companies:offers:read'
         color: 
