@@ -2,14 +2,16 @@
 
 namespace App\Entity;
 
-use App\Entity\Trait\ActionTrackingTrait;
-use App\Entity\Trait\SoftDeleteTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Trait\SoftDeleteTrait;
+use App\Entity\Trait\ActionTrackingTrait;
+use App\Entity\Interface\SoftDeleteInterface;
+use App\Entity\Interface\ActionTrackingInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\MappedSuperclass]
-abstract class AbstractOffer
+abstract class AbstractOffer implements ActionTrackingInterface, SoftDeleteInterface
 {
     use SoftDeleteTrait;
     use ActionTrackingTrait;

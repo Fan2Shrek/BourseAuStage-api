@@ -1,0 +1,23 @@
+App\Entity\SpontaneousRequest:
+    attributes:
+        id:
+            groups: 
+                - 'api:spontaneousRequest:read'
+        student:
+            groups: 
+                - 'api:spontaneousRequest:read'
+        location:
+            groups: 
+                - 'api:spontaneousRequest:read'
+        start:
+            groups: 
+                - 'api:spontaneousRequest:read'
+        end:
+            groups: 
+                - 'api:spontaneousRequest:read'
+        internship:
+            groups: 
+                - 'api:spontaneousRequest:read'
+        name:
+            groups: 
+                - 'api:spontaneousRequest:read'

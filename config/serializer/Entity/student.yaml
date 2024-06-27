@@ -6,29 +6,29 @@ App\Entity\Student:
         email:
             groups:
                 - 'api:student:read'
-                - 'api:request:read'
+                - 'api:spontaneousRequest:read'
         roles:
             groups:
                 - 'api:student:read'
         phone:
             groups:
                 - 'api:student:read'
-                - 'api:request:read'
+                - 'api:spontaneousRequest:read'
         gender:
             groups:
                 - 'api:student:read'
         firstName:
             groups:
                 - 'api:student:read'
-                - 'api:request:read'
+                - 'api:spontaneousRequest:read'
         lastName:
             groups:
                 - 'api:student:read'
-                - 'api:request:read'
+                - 'api:spontaneousRequest:read'
         city:
             groups:
                 - 'api:student:read'
-                - 'api:request:read'
+                - 'api:spontaneousRequest:read'
                 - 'api:user:read'
         postCode:
             groups:
@@ -44,7 +44,7 @@ App\Entity\Student:
         birthdayAt:
             groups:
                 - 'api:student:read'
-                - 'api:request:read'
+                - 'api:spontaneousRequest:read'
                 - 'api:user:read'
         website: 
             groups:

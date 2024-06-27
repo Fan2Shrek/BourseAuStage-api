@@ -181,6 +181,7 @@ class Student extends User
         if (!$this->requests->contains($request)) {
             $this->requests->add($request);
             $request->setStudent($this);
+            $this->updatedAt = new \DateTimeImmutable();
         }
 
         return $this;
@@ -192,6 +193,7 @@ class Student extends User
             // set the owning side to null (unless already changed)
             if ($request->getStudent() === $this) {
                 $request->setStudent(null);
+                $this->updatedAt = new \DateTimeImmutable();
             }
         }
 
@@ -206,6 +208,7 @@ class Student extends User
     public function setAdditionalAddress(?string $additionalAddress): static
     {
         $this->additionalAddress = $additionalAddress;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -218,6 +221,7 @@ class Student extends User
     public function setWebsite(?string $website): static
     {
         $this->website = $website;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -230,6 +234,7 @@ class Student extends User
     public function setLinkedIn(?string $linkedIn): static
     {
         $this->linkedIn = $linkedIn;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -242,6 +247,7 @@ class Student extends User
     public function setHasDriverLicence(bool $hasDriverLicence): static
     {
         $this->hasDriverLicence = $hasDriverLicence;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -254,6 +260,7 @@ class Student extends User
     public function setDisabled(bool $isDisabled): static
     {
         $this->isDisabled = $isDisabled;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -266,6 +273,7 @@ class Student extends User
     public function setStudyLevel(?StudyLevel $studyLevel): static
     {
         $this->studyLevel = $studyLevel;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -278,6 +286,7 @@ class Student extends User
     public function setSchool(?string $school): static
     {
         $this->school = $school;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -290,6 +299,7 @@ class Student extends User
     public function setDiploma(?string $diploma): static
     {
         $this->diploma = $diploma;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -302,6 +312,7 @@ class Student extends User
     public function setCv(?string $cv): static
     {
         $this->cv = $cv;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -314,6 +325,7 @@ class Student extends User
     public function setFormation(?string $formation): static
     {
         $this->formation = $formation;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -330,6 +342,7 @@ class Student extends User
     {
         if (!$this->skills->contains($skill)) {
             $this->skills->add($skill);
+            $this->updatedAt = new \DateTimeImmutable();
         }
 
         return $this;
@@ -338,6 +351,7 @@ class Student extends User
     public function removeSkill(Skill $skill): static
     {
         $this->skills->removeElement($skill);
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -355,6 +369,7 @@ class Student extends User
         if (!$this->experiences->contains($experience)) {
             $this->experiences->add($experience);
             $experience->setStudent($this);
+            $this->updatedAt = new \DateTimeImmutable();
         }
 
         return $this;
@@ -366,6 +381,7 @@ class Student extends User
             // set the owning side to null (unless already changed)
             if ($experience->getStudent() === $this) {
                 $experience->setStudent(null);
+                $this->updatedAt = new \DateTimeImmutable();
             }
         }
 
@@ -385,6 +401,7 @@ class Student extends User
         if (!$this->languages->contains($language)) {
             $this->languages->add($language);
             $language->setStudent($this);
+            $this->updatedAt = new \DateTimeImmutable();
         }
 
         return $this;
@@ -396,9 +413,15 @@ class Student extends User
             // set the owning side to null (unless already changed)
             if ($language->getStudent() === $this) {
                 $language->setStudent(null);
+                $this->updatedAt = new \DateTimeImmutable();
             }
         }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return sprintf('%s %s', $this->getFirstName(), $this->getLastName());
     }
 }

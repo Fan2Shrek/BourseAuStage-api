@@ -35,7 +35,7 @@ class ProfilController extends AbstractController
     ) {
     }
 
-    private function handleSubmit(InputBag $payload, Request $request, Student $user, array &$content, bool $isNew = false): void
+    private function handleSubmitStudent(InputBag $payload, Request $request, Student $user, array &$content, bool $isNew = false): void
     {
         if ($payload->has('study')) {
             $proxy = $this->em->getRepository(StudyLevel::class)->find($payload->get('study'));
@@ -69,17 +69,6 @@ class ProfilController extends AbstractController
             ->setSchool($payload->get('school', $isNew ? null : $user->getSchool()))
             ->setDiploma($payload->get('diploma', $isNew ? null : $user->getDiploma()))
             ->setFormation($payload->get('formation', $isNew ? null : $user->getFormation()));
-
-        if ($file = $request->files->get('avatar')) {
-            if (!in_array($file->guessExtension(), ['png', 'jpg', 'jpeg'])) {
-                $content['avatar'] = $this->translator->trans('user.field.avatar.error.extensions');
-            } else {
-                $newFilename = uniqid().'.'.$file->guessExtension();
-
-                $file->move(self::UPLOADS_DIRECTORY, $newFilename);
-                $user->setAvatar($newFilename);
-            }
-        }
 
         if ($file = $request->files->get('cv')) {
             $newFilename = uniqid().'.'.$file->guessExtension();
@@ -176,12 +165,23 @@ class ProfilController extends AbstractController
             $user->setGender(GenderEnum::tryFrom($payload->get('gender')));
         }
 
+        if ($file = $request->files->get('avatar')) {
+            if (!in_array($file->guessExtension(), ['png', 'jpg', 'jpeg'])) {
+                $content['avatar'] = $this->translator->trans('user.field.avatar.error.extensions');
+            } else {
+                $newFilename = uniqid().'.'.$file->guessExtension();
+
+                $file->move(self::UPLOADS_DIRECTORY, $newFilename);
+                $user->setAvatar($newFilename);
+            }
+        }
+
         if ($user instanceof Student) {
             if ($payload->has('birthdayAt')) {
                 $user->setBirthdayAt(new \DateTime($payload->get('birthdayAt')));
             }
 
-            $this->handleSubmit($payload, $request, $user, $content);
+            $this->handleSubmitStudent($payload, $request, $user, $content);
         } elseif ($user instanceof Collaborator) {
             $user->setJobTitle($payload->get('jobTitle', $user->getJobTitle()));
         }
@@ -224,7 +224,7 @@ class ProfilController extends AbstractController
             $errors['birthdayAt'] = 'student.field.birthdayAt.error.notBlank';
         }
 
-        $this->handleSubmit($payload, $request, $user, $errors, true);
+        $this->handleSubmitStudent($payload, $request, $user, $errors, true);
 
         foreach ($errors as $k => $error) {
             $content[$k] = $this->translator->trans($error);
