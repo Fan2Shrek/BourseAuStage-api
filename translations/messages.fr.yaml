@@ -70,14 +70,15 @@ user:
     email:
       label: "Mail"
       error:
-        notBlank: "Veuillez entrer une adresse mail."
-        email: "L'adresse mail n'est pas valide."
-        lenght: "Votre adresse mail est trop longue."
-        unique: "Cette adresse mail est déjà utilisée."
-        isEmail: "Cette adresse mail n'est pas correct."
+        notBlank: "Veuillez entrer une adresse mail"
+        email: "L'adresse mail n'est pas valide"
+        lenght: "Votre adresse mail est trop longue"
+        unique: "Cette adresse mail est déjà utilisée"
+        isEmail: "Cette adresse mail n'est pas correct"
     phone: 
       error:
-        unique: "Ce numéro de téléphone est déjà utilisée."
+        notBlank: "Veuillez entrer un numéro de téléphone"
+        unique: "Ce numéro de téléphone est déjà utilisé"
         invalid: "Ce numéro de téléphone n'est pas valide"
     postCode:
       error:
@@ -92,10 +93,18 @@ user:
         minLength: "Votre mot de passe doit contenir au moins {{ limit }} caractères."
     firstName:
       label: "Prénom"
+      error:
+        notBlank: "Veuillez entrer un prénom"
     lastName:
       label: "Nom"
+      error:
+        notBlank: "Veuillez entrer un nom"
     role:
       label: "Type d'utilisateur"
+    avatar:
+      error: 
+        extensions: "Seuls les fichiers jpg, jpeg, png sont autorisés"
+
   flash:
     error:
       lastAdmin: "Vous ne pouvez pas désactiver le dernier administrateur."
@@ -278,9 +287,6 @@ student:
       label: "Compétences"
     formation:
       label: "Formation"
-    avatar:
-      error: 
-        extensions: "Seuls les fichiers jpg, jpeg, png sont autorisés."
 
 collaborator:
   pageTitle:
@@ -304,6 +310,8 @@ collaborator:
       label: "Nom"
     jobTitle:
       label: "Fonction"
+      error:
+        notBlank: "Veuillez entrer votre poste."
     company:
       label: "Entreprise"
     email:

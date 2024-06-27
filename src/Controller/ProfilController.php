@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Collaborator;
 use App\Entity\Student;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -47,6 +48,21 @@ class ProfilController extends AbstractController
             $user->setGender(GenderEnum::tryFrom($payload->get('gender')));
         }
 
+        if ($file = $request->files->get('avatar')) {
+            if (!in_array($file->guessExtension(), ['png', 'jpg', 'jpeg'])) {
+                $content['avatar'] = $this->translator->trans('user.field.avatar.error.extensions');
+            } else {
+                $newFilename = sprintf('%s.%s', uniqid(), $file->guessExtension());
+
+                $file->move(self::UPLOADS_DIRECTORY, $newFilename);
+                $user->setAvatar($newFilename);
+            }
+        }
+
+        if ($user instanceof Collaborator) {
+            $user->setJobTitle($payload->get('jobTitle', $user->getJobTitle()));
+        }
+
         if ($user instanceof Student) {
             if ($payload->has('birthdayAt')) {
                 $user->setBirthdayAt(new \DateTime($payload->get('birthdayAt')));
@@ -69,17 +85,6 @@ class ProfilController extends AbstractController
                 ->setSchool($payload->get('school', $user->getSchool()))
                 ->setDiploma($payload->get('diploma', $user->getDiploma()))
                 ->setFormation($payload->get('formation', $user->getFormation()));
-
-            if ($file = $request->files->get('avatar')) {
-                if (!in_array($file->guessExtension(), ['png', 'jpg', 'jpeg'])) {
-                    $content['avatar'] = $this->translator->trans('student.field.avatar.error.extensions');
-                } else {
-                    $newFilename = uniqid().'.'.$file->guessExtension();
-
-                    $file->move(self::UPLOADS_DIRECTORY, $newFilename);
-                    $user->setAvatar($newFilename);
-                }
-            }
 
             if ($file = $request->files->get('cv')) {
                 $newFilename = uniqid().'.'.$file->guessExtension();
