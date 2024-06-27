@@ -55,14 +55,7 @@ class OfferCrudController extends AbstractCrudController
         return [
             FormField::addColumn(6),
             FormField::addFieldset($this->translator->trans('offer.infoTitle.basic')),
-            TextField::new('name', $this->translator->trans('offer.field.name.label'))
-                ->setFormTypeOptions([
-                    'constraints' => [
-                        new Length([
-                            'min' => 50, 'minMessage' => $this->translator->trans('offer.field.name.error.length'),
-                        ]),
-                    ],
-                ]),
+            TextField::new('name', $this->translator->trans('offer.field.name.label')),
             AssociationField::new('company', $this->translator->trans('offer.field.company.label')),
             DateTimeField::new('start', $this->translator->trans('offer.field.startAt.label')),
             DateTimeField::new('end', $this->translator->trans('offer.field.endAt.label')),
