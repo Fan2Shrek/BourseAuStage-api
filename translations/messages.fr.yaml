@@ -367,8 +367,10 @@ offer:
     isInternship:
       label: "Type"
     missions: 
+      label: "Missions"
       error: 
         notBlank: "Veuillez entrer un contenu pour les missions."
     profils: 
+      label: "Profils recherchés"
       error: 
         notBlank: "Veuillez entrer un contenu pour les profils recherchés."

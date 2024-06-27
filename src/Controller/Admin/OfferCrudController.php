@@ -13,9 +13,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 
 class OfferCrudController extends AbstractCrudController
 {
@@ -64,7 +65,7 @@ class OfferCrudController extends AbstractCrudController
                 ])
                 ->renderExpanded()
                 ->setRequired(true),
-            BooleanField::new('isPayed', $this->translator->trans('offer.field.isPayed.label'))
+            NumberField::new('pay', $this->translator->trans('offer.field.isPayed.label'))
                 ->hideOnIndex(),
             FormField::addColumn(6),
             FormField::addFieldset($this->translator->trans('offer.infoTitle.description')),
@@ -80,6 +81,10 @@ class OfferCrudController extends AbstractCrudController
                         return $activity->getName();
                     })->toArray());
                 }),
+            TextareaField::new('missions', 'offer.field.missions.label')
+                ->hideOnIndex(),
+            TextareaField::new('profils', 'offer.field.profils.label')
+                ->hideOnIndex(),
             FormField::addColumn(6)
                 ->hideOnForm(),
             FormField::addFieldset($this->translator->trans('offer.infoTitle.additional'))
