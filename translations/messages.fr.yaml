@@ -36,6 +36,8 @@ dashboard:
     categories: "Catégories d'entreprise"
     activities: "Secteurs d'activité"
     offers: "Offres"
+    spontaneousRequests: "Demandes spontanées"
+    requests: "Demandes"
 
 entity:
   action:
@@ -345,11 +347,11 @@ offer:
       label: "Nom"
       error: 
         notBlank: "Veuillez entrer un nom."
-        length: "Le nom de l'offre doit etre entre 50 et 255 charactères."
+        length: "Le nom de l'offre doit être entre 50 et 255 charactères."
     startAt:
       label: "Date de début"
       error: 
-        lessThanOrEqual: "La date de début etre d'au moins aujourd'hui."
+        lessThanOrEqual: "La date de début ne peut pas être une date antérieur à aujourd'hui."
     endAt:
       label: "Date de fin"
       error:
@@ -374,3 +376,64 @@ offer:
       label: "Profils recherchés"
       error: 
         notBlank: "Veuillez entrer un contenu pour les profils recherchés."
+
+spontaneousRequest:
+  pageTitle:
+    index: "Demandes spontanées"
+    new: "Créer une demande spontanée"
+    edit: "Modifier la demande spontanée"
+  infoTitle:
+    basic: "Informations de base"
+    description: "Description"
+    additional: "Informations complémentaires"
+  action:
+    new: "Créer une demande spontanée"
+    desactivate: "Désactiver"
+    revive: "Réactiver"
+    availableAt: "A partir du"
+  field:
+    name:
+      label: "Nom"
+      error: 
+        notBlank: "Veuillez entrer un nom."
+        length: "Le nom de la demande spontanée doit être entre 50 et 255 charactères."
+    student:
+      label: "Étudiant"
+    startAt:
+      label: "Date de début"
+      error: 
+        lessThanOrEqual: "La date de début ne peut pas être une date antérieur à aujourd'hui."
+    endAt:
+      label: "Date de fin"
+      error:
+        greaterThan: "La date de fin doit être supérieure à la date de début."
+    description:
+      label: "Description"
+      error: 
+        notBlank: "Veuillez entrer une description."
+    isInternship:
+      label: "Type"
+    location:
+      label: "Lieu"
+
+request:
+  pageTitle:
+    index: "Demandes"
+    new: "Créer une demande"
+    edit: "Modifier la demande"
+  infoTitle:
+    basic: "Informations de base"
+    additional: "Informations complémentaires"
+  action:
+    new: "Créer une demande"
+    desactivate: "Désactiver"
+    revive: "Réactiver"
+  field:
+    student:
+      label: "Étudiant"
+      error:
+        notBlank: "Veuillez entrer un étudiant."
+    offer:
+      label: "Offre"
+      error:
+        notBlank: "Veuillez entrer une offre."

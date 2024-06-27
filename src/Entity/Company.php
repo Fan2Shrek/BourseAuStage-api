@@ -261,6 +261,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     public function setPhone(?string $phone): static
     {
         $this->phone = $phone;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -273,6 +274,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     public function setAge(?string $age): static
     {
         $this->age = $age;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -285,6 +287,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     public function setEffective(?int $effective): static
     {
         $this->effective = $effective;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -297,6 +300,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     public function setTurnover(?string $turnover): static
     {
         $this->turnover = $turnover;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -309,6 +313,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     public function setPresentation(?string $presentation): static
     {
         $this->presentation = $presentation;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -321,6 +326,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     public function setOpeningTime(?string $openingTime): static
     {
         $this->openingTime = $openingTime;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -337,6 +343,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     {
         if (!$this->activities->contains($activity)) {
             $this->activities->add($activity);
+            $this->updatedAt = new \DateTimeImmutable();
         }
 
         return $this;
@@ -345,6 +352,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     public function removeActivity(Activity $activity): static
     {
         $this->activities->removeElement($activity);
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -357,6 +365,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     public function setTwitterLink(?string $twitterLink): static
     {
         $this->twitterLink = $twitterLink;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -369,6 +378,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     public function setLinkedInLink(?string $linkedInLink): static
     {
         $this->linkedInLink = $linkedInLink;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -381,6 +391,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     public function setFacebookLink(?string $facebookLink): static
     {
         $this->facebookLink = $facebookLink;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -393,6 +404,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     public function setInstagramLink(?string $instagramLink): static
     {
         $this->instagramLink = $instagramLink;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -406,6 +418,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     {
         if ($logo) {
             $this->logo = $logo;
+            $this->updatedAt = new \DateTimeImmutable();
         }
 
         return $this;
@@ -420,6 +433,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     {
         if ($logoIcon) {
             $this->logoIcon = $logoIcon;
+            $this->updatedAt = new \DateTimeImmutable();
         }
 
         return $this;
@@ -433,6 +447,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     public function setAdditionalAddress(?string $additionalAddress): static
     {
         $this->additionalAddress = $additionalAddress;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -445,13 +460,9 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     public function setCategory(?CompanyCategory $category): static
     {
         $this->category = $category;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
-    }
-
-    public function __toString(): string
-    {
-        return $this->name;
     }
 
     /**
@@ -467,6 +478,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
         if (!$this->offers->contains($offer)) {
             $this->offers->add($offer);
             $offer->setCompany($this);
+            $this->updatedAt = new \DateTimeImmutable();
         }
 
         return $this;
@@ -478,9 +490,15 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
             // set the owning side to null (unless already changed)
             if ($offer->getCompany() === $this) {
                 $offer->setCompany(null);
+                $this->updatedAt = new \DateTimeImmutable();
             }
         }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

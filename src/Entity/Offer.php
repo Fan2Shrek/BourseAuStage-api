@@ -112,6 +112,7 @@ class Offer extends AbstractOffer implements SoftDeleteInterface
     public function setPay(?int $pay): static
     {
         $this->pay = $pay;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -133,6 +134,7 @@ class Offer extends AbstractOffer implements SoftDeleteInterface
     {
         if (!$this->activities->contains($activity)) {
             $this->activities->add($activity);
+            $this->updatedAt = new \DateTimeImmutable();
         }
 
         return $this;
@@ -141,6 +143,7 @@ class Offer extends AbstractOffer implements SoftDeleteInterface
     public function removeActivity(Activity $activity): static
     {
         $this->activities->removeElement($activity);
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -153,6 +156,7 @@ class Offer extends AbstractOffer implements SoftDeleteInterface
     public function setMissions(?string $missions): static
     {
         $this->missions = $missions;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -165,6 +169,7 @@ class Offer extends AbstractOffer implements SoftDeleteInterface
     public function setProfils(?string $profils): static
     {
         $this->profils = $profils;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -177,6 +182,7 @@ class Offer extends AbstractOffer implements SoftDeleteInterface
     public function setCompany(?Company $company): static
     {
         $this->company = $company;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -189,6 +195,7 @@ class Offer extends AbstractOffer implements SoftDeleteInterface
     public function setAvailableAt(\DateTimeImmutable $availableAt): static
     {
         $this->availableAt = $availableAt;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -205,6 +212,7 @@ class Offer extends AbstractOffer implements SoftDeleteInterface
     {
         if (!$this->searchSkills->contains($searchSkill)) {
             $this->searchSkills->add($searchSkill);
+            $this->updatedAt = new \DateTimeImmutable();
         }
 
         return $this;
@@ -213,6 +221,7 @@ class Offer extends AbstractOffer implements SoftDeleteInterface
     public function removeSearchSkill(Skill $searchSkill): static
     {
         $this->searchSkills->removeElement($searchSkill);
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -225,7 +234,13 @@ class Offer extends AbstractOffer implements SoftDeleteInterface
     public function setStudyLevel(?StudyLevel $studyLevel): static
     {
         $this->studyLevel = $studyLevel;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 }
