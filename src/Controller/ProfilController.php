@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Collaborator;
 use App\Entity\Student;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,6 +21,7 @@ use App\Entity\Experience;
 use App\Entity\Language;
 use App\Entity\Skill;
 use App\Enum\GenderEnum;
+use App\Entity\Collaborator;
 
 class ProfilController extends AbstractController
 {
@@ -35,33 +35,44 @@ class ProfilController extends AbstractController
     ) {
     }
 
-    private function handleSubmit(InputBag $payload, Request $request, Student $user, array &$content, bool $isNew = false): void 
+    private function handleSubmit(InputBag $payload, Request $request, Student $user, array &$content, bool $isNew = false): void
     {
-        if ($payload->has('birthdayAt')) {
-            $user->setBirthdayAt(new \DateTime($payload->get('birthdayAt')));
-        }
-
         if ($payload->has('study')) {
             $proxy = $this->em->getRepository(StudyLevel::class)->find($payload->get('study'));
             $user->setStudyLevel($proxy);
         }
 
+        if ($payload->has('city')) {
+            $user->setCity($payload->get('city'));
+        } elseif ($isNew) {
+            $content['city'] = 'student.field.city.error.notBlank';
+        }
+
+        if ($payload->has('address')) {
+            $user->setAddress($payload->get('address'));
+        } elseif ($isNew) {
+            $content['address'] = 'student.field.address.error.notBlank';
+        }
+
+        if ($payload->has('postCode')) {
+            $user->setPostCode($payload->get('postCode'));
+        } elseif ($isNew) {
+            $content['postCode'] = 'student.field.postCode.error.notBlank';
+        }
+
         $user
-            ->setCity($payload->get('city', $isNew ?: $user->getCity()))
-            ->setPostCode($payload->get('postCode', $isNew ?: $user->getPostCode()))
-            ->setAddress($payload->get('address', $isNew ?: $user->getAddress()))
-            ->setAdditionalAddress($payload->get('additionalAddress', $isNew ?: $user->getAdditionalAddress()))
-            ->setWebsite($payload->get('website', $isNew ?: $user->getWebsite()))
-            ->setLinkedIn($payload->get('linkedIn', $isNew ?: $user->getLinkedIn()))
-            ->setHasDriverLicence(filter_var($payload->get('hasDriverLicence', $isNew ?: $user->hasDriverLicence()), FILTER_VALIDATE_BOOLEAN))
-            ->setDisabled(filter_var($payload->get('isDisabled', $isNew ?: $user->isDisabled()), FILTER_VALIDATE_BOOLEAN))
-            ->setSchool($payload->get('school', $isNew ?: $user->getSchool()))
-            ->setDiploma($payload->get('diploma', $isNew ?: $user->getDiploma()))
-            ->setFormation($payload->get('formation', $isNew ?: $user->getFormation()));
+            ->setAdditionalAddress($payload->get('additionalAddress', $isNew ? null : $user->getAdditionalAddress()))
+            ->setWebsite($payload->get('website', $isNew ? null : $user->getWebsite()))
+            ->setLinkedIn($payload->get('linkedIn', $isNew ? null : $user->getLinkedIn()))
+            ->setHasDriverLicence(filter_var($payload->get('hasDriverLicence', $isNew ? null : $user->hasDriverLicence()), FILTER_VALIDATE_BOOLEAN))
+            ->setDisabled(filter_var($payload->get('isDisabled', $isNew ? null : $user->isDisabled()), FILTER_VALIDATE_BOOLEAN))
+            ->setSchool($payload->get('school', $isNew ? null : $user->getSchool()))
+            ->setDiploma($payload->get('diploma', $isNew ? null : $user->getDiploma()))
+            ->setFormation($payload->get('formation', $isNew ? null : $user->getFormation()));
 
         if ($file = $request->files->get('avatar')) {
             if (!in_array($file->guessExtension(), ['png', 'jpg', 'jpeg'])) {
-                $content['avatar'] = $this->translator->trans('student.field.avatar.error.extensions');
+                $content['avatar'] = $this->translator->trans('user.field.avatar.error.extensions');
             } else {
                 $newFilename = uniqid().'.'.$file->guessExtension();
 
@@ -141,7 +152,8 @@ class ProfilController extends AbstractController
         }
     }
 
-    private function handlePayload(string $name, InputBag $payload, User $user, array &$errors): void {
+    private function handlePayload(string $name, InputBag $payload, User $user, array &$errors): void
+    {
         if ($payload->has($name)) {
             $user->{sprintf('set%s', ucfirst($name))}($payload->get($name));
         } else {
@@ -165,11 +177,13 @@ class ProfilController extends AbstractController
         }
 
         if ($user instanceof Student) {
-           $this->handleSubmit($payload, $request, $user, $content);
-        }
+            if ($payload->has('birthdayAt')) {
+                $user->setBirthdayAt(new \DateTime($payload->get('birthdayAt')));
+            }
 
-        foreach ($errors as $k => $error) {
-            $content[$k] = $this->translator->trans($error);
+            $this->handleSubmit($payload, $request, $user, $content);
+        } elseif ($user instanceof Collaborator) {
+            $user->setJobTitle($payload->get('jobTitle', $user->getJobTitle()));
         }
 
         $errors = $this->validator->validate($user);
@@ -190,7 +204,7 @@ class ProfilController extends AbstractController
     #[Route('/api/register/student', methods: ['POST'])]
     public function register(Request $request): Response
     {
-        $user = new Student;
+        $user = new Student();
         $payload = $request->request;
         $content = $errors = [];
 
@@ -203,9 +217,15 @@ class ProfilController extends AbstractController
         if ($payload->has('gender')) {
             $user->setGender(GenderEnum::tryFrom($payload->get('gender')));
         }
-        
-        $this->handleSubmit($payload, $request, $user, $content, true);
-        
+
+        if ($payload->has('birthdayAt')) {
+            $user->setBirthdayAt(new \DateTime($payload->get('birthdayAt')));
+        } else {
+            $errors['birthdayAt'] = 'student.field.birthdayAt.error.notBlank';
+        }
+
+        $this->handleSubmit($payload, $request, $user, $errors, true);
+
         foreach ($errors as $k => $error) {
             $content[$k] = $this->translator->trans($error);
         }
@@ -218,14 +238,15 @@ class ProfilController extends AbstractController
 
         if (empty($content)) {
             $user->setPassword($this->hasher->hashPassword($user, $user->getPassword()));
-         
+
             $this->em->persist($user);
             $this->em->flush();
 
-            return new JsonResponse(['id' => $user->getId()], Response::HTTP_CREATED);
+            return new JsonResponse('', Response::HTTP_CREATED);
         }
 
-        return new JsonResponse($content, Response::HTTP_BAD_REQUEST);    }
+        return new JsonResponse($content, Response::HTTP_BAD_REQUEST);
+    }
 
     #[Route('/api/me', methods: ['GET'])]
     public function getProfil(#[CurrentUser] User $user, SerializerInterface $serializer): Response
