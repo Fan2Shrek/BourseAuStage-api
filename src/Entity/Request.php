@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\Link;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
@@ -12,6 +13,14 @@ use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
 
 #[ApiResource(
     operations: [
+        new GetCollection(
+            uriTemplate: '/offers/{offerId}/requests',
+            uriVariables: [
+                'offerId' => new Link(fromClass: Offer::class, toProperty: 'offer'),
+            ],
+            normalizationContext: ['groups' => ['api:offers:requests:read']],
+            paginationEnabled: false,
+        ),
         new GetCollection(
             normalizationContext: ['groups' => ['api:request:read']]
         ),
@@ -31,6 +40,10 @@ class Request extends AbstractOffer
     #[ORM\JoinColumn(nullable: false)]
     private ?Student $student = null;
 
+    #[ORM\ManyToOne(inversedBy: 'requests')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Offer $offer = null;
+
     #[ORM\Column(length: 255)]
     private ?string $location = null;
 
@@ -47,6 +60,18 @@ class Request extends AbstractOffer
     public function setStudent(?Student $student): static
     {
         $this->student = $student;
+
+        return $this;
+    }
+
+    public function getOffer(): ?Offer
+    {
+        return $this->offer;
+    }
+
+    public function setOffer(?Offer $offer): static
+    {
+        $this->offer = $offer;
 
         return $this;
     }

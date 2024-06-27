@@ -20,6 +20,8 @@ final class RequestFactory extends ModelFactory
             'end' => self::faker()->dateTime(),
             'start' => self::faker()->dateTime(),
             'description' => self::faker()->text(255),
+            'student' => StudentFactory::random(),
+            'offer' => OfferFactory::random(),
         ];
     }
 

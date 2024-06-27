@@ -3,6 +3,7 @@ App\Entity\Request:
         id:
             groups: 
                 - 'api:request:read'
+                - 'api:offers:requests:read'
         student:
             groups: 
                 - 'api:request:read'
