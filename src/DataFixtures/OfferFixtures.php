@@ -7,7 +7,6 @@ use App\Tests\Factory\SkillFactory;
 use App\Tests\Factory\ActivityFactory;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 class OfferFixtures extends Fixture
 {
