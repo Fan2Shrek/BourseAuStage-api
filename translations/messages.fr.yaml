@@ -91,6 +91,7 @@ user:
       repeat: "Confirmer le mot de passe"
       error:
         minLength: "Votre mot de passe doit contenir au moins {{ limit }} caractères."
+        notBlank: "Veuillez rentrer un mot de passe "
     firstName:
       label: "Prénom"
       error:

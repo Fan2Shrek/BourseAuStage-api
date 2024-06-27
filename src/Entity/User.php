@@ -93,7 +93,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionT
         return $this->email;
     }
 
-    public function setEmail(string $email): static
+    public function setEmail(?string $email): static
     {
         $this->email = $email;
         $this->updatedAt = new \DateTimeImmutable();
@@ -106,7 +106,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionT
         return $this->phone;
     }
 
-    public function setPhone(string $phone): static
+    public function setPhone(?string $phone): static
     {
         $this->phone = $phone;
         $this->updatedAt = new \DateTimeImmutable();

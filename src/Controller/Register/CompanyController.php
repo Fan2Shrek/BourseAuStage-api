@@ -27,7 +27,7 @@ class CompanyController extends AbstractController
     ) {
     }
 
-    #[Route('api/inscription/entreprise', methods: ['POST'])]
+    #[Route('api/register/company', methods: ['POST'])]
     public function registerCompany(Request $request): Response
     {
         $payload = $request->request;
