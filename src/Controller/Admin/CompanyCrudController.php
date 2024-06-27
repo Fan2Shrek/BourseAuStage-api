@@ -112,7 +112,6 @@ class CompanyCrudController extends AbstractCrudController
                 ->setBasePath('')
                 ->setUploadDir('public/img/company/logo')
                 ->setUploadedFileNamePattern('public/img/company/logo/[randomhash].[extension]')
-                ->setRequired(Crud::PAGE_NEW === $pageName)
                 ->formatValue(function ($value, ?Company $entity) {
                     if (null === $entity) {
                         return '';
@@ -125,7 +124,6 @@ class CompanyCrudController extends AbstractCrudController
                 ->setBasePath('')
                 ->setUploadDir('public/img/company/logoIcon')
                 ->setUploadedFileNamePattern('public/img/company/logoIcon/[randomhash].[extension]')
-                ->setRequired(Crud::PAGE_NEW === $pageName)
                 ->formatValue(function ($value, ?Company $entity) {
                     if (null === $entity) {
                         return '';

@@ -30,3 +30,6 @@ App\Entity\User:
             groups:
                 - 'api:user:read'
                 - 'user:read'
+        deletedAt:
+            groups:
+                - 'api:user:read'
