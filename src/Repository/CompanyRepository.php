@@ -58,6 +58,7 @@ class CompanyRepository extends ServiceEntityRepository
             ->select('c.id, c.name, c.logo')
             ->orderBy('c.numberActiveOffer', 'DESC')
             ->addOrderBy('c.name', 'ASC')
+            ->andWhere('c.deletedAt is NULL')
             ->setMaxResults(5)
             ->getQuery()
             ->getResult();
