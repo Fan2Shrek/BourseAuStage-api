@@ -91,6 +91,7 @@ user:
       repeat: "Confirmer le mot de passe"
       error:
         minLength: "Votre mot de passe doit contenir au moins {{ limit }} caractères."
+        notBlank: "Veuillez rentrer un mot de passe "
     firstName:
       label: "Prénom"
       error:
@@ -246,12 +247,20 @@ student:
       label: "Nom"
     city:
       label: "Ville"
+      error:
+        notBlank: "Veuillez renseigner une ville"
     postCode:
       label: "Code postal"
+      error:
+        notBlank: "Veuillez renseigner un code postal"
     address:
       label: "Adresse"
+      error:
+        notBlank: "Veuillez renseigner une adresse"
     birthdayAt:
       label: "Date de naissance"
+      error: 
+        notBlank: "Veuillez renseigner votre date de naissance"
     email:
       label: "Mail"
       error:
