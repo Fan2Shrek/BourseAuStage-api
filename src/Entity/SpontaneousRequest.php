@@ -2,41 +2,26 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\Link;
-use ApiPlatform\Metadata\Post;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
-use App\Entity\Trait\SoftDeleteTrait;
-use App\Repository\RequestRepository;
+use App\Repository\SpontaneousRequestRepository;
 use ApiPlatform\Metadata\GetCollection;
-use App\Entity\Trait\ActionTrackingTrait;
-use App\Entity\Interface\SoftDeleteInterface;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
-use App\Entity\Interface\ActionTrackingInterface;
 
 #[ApiResource(
     operations: [
         new GetCollection(
-            uriTemplate: '/offers/{offerId}/requests',
-            uriVariables: [
-                'offerId' => new Link(fromClass: Offer::class, toProperty: 'offer'),
-            ],
-            normalizationContext: ['groups' => ['api:offers:requests:read']],
-            paginationEnabled: false,
+            normalizationContext: ['groups' => ['api:spontaneousRequest:read']]
         ),
-        new Post(),
     ]
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id'], arguments: ['orderParameterName' => 'order'])]
 #[ApiFilter(ExistsFilter::class, properties: ['deletedAt'])]
-#[ORM\Entity(repositoryClass: RequestRepository::class)]
-class Request implements ActionTrackingInterface, SoftDeleteInterface
+#[ORM\Entity(repositoryClass: SpontaneousRequestRepository::class)]
+class SpontaneousRequest extends AbstractOffer
 {
-    use SoftDeleteTrait;
-    use ActionTrackingTrait;
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -46,14 +31,8 @@ class Request implements ActionTrackingInterface, SoftDeleteInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?Student $student = null;
 
-    #[ORM\ManyToOne(inversedBy: 'requests')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Offer $offer = null;
-
-    public function __construct()
-    {
-        $this->createdAt = new \DateTimeImmutable();
-    }
+    #[ORM\Column(length: 255)]
+    private ?string $location = null;
 
     public function getId(): ?int
     {
@@ -73,14 +52,14 @@ class Request implements ActionTrackingInterface, SoftDeleteInterface
         return $this;
     }
 
-    public function getOffer(): ?Offer
+    public function getLocation(): ?string
     {
-        return $this->offer;
+        return $this->location;
     }
 
-    public function setOffer(?Offer $offer): static
+    public function setLocation(string $location): static
     {
-        $this->offer = $offer;
+        $this->location = $location;
         $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
