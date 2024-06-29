@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\Put;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Api\Filter\BetweenFilter;
 use ApiPlatform\Metadata\ApiFilter;
@@ -36,7 +36,6 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             normalizationContext: ['groups' => ['api:company:read']],
         ),
-        new Put(),
     ],
 )]
 #[ApiFilter(SearchFilter::class, properties: [
@@ -57,12 +56,14 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     #[ORM\Column]
     private int $id;
 
+    #[Assert\NotNull(message: 'company.field.name.error.notBlank')]
     #[ORM\Column(length: 180)]
     private string $name;
 
     #[ORM\Column(length: 180, nullable: true)]
     private ?string $legalStatus = null;
 
+    #[Assert\NotNull(message: 'company.field.siretNumber.error.notBlank')]
     #[Assert\Luhn(message: 'user.field.siret.error.invalid')]
     #[ORM\Column(length: 14)]
     private string $siretNumber;
@@ -70,13 +71,16 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     #[ORM\Column(length: 180, nullable: true)]
     private ?string $socialLink = null;
 
+    #[Assert\NotNull(message: 'company.field.city.error.notBlank')]
     #[ORM\Column(length: 180)]
     private string $city;
 
+    #[Assert\NotNull(message: 'company.field.postCode.error.notBlank')]
     #[Assert\Regex('/^\d{5}$/', 'user.field.postCode.error.invalid')]
     #[ORM\Column(length: 10)]
     private string $postCode;
 
+    #[Assert\NotNull(message: 'company.field.address.error.notBlank')]
     #[ORM\Column(length: 180)]
     private string $address;
 
@@ -87,8 +91,8 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phone = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $age = null;
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $age = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $effective = null;
@@ -131,6 +135,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull(message: 'company.field.category.error.notBlank')]
     private ?CompanyCategory $category = null;
 
     /**
@@ -268,12 +273,12 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
         return $this;
     }
 
-    public function getAge(): ?string
+    public function getAge(): ?\DateTimeInterface
     {
         return $this->age;
     }
 
-    public function setAge(?string $age): static
+    public function setAge(?\DateTimeInterface $age): static
     {
         $this->age = $age;
         $this->updatedAt = new \DateTimeImmutable();
