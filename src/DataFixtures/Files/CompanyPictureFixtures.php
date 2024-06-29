@@ -24,7 +24,6 @@ class CompanyPictureFixtures extends Fixture implements DependentFixtureInterfac
             $url = $faker->image('public/img/company', 640, 480, 'placeholder', true, true, 'company');
 
             $file = (new CompanyPicture())
-                ->setName($faker->word())
                 ->setPath($url)
                 ->setPosition($i)
                 ->setCompany($company->object());
