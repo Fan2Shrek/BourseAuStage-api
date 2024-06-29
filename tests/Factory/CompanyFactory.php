@@ -27,7 +27,12 @@ final class CompanyFactory extends ModelFactory
             'address' => self::faker()->address(),
             'numberActiveOffer' => self::faker()->numberBetween(0, 20),
             'phone' => self::faker()->phoneNumber(),
-            'age' => sprintf('%d ans', self::faker()->numberBetween(1, 20)),
+            'age' => self::faker()->randomElement([
+                new \DateTime('-1 month'),
+                new \DateTime('-1 year'),
+                new \DateTime('-2 years'),
+                new \DateTime('-3 years'),
+            ]),
             'openingTime' => self::faker()->sentence(),
             'effective' => self::faker()->numberBetween(1, 1100),
             'turnover' => self::faker()->numberBetween(1000, 1000000),
@@ -36,8 +41,8 @@ final class CompanyFactory extends ModelFactory
             'facebookLink' => self::faker()->url(),
             'linkedInLink' => self::faker()->url(),
             'instagramLink' => self::faker()->url(),
-            // 'logo' => self::faker()->image('public/img/company/logo', 340, 60, 'placeholder', true, true, 'logo'),
-            // 'logoIcon' => self::faker()->image('public/img/company/logoIcon', 50, 50, 'placeholder', true, true, 'icon'),
+            'logo' => self::faker()->image('public/img/company/logo', 340, 60, 'placeholder', true, true, 'logo'),
+            'logoIcon' => self::faker()->image('public/img/company/logoIcon', 50, 50, 'placeholder', true, true, 'icon'),
             'category' => CompanyCategoryFactory::random(),
         ];
     }

@@ -188,6 +188,14 @@ company:
       label: "Logo de l'entreprise"
     logoIcon:
       label: "Logo réduit (50x50)"
+    activities:
+      label: "Secteurs d'activité"
+      error:
+        notBlank: "Veuillez entrer un secteur d'activité."
+    category:
+      label: "Catégorie"
+      error:
+        notBlank: "Veuillez entrer séléctionner une catégorie."
 
 activity: 
   action:

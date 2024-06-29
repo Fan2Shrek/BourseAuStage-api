@@ -95,3 +95,6 @@ App\Entity\Company:
         additionalAddress:
             groups:
                 - 'api:company:read'
+        category:
+            groups:
+                - 'api:company:read'

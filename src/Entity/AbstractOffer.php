@@ -48,6 +48,7 @@ abstract class AbstractOffer implements ActionTrackingInterface, SoftDeleteInter
     public function setName(?string $name): static
     {
         $this->name = $name;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -60,6 +61,7 @@ abstract class AbstractOffer implements ActionTrackingInterface, SoftDeleteInter
     public function setStart(\DateTimeInterface $start): static
     {
         $this->start = $start;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -72,6 +74,7 @@ abstract class AbstractOffer implements ActionTrackingInterface, SoftDeleteInter
     public function setEnd(\DateTimeInterface $end): static
     {
         $this->end = $end;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -84,6 +87,7 @@ abstract class AbstractOffer implements ActionTrackingInterface, SoftDeleteInter
     public function setIsInternship(bool $isInternship): static
     {
         $this->isInternship = $isInternship;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -96,6 +100,7 @@ abstract class AbstractOffer implements ActionTrackingInterface, SoftDeleteInter
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }

@@ -169,10 +169,15 @@ class ProfilController extends AbstractController
             if (!in_array($file->guessExtension(), ['png', 'jpg', 'jpeg'])) {
                 $content['avatar'] = $this->translator->trans('user.field.avatar.error.extensions');
             } else {
-                $newFilename = uniqid().'.'.$file->guessExtension();
-
+                $newFilename = sprintf('%s.%s', uniqid(), $file->guessExtension());
                 $file->move(self::UPLOADS_DIRECTORY, $newFilename);
-                $user->setAvatar($newFilename);
+
+                $current = $user->getAvatar();
+                if ($current) {
+                    unlink(str_replace('public/', '', $current));
+                }
+
+                $user->setAvatar(sprintf('public/%s/%s', self::UPLOADS_DIRECTORY, $newFilename));
             }
         }
 

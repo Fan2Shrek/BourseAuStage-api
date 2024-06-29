@@ -2,12 +2,14 @@
 
 namespace App\Entity\Files;
 
+use App\Entity\Company;
+use ApiPlatform\Metadata\Link;
+use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Link;
-use App\Entity\Company;
-use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CompanyPictureRepository;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 
 #[ApiResource(
     uriTemplate: '/companies/{companyId}/pictures/',
@@ -16,6 +18,7 @@ use App\Repository\CompanyPictureRepository;
     ],
     operations: [new GetCollection()]
 )]
+#[ApiFilter(OrderFilter::class, properties: ['position'])]
 #[ORM\Entity(repositoryClass: CompanyPictureRepository::class)]
 class CompanyPicture
 {
@@ -24,11 +27,11 @@ class CompanyPicture
     #[ORM\Column]
     private int $id;
 
-    #[ORM\Column(length: 255)]
-    private string $name;
-
-    #[ORM\Column()]
+    #[ORM\Column]
     private string $path;
+
+    #[ORM\Column]
+    private int $position;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
@@ -39,18 +42,6 @@ class CompanyPicture
         return $this->id ?? null;
     }
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): static
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
     public function getPath(): string
     {
         return $this->path;
@@ -59,6 +50,18 @@ class CompanyPicture
     public function setPath(string $path): static
     {
         $this->path = $path;
+
+        return $this;
+    }
+
+    public function getPosition(): int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(int $position): static
+    {
+        $this->position = $position;
 
         return $this;
     }

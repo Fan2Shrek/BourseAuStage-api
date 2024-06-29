@@ -2,8 +2,8 @@
 
 namespace App\DataFixtures;
 
-use App\Tests\Factory\ActivityFactory;
 use App\Tests\Factory\CompanyFactory;
+use App\Tests\Factory\ActivityFactory;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -26,8 +26,6 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
 
         CompanyFactory::createMany(10, fn () => [
             'activities' => $this->randomActivities(),
-            'logo' => 'public/img/company/logo/img.jpg', // TODO : enlever quand l'api marchera
-            'logoIcon' => 'public/img/company/logoIcon/img.jpg', // TODO : enlever quand l'api marchera
         ]);
     }
 

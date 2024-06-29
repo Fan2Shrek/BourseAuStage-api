@@ -63,6 +63,7 @@ class Collaborator extends User
     public function setJobTitle(string $jobTitle): static
     {
         $this->jobTitle = $jobTitle;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
