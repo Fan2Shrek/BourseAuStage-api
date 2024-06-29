@@ -20,23 +20,19 @@ class CompanyPictureFixtures extends Fixture implements DependentFixtureInterfac
         $faker = CompanyFactory::faker();
         $company = CompanyFactory::random();
 
-        for ($i = 0; $i < 3; ++$i) {
-            $file = $this->createFile($faker->image('public/img/company', 640, 480, 'placeholder', true, true, 'company'));
-            $file->setCompany($company->object());
-            $file->setName($faker->word());
+        for ($i = 1; $i <= 5; ++$i) {
+            $url = $faker->image('public/img/company', 640, 480, 'placeholder', true, true, 'company');
+
+            $file = (new CompanyPicture())
+                ->setName($faker->word())
+                ->setPath($url)
+                ->setPosition($i)
+                ->setCompany($company->object());
 
             $em->persist($file);
         }
 
         $em->flush();
-    }
-
-    public function createFile(string $url): CompanyPicture
-    {
-        $file = new CompanyPicture();
-        $file->setPath($url);
-
-        return $file;
     }
 
     public function getDependencies(): array

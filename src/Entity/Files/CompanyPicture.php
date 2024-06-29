@@ -27,8 +27,11 @@ class CompanyPicture
     #[ORM\Column(length: 255)]
     private string $name;
 
-    #[ORM\Column()]
+    #[ORM\Column]
     private string $path;
+
+    #[ORM\Column]
+    private int $position;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
@@ -59,6 +62,18 @@ class CompanyPicture
     public function setPath(string $path): static
     {
         $this->path = $path;
+
+        return $this;
+    }
+
+    public function getPosition(): int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(int $position): static
+    {
+        $this->position = $position;
 
         return $this;
     }
