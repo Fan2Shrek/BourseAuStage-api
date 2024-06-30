@@ -84,13 +84,16 @@ class StudentCrudController extends AbstractCrudController
                         '<span class="badge badge-secondary">%s</span>',
                         $entity->getGender()->value,
                     );
-                }),
+                })
+                ->setRequired(true),
             TextField::new('firstName', $this->translator->trans('student.field.firstName.label')),
             TextField::new('lastName', $this->translator->trans('student.field.lastName.label')),
             DateField::new('birthdayAt', $this->translator->trans('student.field.birthdayAt.label'))
+                ->setRequired(true)
                 ->setFormat('dd/MM/yyyy')
                 ->hideOnIndex(),
             NumberField::new('age', 'Âge')
+                ->setRequired(true)
                 ->onlyOnIndex(),
 
             FormField::addColumn(6),
@@ -110,8 +113,10 @@ class StudentCrudController extends AbstractCrudController
                         ]),
                     ],
                 ])
+                ->setRequired(true)
                 ->hideOnIndex(),
             TelephoneField::new('phone')
+                ->setRequired(true)
                 ->hideOnIndex(),
             TextField::new('password')
                 ->setFormType(RepeatedType::class)
@@ -135,14 +140,18 @@ class StudentCrudController extends AbstractCrudController
                 ])
                 ->setRequired(Crud::PAGE_NEW === $pageName)
                 ->onlyOnForms()
+                ->setRequired(true)
                 ->hideOnIndex()
                 ->hideOnDetail(),
 
             FormField::addColumn(6),
             FormField::addFieldset($this->translator->trans('student.infoTitle.localisation')),
-            TextField::new('city', $this->translator->trans('student.field.city.label')),
-            TextField::new('postCode', $this->translator->trans('student.field.postCode.label')),
+            TextField::new('city', $this->translator->trans('student.field.city.label'))
+                ->setRequired(true),
+            TextField::new('postCode', $this->translator->trans('student.field.postCode.label'))
+                ->setRequired(true),
             TextField::new('address', $this->translator->trans('student.field.address.label'))
+                ->setRequired(true)
                 ->hideOnIndex(),
 
             FormField::addColumn(6)
