@@ -87,6 +87,7 @@ user:
         invalid: "Ce code postal n'est pas valide"
     siret:
       error:
+        unique: "Ce numéro de siret est déjà utilisé"
         invalid: "Ce numéro de siret n'est pas valide"
     password:
       label: "Mot de passe"

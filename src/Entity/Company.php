@@ -21,6 +21,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Entity\Interface\ActionTrackingInterface;
 use App\Api\Provider\Company\CompanyHighlightProvider;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ApiResource(
     operations: [
@@ -45,6 +46,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(BetweenFilter::class, properties: ['effective'])]
 #[ApiFilter(OrderFilter::class, properties: ['name'])]
 #[ApiFilter(ExistsFilter::class, properties: ['deletedAt'])]
+#[UniqueEntity('siretNumber', 'company.field.siret.error.unique')]
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
 class Company implements ActionTrackingInterface, SoftDeleteInterface
 {
