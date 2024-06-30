@@ -98,6 +98,9 @@
         "patches": {
             "api-platform/core": {
                 "Fixes scopes issues": "./patches/api_platform.patch"
+            },
+            "easycorp/easyadmin-bundle": {
+                "Diff app_env": "./patches/ezadmin.patch"
             }
         }
     }
