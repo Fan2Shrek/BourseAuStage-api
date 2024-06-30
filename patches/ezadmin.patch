@@ -1,0 +1,11 @@
+--- a/vendor/easycorp/easyadmin-bundle/src/Field/Configurator/CommonPreConfigurator.php	2024-06-30 12:37:12.711230591 +0200
++++ b/vendor/easycorp/easyadmin-bundle/src/Field/Configurator/CommonPreConfigurator.php	2024-06-30 12:35:45.365488504 +0200
+@@ -221,7 +221,7 @@
+             return false;
+         }
+ 
+-        return false === $doctrinePropertyMetadata->get('nullable');
++        return false === ($doctrinePropertyMetadata->get('nullable') ?? false);
+     }
+ 
+     private function humanizeString(string $string): string
