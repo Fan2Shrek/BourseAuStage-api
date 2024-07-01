@@ -66,7 +66,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     private ?string $legalStatus = null;
 
     #[Assert\NotNull(message: 'company.field.siretNumber.error.notBlank')]
-    #[Assert\Luhn(message: 'user.field.siretNumber.error.luhn')]
+    #[Assert\Luhn(message: 'company.field.siretNumber.error.luhn')]
     #[ORM\Column(length: 14)]
     private string $siretNumber;
 
