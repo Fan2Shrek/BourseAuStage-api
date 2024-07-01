@@ -85,8 +85,9 @@ class OfferFacetsProvider implements ProviderInterface
             }
         }
 
-        $studyLevelName = $offer->getStudyLevel();
-        if ($studyLevelName) {
+        $studyLevel = $offer->getStudyLevel();
+        if ($studyLevel) {
+            $studyLevelName = $studyLevel->getName();
             if (!in_array($studyLevelName, $carry['studyLevel.name'])) {
                 $carry['studyLevel.name'][] = $studyLevelName;
             }
