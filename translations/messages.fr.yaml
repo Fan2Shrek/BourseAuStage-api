@@ -85,10 +85,6 @@ user:
     postCode:
       error:
         invalid: "Ce code postal n'est pas valide"
-    siret:
-      error:
-        unique: "Ce numéro de siret est déjà utilisé"
-        invalid: "Ce numéro de siret n'est pas valide"
     password:
       label: "Mot de passe"
       repeat: "Confirmer le mot de passe"
@@ -168,6 +164,7 @@ company:
     siretNumber:
       label: "Siret"
       error:
+        unique: "Ce numéro de siret est déjà utilisé."
         notBlank: "Veuillez entrer un numéro de siret."
         length: "Votre numéro de siret doit contenir 14 chiffres."
         luhn: "Numéro de siret incorrect."
