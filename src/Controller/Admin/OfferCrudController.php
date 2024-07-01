@@ -45,7 +45,7 @@ class OfferCrudController extends AbstractCrudController
             ->setPageTitle(Crud::PAGE_NEW, $this->translator->trans('offer.pageTitle.new'))
             ->setPageTitle(Crud::PAGE_DETAIL, fn (Offer $offer) => $offer->getName())
             ->setPageTitle(Crud::PAGE_EDIT, $this->translator->trans('offer.pageTitle.edit'))
-            ->setSearchFields(['name', 'location', 'description', 'student.email']);
+            ->setSearchFields(['name', 'description', 'company.name']);
     }
 
     public function configureFields(string $pageName): iterable
