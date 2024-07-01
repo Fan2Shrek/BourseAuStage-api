@@ -45,7 +45,8 @@ class RequestCrudController extends AbstractCrudController
                 $request->getStudent()->getLastName(),
                 $request->getOffer()->getName(),
             ))
-            ->setPageTitle(Crud::PAGE_EDIT, $this->translator->trans('request.pageTitle.edit'));
+            ->setPageTitle(Crud::PAGE_EDIT, $this->translator->trans('request.pageTitle.edit'))
+            ->setSearchFields(null);
     }
 
     public function configureFields(string $pageName): iterable

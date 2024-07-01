@@ -42,7 +42,8 @@ class SpontaneousRequestCrudController extends AbstractCrudController
             ->setPageTitle(Crud::PAGE_INDEX, $this->translator->trans('spontaneousRequest.pageTitle.index'))
             ->setPageTitle(Crud::PAGE_NEW, $this->translator->trans('spontaneousRequest.pageTitle.new'))
             ->setPageTitle(Crud::PAGE_DETAIL, fn (SpontaneousRequest $spontaneousRequest) => $spontaneousRequest->getName())
-            ->setPageTitle(Crud::PAGE_EDIT, $this->translator->trans('spontaneousRequest.pageTitle.edit'));
+            ->setPageTitle(Crud::PAGE_EDIT, $this->translator->trans('spontaneousRequest.pageTitle.edit'))
+            ->setSearchFields(['name', 'location', 'description', 'student.email']);
     }
 
     public function configureFields(string $pageName): iterable
@@ -50,7 +51,8 @@ class SpontaneousRequestCrudController extends AbstractCrudController
         return [
             FormField::addColumn(6),
             FormField::addFieldset($this->translator->trans('spontaneousRequest.infoTitle.basic')),
-            TextField::new('name', $this->translator->trans('spontaneousRequest.field.name.label')),
+            TextField::new('name', $this->translator->trans('spontaneousRequest.field.name.label'))
+                ->setRequired(true),
             TextField::new('location', $this->translator->trans('spontaneousRequest.field.location.label')),
             AssociationField::new('student', $this->translator->trans('spontaneousRequest.field.student.label')),
             DateTimeField::new('start', $this->translator->trans('spontaneousRequest.field.startAt.label')),

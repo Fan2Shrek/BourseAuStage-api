@@ -44,7 +44,8 @@ class OfferCrudController extends AbstractCrudController
             ->setPageTitle(Crud::PAGE_INDEX, $this->translator->trans('offer.pageTitle.index'))
             ->setPageTitle(Crud::PAGE_NEW, $this->translator->trans('offer.pageTitle.new'))
             ->setPageTitle(Crud::PAGE_DETAIL, fn (Offer $offer) => $offer->getName())
-            ->setPageTitle(Crud::PAGE_EDIT, $this->translator->trans('offer.pageTitle.edit'));
+            ->setPageTitle(Crud::PAGE_EDIT, $this->translator->trans('offer.pageTitle.edit'))
+            ->setSearchFields(['name', 'location', 'description', 'student.email']);
     }
 
     public function configureFields(string $pageName): iterable
@@ -52,7 +53,8 @@ class OfferCrudController extends AbstractCrudController
         return [
             FormField::addColumn(6),
             FormField::addFieldset($this->translator->trans('offer.infoTitle.basic')),
-            TextField::new('name', $this->translator->trans('offer.field.name.label')),
+            TextField::new('name', $this->translator->trans('offer.field.name.label'))
+                ->setRequired(true),
             AssociationField::new('company', $this->translator->trans('offer.field.company.label')),
             DateTimeField::new('start', $this->translator->trans('offer.field.startAt.label')),
             DateTimeField::new('end', $this->translator->trans('offer.field.endAt.label')),
