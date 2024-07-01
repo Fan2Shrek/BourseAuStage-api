@@ -16,6 +16,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use ApiPlatform\Doctrine\Orm\Filter\ExistsFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use App\Api\Filter\DurationFilter;
+use App\Entity\Interface\SoftDeleteInterface;
+use App\Entity\Trait\SoftDeleteTrait;
+use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(operations: [
     new Get(
@@ -34,6 +39,7 @@ use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
     ),
 ])]
 #[ApiFilter(SearchFilter::class, properties: [
+    'company.id' => 'exact',
     'activities.name' => 'exact',
     'studyLevel.name' => 'exact',
 ])]
@@ -41,16 +47,19 @@ use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 #[ApiFilter(BooleanFilter::class, properties: ['isInternship'])]
 #[ApiFilter(ExistsFilter::class, properties: ['deletedAt'])]
 #[ApiFilter(DateFilter::class, properties: ['availableAt'])]
+#[ApiFilter(DurationFilter::class, properties: ['end' => 'start'])]
 #[ORM\Entity(repositoryClass: OfferRepository::class)]
-class Offer extends AbstractOffer
+class Offer extends AbstractOffer implements SoftDeleteInterface
 {
+    use SoftDeleteTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?bool $isPayed = null;
+    #[ORM\Column(nullable: true)]
+    private ?int $pay = null;
 
     /**
      * @var Collection<int, Activity>
@@ -58,17 +67,13 @@ class Offer extends AbstractOffer
     #[ORM\ManyToMany(targetEntity: Activity::class)]
     private Collection $activities;
 
-    /**
-     * @var Collection<int, Mission>
-     */
-    #[ORM\OneToMany(targetEntity: Mission::class, mappedBy: 'offer', orphanRemoval: true)]
-    private Collection $missions;
+    #[Assert\NotBlank(message: 'offer.field.missions.error.notBlank')]
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $missions = null;
 
-    /**
-     * @var Collection<int, Profil>
-     */
-    #[ORM\OneToMany(targetEntity: Profil::class, mappedBy: 'offer', orphanRemoval: true)]
-    private Collection $profils;
+    #[Assert\NotBlank(message: 'offer.field.profils.error.notBlank')]
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $profils = null;
 
     #[ORM\ManyToOne(inversedBy: 'offers')]
     #[ORM\JoinColumn(nullable: false)]
@@ -89,8 +94,6 @@ class Offer extends AbstractOffer
     public function __construct()
     {
         $this->activities = new ArrayCollection();
-        $this->missions = new ArrayCollection();
-        $this->profils = new ArrayCollection();
         $this->searchSkills = new ArrayCollection();
 
         parent::__construct();
@@ -103,14 +106,20 @@ class Offer extends AbstractOffer
 
     public function isPayed(): ?bool
     {
-        return $this->isPayed;
+        return null !== $this->pay && 0 !== $this->pay;
     }
 
-    public function setIsPayed(bool $isPayed): static
+    public function setPay(?int $pay): static
     {
-        $this->isPayed = $isPayed;
+        $this->pay = $pay;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
+    }
+
+    public function getPay(): ?int
+    {
+        return $this->pay;
     }
 
     /**
@@ -125,6 +134,7 @@ class Offer extends AbstractOffer
     {
         if (!$this->activities->contains($activity)) {
             $this->activities->add($activity);
+            $this->updatedAt = new \DateTimeImmutable();
         }
 
         return $this;
@@ -133,66 +143,33 @@ class Offer extends AbstractOffer
     public function removeActivity(Activity $activity): static
     {
         $this->activities->removeElement($activity);
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Mission>
-     */
-    public function getMissions(): Collection
+    public function getMissions(): ?string
     {
         return $this->missions;
     }
 
-    public function addMission(Mission $mission): static
+    public function setMissions(?string $missions): static
     {
-        if (!$this->missions->contains($mission)) {
-            $this->missions->add($mission);
-            $mission->setOffer($this);
-        }
+        $this->missions = $missions;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
 
-    public function removeMission(Mission $mission): static
-    {
-        if ($this->missions->removeElement($mission)) {
-            // set the owning side to null (unless already changed)
-            if ($mission->getOffer() === $this) {
-                $mission->setOffer(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Profil>
-     */
-    public function getProfils(): Collection
+    public function getProfils(): ?string
     {
         return $this->profils;
     }
 
-    public function addProfil(Profil $profil): static
+    public function setProfils(?string $profils): static
     {
-        if (!$this->profils->contains($profil)) {
-            $this->profils->add($profil);
-            $profil->setOffer($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProfil(Profil $profil): static
-    {
-        if ($this->profils->removeElement($profil)) {
-            // set the owning side to null (unless already changed)
-            if ($profil->getOffer() === $this) {
-                $profil->setOffer(null);
-            }
-        }
+        $this->profils = $profils;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -205,6 +182,7 @@ class Offer extends AbstractOffer
     public function setCompany(?Company $company): static
     {
         $this->company = $company;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -217,6 +195,7 @@ class Offer extends AbstractOffer
     public function setAvailableAt(\DateTimeImmutable $availableAt): static
     {
         $this->availableAt = $availableAt;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -233,6 +212,7 @@ class Offer extends AbstractOffer
     {
         if (!$this->searchSkills->contains($searchSkill)) {
             $this->searchSkills->add($searchSkill);
+            $this->updatedAt = new \DateTimeImmutable();
         }
 
         return $this;
@@ -241,6 +221,7 @@ class Offer extends AbstractOffer
     public function removeSearchSkill(Skill $searchSkill): static
     {
         $this->searchSkills->removeElement($searchSkill);
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }
@@ -253,7 +234,13 @@ class Offer extends AbstractOffer
     public function setStudyLevel(?StudyLevel $studyLevel): static
     {
         $this->studyLevel = $studyLevel;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 }

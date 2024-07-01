@@ -4,7 +4,14 @@ namespace App\Entity;
 
 use App\Repository\ActivityRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+    ],
+)]
 #[ORM\Entity(repositoryClass: ActivityRepository::class)]
 class Activity
 {

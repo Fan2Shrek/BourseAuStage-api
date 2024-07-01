@@ -21,6 +21,11 @@ App\Entity\Collaborator:
         lastName:
             groups:
                 - 'api:collaborator:read'
+        jobTitle:
+            groups:
+                - 'api:collaborator:read'
+                - 'api:user:read'
         company:
             groups:
                 - 'api:collaborator:read'
+                - 'api:user:read'

@@ -31,6 +31,9 @@ class Student extends User
 
         parent::__construct();
         $this->requests = new ArrayCollection();
+        $this->skills = new ArrayCollection();
+        $this->experiences = new ArrayCollection();
+        $this->languages = new ArrayCollection();
     }
 
     #[ORM\Column(length: 180)]
@@ -50,6 +53,55 @@ class Student extends User
      */
     #[ORM\OneToMany(targetEntity: Request::class, mappedBy: 'student', orphanRemoval: true)]
     private Collection $requests;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $additionalAddress = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $website = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $linkedIn = null;
+
+    #[ORM\Column]
+    private bool $hasDriverLicence = false;
+
+    #[ORM\Column]
+    private bool $isDisabled = false;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?StudyLevel $studyLevel = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $school = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $diploma = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $cv = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $formation = null;
+
+    /**
+     * @var Collection<int, Skill>
+     */
+    #[ORM\ManyToMany(targetEntity: Skill::class)]
+    private Collection $skills;
+
+    /**
+     * @var Collection<int, Experience>
+     */
+    #[ORM\OneToMany(targetEntity: Experience::class, mappedBy: 'student', orphanRemoval: true)]
+    private Collection $experiences;
+
+    /**
+     * @var Collection<int, Language>
+     */
+    #[ORM\OneToMany(targetEntity: Language::class, mappedBy: 'student', orphanRemoval: true)]
+    private Collection $languages;
 
     public function getAddress(): string
     {
@@ -129,6 +181,7 @@ class Student extends User
         if (!$this->requests->contains($request)) {
             $this->requests->add($request);
             $request->setStudent($this);
+            $this->updatedAt = new \DateTimeImmutable();
         }
 
         return $this;
@@ -140,9 +193,235 @@ class Student extends User
             // set the owning side to null (unless already changed)
             if ($request->getStudent() === $this) {
                 $request->setStudent(null);
+                $this->updatedAt = new \DateTimeImmutable();
             }
         }
 
         return $this;
+    }
+
+    public function getAdditionalAddress(): ?string
+    {
+        return $this->additionalAddress;
+    }
+
+    public function setAdditionalAddress(?string $additionalAddress): static
+    {
+        $this->additionalAddress = $additionalAddress;
+        $this->updatedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function getWebsite(): ?string
+    {
+        return $this->website;
+    }
+
+    public function setWebsite(?string $website): static
+    {
+        $this->website = $website;
+        $this->updatedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function getLinkedIn(): ?string
+    {
+        return $this->linkedIn;
+    }
+
+    public function setLinkedIn(?string $linkedIn): static
+    {
+        $this->linkedIn = $linkedIn;
+        $this->updatedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function hasDriverLicence(): ?bool
+    {
+        return $this->hasDriverLicence;
+    }
+
+    public function setHasDriverLicence(bool $hasDriverLicence): static
+    {
+        $this->hasDriverLicence = $hasDriverLicence;
+        $this->updatedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function isDisabled(): ?bool
+    {
+        return $this->isDisabled;
+    }
+
+    public function setDisabled(bool $isDisabled): static
+    {
+        $this->isDisabled = $isDisabled;
+        $this->updatedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function getStudyLevel(): ?StudyLevel
+    {
+        return $this->studyLevel;
+    }
+
+    public function setStudyLevel(?StudyLevel $studyLevel): static
+    {
+        $this->studyLevel = $studyLevel;
+        $this->updatedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function getSchool(): ?string
+    {
+        return $this->school;
+    }
+
+    public function setSchool(?string $school): static
+    {
+        $this->school = $school;
+        $this->updatedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function getDiploma(): ?string
+    {
+        return $this->diploma;
+    }
+
+    public function setDiploma(?string $diploma): static
+    {
+        $this->diploma = $diploma;
+        $this->updatedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function getCv(): ?string
+    {
+        return $this->cv;
+    }
+
+    public function setCv(?string $cv): static
+    {
+        $this->cv = $cv;
+        $this->updatedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function getFormation(): ?string
+    {
+        return $this->formation;
+    }
+
+    public function setFormation(?string $formation): static
+    {
+        $this->formation = $formation;
+        $this->updatedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Skill>
+     */
+    public function getSkills(): Collection
+    {
+        return $this->skills;
+    }
+
+    public function addSkill(Skill $skill): static
+    {
+        if (!$this->skills->contains($skill)) {
+            $this->skills->add($skill);
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+
+        return $this;
+    }
+
+    public function removeSkill(Skill $skill): static
+    {
+        $this->skills->removeElement($skill);
+        $this->updatedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Experience>
+     */
+    public function getExperiences(): Collection
+    {
+        return $this->experiences;
+    }
+
+    public function addExperience(Experience $experience): static
+    {
+        if (!$this->experiences->contains($experience)) {
+            $this->experiences->add($experience);
+            $experience->setStudent($this);
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+
+        return $this;
+    }
+
+    public function removeExperience(Experience $experience): static
+    {
+        if ($this->experiences->removeElement($experience)) {
+            // set the owning side to null (unless already changed)
+            if ($experience->getStudent() === $this) {
+                $experience->setStudent(null);
+                $this->updatedAt = new \DateTimeImmutable();
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Language>
+     */
+    public function getLanguages(): Collection
+    {
+        return $this->languages;
+    }
+
+    public function addLanguage(Language $language): static
+    {
+        if (!$this->languages->contains($language)) {
+            $this->languages->add($language);
+            $language->setStudent($this);
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+
+        return $this;
+    }
+
+    public function removeLanguage(Language $language): static
+    {
+        if ($this->languages->removeElement($language)) {
+            // set the owning side to null (unless already changed)
+            if ($language->getStudent() === $this) {
+                $language->setStudent(null);
+                $this->updatedAt = new \DateTimeImmutable();
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return sprintf('%s %s', $this->getFirstName(), $this->getLastName());
     }
 }

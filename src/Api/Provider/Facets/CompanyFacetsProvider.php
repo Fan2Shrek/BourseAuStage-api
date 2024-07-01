@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Entity\Company;
 use App\Repository\CompanyRepository;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @implements ProviderInterface<Facets>
@@ -16,6 +17,7 @@ class CompanyFacetsProvider implements ProviderInterface
 {
     public function __construct(
         private readonly CompanyRepository $companyRepository,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -34,12 +36,12 @@ class CompanyFacetsProvider implements ProviderInterface
                 'activities.name' => [],
                 'category.name' => [],
                 'effective' => [
-                    '1-9',
-                    '10-49',
-                    '50-99',
-                    '100-249',
-                    '250-999',
-                    '1000',
+                    $this->translator->trans('facets.between.1-9') => ['1', '9'],
+                    $this->translator->trans('facets.between.10-49') => ['10', '49'],
+                    $this->translator->trans('facets.between.50-99') => ['50', '99'],
+                    $this->translator->trans('facets.between.100-249') => ['100', '249'],
+                    $this->translator->trans('facets.between.250-999') => ['250', '999'],
+                    $this->translator->trans('facets.between.+1000') => '>999',
                 ],
                 'range' => [
                     'min' => 0,
@@ -65,7 +67,6 @@ class CompanyFacetsProvider implements ProviderInterface
             ],
             'effective' => [
                 FacetOptionEnum::BETWEEN,
-                FacetOptionEnum::BETWEEN_AND_MORE,
             ],
             'range' => [
                 FacetOptionEnum::RANGE,

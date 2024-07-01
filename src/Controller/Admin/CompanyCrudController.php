@@ -60,7 +60,7 @@ class CompanyCrudController extends AbstractCrudController
             TextField::new('legalStatus', $this->translator->trans('company.field.legalStatus.label')),
             TextField::new('socialLink', $this->translator->trans('company.field.socialLink.label'))
                 ->hideOnIndex(),
-            TextField::new('age', $this->translator->trans('company.field.age.label'))
+            DateTimeField::new('age', $this->translator->trans('company.field.age.label'))
                 ->hideOnIndex(),
             TextField::new('siretNumber', $this->translator->trans('company.field.siretNumber.label'))
                 ->setFormTypeOptions([
@@ -112,7 +112,6 @@ class CompanyCrudController extends AbstractCrudController
                 ->setBasePath('')
                 ->setUploadDir('public/img/company/logo')
                 ->setUploadedFileNamePattern('public/img/company/logo/[randomhash].[extension]')
-                ->setRequired(Crud::PAGE_NEW === $pageName)
                 ->formatValue(function ($value, ?Company $entity) {
                     if (null === $entity) {
                         return '';
@@ -125,7 +124,6 @@ class CompanyCrudController extends AbstractCrudController
                 ->setBasePath('')
                 ->setUploadDir('public/img/company/logoIcon')
                 ->setUploadedFileNamePattern('public/img/company/logoIcon/[randomhash].[extension]')
-                ->setRequired(Crud::PAGE_NEW === $pageName)
                 ->formatValue(function ($value, ?Company $entity) {
                     if (null === $entity) {
                         return '';

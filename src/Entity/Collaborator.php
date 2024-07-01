@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use App\Repository\CollaboratorRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
@@ -30,6 +31,7 @@ class Collaborator extends User
     #[ORM\ManyToOne(targetEntity: Company::class)]
     private Company $company;
 
+    #[Assert\NotBlank(message: 'collaborator.field.jobTitle.error.notBlank')]
     #[ORM\Column(length: 255)]
     private ?string $jobTitle = null;
 
@@ -61,6 +63,7 @@ class Collaborator extends User
     public function setJobTitle(string $jobTitle): static
     {
         $this->jobTitle = $jobTitle;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }

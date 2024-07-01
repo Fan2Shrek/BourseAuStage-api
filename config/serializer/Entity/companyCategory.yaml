@@ -1,0 +1,8 @@
+App\Entity\CompanyCategory:
+    attributes:
+        id:
+            groups:
+                - 'api:company:read'
+        name:
+            groups:
+                - 'api:company:read'

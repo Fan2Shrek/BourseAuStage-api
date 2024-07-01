@@ -17,6 +17,13 @@ facets:
     '2-6': "Entre 2 et 6 mois"
     '6-12': "Entre 6 et 12 mois"
     '+12': "Plus de 12 mois"
+  between:
+    '1-9': "1-9"
+    '10-49': "10-49"
+    '50-99': "50-99"
+    '100-249': "100-249"
+    '250-999': "250-999"
+    '+1000': "1000 et supérieur"
 
 dashboard:
   title: "Tableau de bord"
@@ -28,6 +35,9 @@ dashboard:
     collaborators: "Collaborateurs"
     categories: "Catégories d'entreprise"
     activities: "Secteurs d'activité"
+    offers: "Offres"
+    spontaneousRequests: "Demandes spontanées"
+    requests: "Demandes"
 
 entity:
   action:
@@ -62,20 +72,39 @@ user:
     email:
       label: "Mail"
       error:
-        notBlank: "Veuillez entrer une adresse mail."
-        email: "L'adresse mail n'est pas valide."
-        lenght: "Votre adresse mail est trop longue."
+        notBlank: "Veuillez entrer une adresse mail"
+        email: "L'adresse mail n'est pas valide"
+        lenght: "Votre adresse mail est trop longue"
+        unique: "Cette adresse mail est déjà utilisée"
+        isEmail: "Cette adresse mail n'est pas correct"
+    phone: 
+      error:
+        notBlank: "Veuillez entrer un numéro de téléphone"
+        unique: "Ce numéro de téléphone est déjà utilisé"
+        invalid: "Ce numéro de téléphone n'est pas valide"
+    postCode:
+      error:
+        invalid: "Ce code postal n'est pas valide"
     password:
       label: "Mot de passe"
       repeat: "Confirmer le mot de passe"
       error:
         minLength: "Votre mot de passe doit contenir au moins {{ limit }} caractères."
+        notBlank: "Veuillez rentrer un mot de passe "
     firstName:
       label: "Prénom"
+      error:
+        notBlank: "Veuillez entrer un prénom"
     lastName:
       label: "Nom"
+      error:
+        notBlank: "Veuillez entrer un nom"
     role:
       label: "Type d'utilisateur"
+    avatar:
+      error: 
+        extensions: "Seuls les fichiers jpg, jpeg, png sont autorisés"
+
   flash:
     error:
       lastAdmin: "Vous ne pouvez pas désactiver le dernier administrateur."
@@ -135,6 +164,7 @@ company:
     siretNumber:
       label: "Siret"
       error:
+        unique: "Ce numéro de siret est déjà utilisé."
         notBlank: "Veuillez entrer un numéro de siret."
         length: "Votre numéro de siret doit contenir 14 chiffres."
         luhn: "Numéro de siret incorrect."
@@ -156,6 +186,14 @@ company:
       label: "Logo de l'entreprise"
     logoIcon:
       label: "Logo réduit (50x50)"
+    activities:
+      label: "Secteurs d'activité"
+      error:
+        notBlank: "Veuillez entrer un secteur d'activité."
+    category:
+      label: "Catégorie"
+      error:
+        notBlank: "Veuillez entrer séléctionner une catégorie."
 
 activity: 
   action:
@@ -203,6 +241,7 @@ student:
       authentication: "Authentification"
       localisation: "Localisation"
       additional: "Informations complémentaires"
+      profil: "Profil"
   action:
     new: "Créer un étudiant"
     desactivate: "Désactiver"
@@ -216,12 +255,20 @@ student:
       label: "Nom"
     city:
       label: "Ville"
+      error:
+        notBlank: "Veuillez renseigner une ville"
     postCode:
       label: "Code postal"
+      error:
+        notBlank: "Veuillez renseigner un code postal"
     address:
       label: "Adresse"
+      error:
+        notBlank: "Veuillez renseigner une adresse"
     birthdayAt:
       label: "Date de naissance"
+      error: 
+        notBlank: "Veuillez renseigner votre date de naissance"
     email:
       label: "Mail"
       error:
@@ -233,6 +280,30 @@ student:
       repeat: "Confirmer le mot de passe"
       error:
         minLength: "Votre mot de passe doit contenir au moins {{ limit }} caractères."
+    additionalAddress:
+      label: "Adresse complémentaire"
+    website:
+      label: "Site personnel"
+    linkedIn:
+      label: "Lien linkedIn"
+    hasDriverLicence:
+      label: "Permis de conduire"
+    isDisabled:
+      label: "Handicape"
+    school:
+      label: "Etablissement"
+    diploma:
+      label: "Diplôme"
+    studyLevel:
+      label: "Niveau d'étude"
+    experiences:
+      label: "Expériences"
+    languages:
+      label: "Langues"
+    skills:
+      label: "Compétences"
+    formation:
+      label: "Formation"
 
 collaborator:
   pageTitle:
@@ -256,6 +327,8 @@ collaborator:
       label: "Nom"
     jobTitle:
       label: "Fonction"
+      error:
+        notBlank: "Veuillez entrer votre poste."
     company:
       label: "Entreprise"
     email:
@@ -269,4 +342,113 @@ collaborator:
       repeat: "Confirmer le mot de passe"
       error:
         minLength: "Votre mot de passe doit contenir au moins {{ limit }} caractères."
-    
+
+offer:
+  pageTitle:
+    index: "Offres"
+    new: "Créer une offre"
+    edit: "Modifier l'offre"
+  infoTitle:
+    basic: "Informations de base"
+    description: "Description"
+    additional: "Informations complémentaires"
+  action:
+    new: "Créer une offre"
+    desactivate: "Désactiver"
+    revive: "Réactiver"
+    availableAt: "A partir du"
+  field:
+    name:
+      label: "Nom"
+      error: 
+        notBlank: "Veuillez entrer un nom."
+        length: "Le nom de l'offre doit être entre 50 et 255 charactères."
+    startAt:
+      label: "Date de début"
+      error: 
+        lessThanOrEqual: "La date de début ne peut pas être une date antérieur à aujourd'hui."
+    endAt:
+      label: "Date de fin"
+      error:
+        greaterThan: "La date de fin doit être supérieure à la date de début."
+    description:
+      label: "Description"
+      error: 
+        notBlank: "Veuillez entrer une description."
+    isPayed:
+      label: "Payé"
+    company:
+      label: "Entreprise"
+    studyLevel:
+      label: "Niveau requis"
+    isInternship:
+      label: "Type"
+    missions: 
+      label: "Missions"
+      error: 
+        notBlank: "Veuillez entrer un contenu pour les missions."
+    profils: 
+      label: "Profils recherchés"
+      error: 
+        notBlank: "Veuillez entrer un contenu pour les profils recherchés."
+
+spontaneousRequest:
+  pageTitle:
+    index: "Demandes spontanées"
+    new: "Créer une demande spontanée"
+    edit: "Modifier la demande spontanée"
+  infoTitle:
+    basic: "Informations de base"
+    description: "Description"
+    additional: "Informations complémentaires"
+  action:
+    new: "Créer une demande spontanée"
+    desactivate: "Désactiver"
+    revive: "Réactiver"
+    availableAt: "A partir du"
+  field:
+    name:
+      label: "Nom"
+      error: 
+        notBlank: "Veuillez entrer un nom."
+        length: "Le nom de la demande spontanée doit être entre 50 et 255 charactères."
+    student:
+      label: "Étudiant"
+    startAt:
+      label: "Date de début"
+      error: 
+        lessThanOrEqual: "La date de début ne peut pas être une date antérieur à aujourd'hui."
+    endAt:
+      label: "Date de fin"
+      error:
+        greaterThan: "La date de fin doit être supérieure à la date de début."
+    description:
+      label: "Description"
+      error: 
+        notBlank: "Veuillez entrer une description."
+    isInternship:
+      label: "Type"
+    location:
+      label: "Lieu"
+
+request:
+  pageTitle:
+    index: "Demandes"
+    new: "Créer une demande"
+    edit: "Modifier la demande"
+  infoTitle:
+    basic: "Informations de base"
+    additional: "Informations complémentaires"
+  action:
+    new: "Créer une demande"
+    desactivate: "Désactiver"
+    revive: "Réactiver"
+  field:
+    student:
+      label: "Étudiant"
+      error:
+        notBlank: "Veuillez entrer un étudiant."
+    offer:
+      label: "Offre"
+      error:
+        notBlank: "Veuillez entrer une offre."

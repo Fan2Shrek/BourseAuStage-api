@@ -6,18 +6,30 @@ App\Entity\User:
         email:
             groups:
                 - 'api:user:read'
+                - 'user:read'
         roles:
             groups:
                 - 'api:user:read'
         phone:
             groups:
                 - 'api:user:read'
+                - 'user:read'
         gender:
             groups:
                 - 'api:user:read'
+                - 'user:read'
         firstName:
             groups:
                 - 'api:user:read'
+                - 'user:read'
         lastName:
+            groups:
+                - 'api:user:read'
+                - 'user:read'
+        avatar:
+            groups:
+                - 'api:user:read'
+                - 'user:read'
+        deletedAt:
             groups:
                 - 'api:user:read'

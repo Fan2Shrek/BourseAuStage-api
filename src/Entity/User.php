@@ -16,6 +16,8 @@ use App\Entity\Interface\ActionTrackingInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\PasswordStrength;
 
 #[ApiResource(
     operations: [
@@ -27,7 +29,8 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
         ),
     ],
 )]
-#[UniqueEntity('email')]
+#[UniqueEntity('email', 'user.field.email.error.unique')]
+#[UniqueEntity('phone', 'user.field.phone.error.unique')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\InheritanceType('JOINED')]
 #[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
@@ -42,6 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionT
     #[ORM\Column]
     private int $id;
 
+    #[Assert\Email(message: 'user.field.email.error.isEmail', )]
     #[ORM\Column(length: 180, unique: true)]
     private string $email;
 
@@ -51,20 +55,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionT
     #[ORM\Column]
     private array $roles = [];
 
-    #[ORM\Column()]
+    #[Assert\NotBlank(message: 'user.field.phone.error.notBlank')]
+    #[Assert\Regex('/^\d{10}$/', 'user.field.phone.error.invalid')]
+    #[ORM\Column]
     private string $phone;
 
+    #[PasswordStrength(minScore: PasswordStrength::STRENGTH_WEAK)]
     #[ORM\Column]
     private string $password;
 
     #[ORM\Column(type: 'string', enumType: GenderEnum::class)]
     private GenderEnum $gender;
 
+    #[Assert\NotBlank(message: 'user.field.firstName.error.notBlank')]
     #[ORM\Column]
     private string $firstName;
 
+    #[Assert\NotBlank(message: 'user.field.lastName.error.notBlank')]
     #[ORM\Column]
     private string $lastName;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $avatar = null;
 
     public function __construct()
     {
@@ -81,7 +93,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionT
         return $this->email;
     }
 
-    public function setEmail(string $email): static
+    public function setEmail(?string $email): static
     {
         $this->email = $email;
         $this->updatedAt = new \DateTimeImmutable();
@@ -94,7 +106,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionT
         return $this->phone;
     }
 
-    public function setPhone(string $phone): static
+    public function setPhone(?string $phone): static
     {
         $this->phone = $phone;
         $this->updatedAt = new \DateTimeImmutable();
@@ -179,6 +191,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, ActionT
     public function setLastName(string $lastName): static
     {
         $this->lastName = $lastName;
+        $this->updatedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): static
+    {
+        $this->avatar = $avatar;
         $this->updatedAt = new \DateTimeImmutable();
 
         return $this;

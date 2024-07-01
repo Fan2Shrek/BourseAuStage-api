@@ -10,9 +10,12 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -27,6 +30,9 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Validator\Constraints\PasswordStrength;
 use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use App\Form\ExperienceType;
+use App\Form\LanguageType;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 
 class StudentCrudController extends AbstractCrudController
 {
@@ -164,6 +170,82 @@ class StudentCrudController extends AbstractCrudController
                 ->hideOnForm(),
             DateTimeField::new('deletedAt', $this->translator->trans('entity.action.deletedAt.dateLabel'))
                 ->onlyOnDetail(),
+            TextField::new('additionalAddress', $this->translator->trans('student.field.additionalAddress.label'))
+                ->hideOnIndex(),
+            ImageField::new('avatar')
+                ->hideOnIndex()
+                ->setUploadDir('public/img/user'),
+            ImageField::new('cv')
+                ->hideOnIndex()
+                ->setUploadDir('public/img/user'),
+
+            FormField::addColumn(12)
+                ->hideOnIndex(),
+            FormField::addFieldset($this->translator->trans('student.infoTitle.profil'))
+                ->hideOnIndex(),
+            TextField::new('website', $this->translator->trans('student.field.website.label'))
+                ->hideOnIndex(),
+            TextField::new('linkedIn', $this->translator->trans('student.field.linkedIn.label'))
+                ->hideOnIndex(),
+            BooleanField::new('hasDriverLicence', $this->translator->trans('student.field.hasDriverLicence.label'))
+                ->hideOnIndex(),
+            BooleanField::new('isDisabled', $this->translator->trans('student.field.isDisabled.label'))
+                ->hideOnIndex(),
+            TextField::new('school', $this->translator->trans('student.field.school.label'))
+                ->hideOnIndex(),
+            TextField::new('diploma', $this->translator->trans('student.field.diploma.label'))
+                ->hideOnIndex(),
+            AssociationField::new('studyLevel', $this->translator->trans('student.field.studyLevel.label'))
+                ->setFormTypeOption('choice_label', 'name')
+                ->hideOnIndex(),
+            CollectionField::new('experiences', $this->translator->trans('student.field.experiences.label'))
+                ->setEntryType(ExperienceType::class)
+                ->hideOnIndex(),
+            CollectionField::new('languages', $this->translator->trans('student.field.languages.label'))
+                ->setEntryType(LanguageType::class)
+                ->hideOnIndex(),
+            AssociationField::new('skills', $this->translator->trans('student.field.skills.label'))
+                ->setFormTypeOption('choice_label', 'name')
+                ->hideOnIndex(),
+            TextField::new('additionalAddress', $this->translator->trans('student.field.additionalAddress.label'))
+                ->hideOnIndex(),
+            ImageField::new('avatar')
+                ->hideOnIndex()
+                ->setUploadDir('public/img/user'),
+            ImageField::new('cv')
+                ->hideOnIndex()
+                ->setUploadDir('public/img/user'),
+
+            FormField::addColumn(12)
+                ->hideOnIndex(),
+            FormField::addFieldset($this->translator->trans('student.infoTitle.profil'))
+                ->hideOnIndex(),
+            TextField::new('website', $this->translator->trans('student.field.website.label'))
+                ->hideOnIndex(),
+            TextField::new('linkedIn', $this->translator->trans('student.field.linkedIn.label'))
+                ->hideOnIndex(),
+            TextField::new('formation', $this->translator->trans('student.field.formation.label'))
+                ->hideOnIndex(),
+            BooleanField::new('hasDriverLicence', $this->translator->trans('student.field.hasDriverLicence.label'))
+                ->hideOnIndex(),
+            BooleanField::new('isDisabled', $this->translator->trans('student.field.isDisabled.label'))
+                ->hideOnIndex(),
+            TextField::new('school', $this->translator->trans('student.field.school.label'))
+                ->hideOnIndex(),
+            TextField::new('diploma', $this->translator->trans('student.field.diploma.label'))
+                ->hideOnIndex(),
+            AssociationField::new('studyLevel', $this->translator->trans('student.field.studyLevel.label'))
+                ->setFormTypeOption('choice_label', 'name')
+                ->hideOnIndex(),
+            CollectionField::new('experiences', $this->translator->trans('student.field.experiences.label'))
+                ->setEntryType(ExperienceType::class)
+                ->hideOnIndex(),
+            CollectionField::new('languages', $this->translator->trans('student.field.languages.label'))
+                ->setEntryType(LanguageType::class)
+                ->hideOnIndex(),
+            AssociationField::new('skills', $this->translator->trans('student.field.skills.label'))
+                ->setFormTypeOption('choice_label', 'name')
+                ->hideOnIndex(),
         ];
     }
 

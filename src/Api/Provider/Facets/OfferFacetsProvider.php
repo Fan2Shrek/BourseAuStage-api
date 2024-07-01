@@ -41,10 +41,10 @@ class OfferFacetsProvider implements ProviderInterface
                 'activities.name' => [],
                 'studyLevel.name' => [],
                 'end' => [
-                    $this->translator->trans('facets.duration.-2'),
-                    $this->translator->trans('facets.duration.2-6'),
-                    $this->translator->trans('facets.duration.6-12'),
-                    $this->translator->trans('facets.duration.+12'),
+                    $this->translator->trans('facets.duration.-2') => '<61',
+                    $this->translator->trans('facets.duration.2-6') => ['61', '182'],
+                    $this->translator->trans('facets.duration.6-12') => ['183', '365'],
+                    $this->translator->trans('facets.duration.+12') => '>365',
                 ],
                 'range' => [
                     'min' => 0,
@@ -64,6 +64,9 @@ class OfferFacetsProvider implements ProviderInterface
         ];
 
         $facets->options = [
+            'end' => [
+                FacetOptionEnum::DURATION,
+            ],
             'range' => [
                 FacetOptionEnum::RANGE,
             ],

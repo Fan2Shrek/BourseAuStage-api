@@ -2,23 +2,24 @@
 
 namespace App\Tests\Factory;
 
-use App\Entity\Mission;
+use App\Entity\Experience;
+use App\Entity\Student;
 use Zenstruck\Foundry\ModelFactory;
 
 /**
- * @extends ModelFactory<Mission>
+ * @extends ModelFactory<Student>
  */
-final class MissionFactory extends ModelFactory
+final class ExperienceFactory extends ModelFactory
 {
     protected function getDefaults(): array
     {
         return [
-            'description' => self::faker()->sentence(),
+            'name' => self::faker()->sentence(),
         ];
     }
 
     protected static function getClass(): string
     {
-        return Mission::class;
+        return Experience::class;
     }
 }
