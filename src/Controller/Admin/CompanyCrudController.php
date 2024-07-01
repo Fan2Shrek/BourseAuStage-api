@@ -60,7 +60,7 @@ class CompanyCrudController extends AbstractCrudController
             TextField::new('legalStatus', $this->translator->trans('company.field.legalStatus.label')),
             TextField::new('socialLink', $this->translator->trans('company.field.socialLink.label'))
                 ->hideOnIndex(),
-            TextField::new('age', $this->translator->trans('company.field.age.label'))
+            DateTimeField::new('age', $this->translator->trans('company.field.age.label'))
                 ->hideOnIndex(),
             TextField::new('siretNumber', $this->translator->trans('company.field.siretNumber.label'))
                 ->setFormTypeOptions([
