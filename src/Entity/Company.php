@@ -46,7 +46,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ApiFilter(BetweenFilter::class, properties: ['effective'])]
 #[ApiFilter(OrderFilter::class, properties: ['name'])]
 #[ApiFilter(ExistsFilter::class, properties: ['deletedAt'])]
-#[UniqueEntity('siretNumber', 'company.field.siret.error.unique')]
+#[UniqueEntity('siretNumber', 'company.field.siretNumber.error.unique')]
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
 class Company implements ActionTrackingInterface, SoftDeleteInterface
 {
@@ -66,7 +66,7 @@ class Company implements ActionTrackingInterface, SoftDeleteInterface
     private ?string $legalStatus = null;
 
     #[Assert\NotNull(message: 'company.field.siretNumber.error.notBlank')]
-    #[Assert\Luhn(message: 'user.field.siret.error.invalid')]
+    #[Assert\Luhn(message: 'user.field.siretNumber.error.luhn')]
     #[ORM\Column(length: 14)]
     private string $siretNumber;
 
